@@ -4,7 +4,7 @@
 
 namespace Lynx
 {
-    class Application
+    class LYNX_API Application
     {
         public:
             Application();

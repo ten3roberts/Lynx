@@ -21,6 +21,7 @@ project "Lynx"
    filter "configurations:Release"
        defines {"NDEBUG", "COMPILE_DLL"}
        optimize "On"
+    defines{"LX_EXPORT"}
 
 project "Sandbox"
     kind "ConsoleApp"
@@ -49,3 +50,5 @@ project "Sandbox"
 
     filter "system:linux"
         defines{ "PL_LINUX=1" }
+
+    defines{"LX_IMPORT"}
