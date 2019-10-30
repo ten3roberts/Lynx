@@ -1,9 +1,11 @@
 bin/
 .vscode/
-
+.vs/
 obj/
 
 Makefile
 *.make
+
+
 
 
