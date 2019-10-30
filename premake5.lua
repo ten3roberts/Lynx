@@ -7,7 +7,7 @@ project "Lynx"
    language "C++"
    targetdir "bin"
 
-   files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp", "Lynx.h"}
+   files {"%{prj.name}/**.h", "%{prj.name}/**.cpp"}
       
    includedirs("Lynx")
 

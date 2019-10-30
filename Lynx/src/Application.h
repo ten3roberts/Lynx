@@ -14,5 +14,5 @@ namespace Lynx
     };
 
     //To be defined in client
-    Application* CreateApplication();
+	Application* CreateApplication();
 }

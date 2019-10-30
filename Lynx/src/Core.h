@@ -5,14 +5,18 @@
 #else
     #define SLASH '/'
 #endif
-
+#define PLAT_WINDOWS 1
 #if PLAT_WINDOWS
     #if LX_EXPORT
         #define LYNX_API __declspec(dllexport)
-    #endif
-    #if LX_IMPORT
+    #else
         #define LYNX_API __declspec(dllimport)
     #endif
 #else
     #define LYNX_API
 #endif
+
+#include <thread>
+#include <chrono>
+
+#define SLEEP(x) std::this_thread::sleep_for(std::chrono::seconds(x));

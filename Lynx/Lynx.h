@@ -1,1 +1,5 @@
-#include <src/Application.h>
+#pragma once
+
+#include "src/Application.h"
+
+#include "src/EntryPoint.h"

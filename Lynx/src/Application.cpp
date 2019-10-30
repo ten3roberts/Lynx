@@ -17,7 +17,8 @@ namespace Lynx
     {
         while(true)
         {
-            printf("Running\n");
+            printf("Running \n");
+			SLEEP(1);
         }
     }
 }

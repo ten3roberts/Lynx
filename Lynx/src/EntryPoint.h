@@ -1,11 +1,10 @@
-#include <src/Application.h>
-
+#pragma once
 
 extern Lynx::Application* Lynx::CreateApplication();
 
 int main(int argc, char** argv)
 {
-    auto application = Lynx::CreateApplication();
+	auto application = Lynx::CreateApplication();
     application->Run();
     delete application;
 }

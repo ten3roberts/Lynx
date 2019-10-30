@@ -4,20 +4,19 @@
 
 class Sandbox : public Lynx::Application
 {
-    public:
-        Sandbox()
-        {
-            printf("Starting project Sandbox\n");
-        }
-        ~Sandbox()
-        {
+public:
+	Sandbox()
+	{
+		printf("Starting project Sandbox\n");
+	}
+	~Sandbox()
+	{
 
-        }
+	}
 };
-
 
 
 Lynx::Application* Lynx::CreateApplication()
 {
-    return new Sandbox();
+	return new Sandbox();
 }
