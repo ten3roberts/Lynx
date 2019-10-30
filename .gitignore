@@ -6,6 +6,12 @@ obj/
 Makefile
 *.make
 
+*.exe
+*.so
+
+*.sln
+*.vcxproj
+*.vcxproj.filters
 
 
 
