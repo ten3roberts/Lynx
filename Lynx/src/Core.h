@@ -5,7 +5,7 @@
 #else
     #define SLASH '/'
 #endif
-#define PLAT_WINDOWS 1
+
 #if PLAT_WINDOWS
     #if LX_EXPORT
         #define LYNX_API __declspec(dllexport)
