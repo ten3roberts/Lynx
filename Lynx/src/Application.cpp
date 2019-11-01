@@ -4,9 +4,10 @@
 
 namespace Lynx
 {
-    Application::Application()
+    Application::Application() : m_name("Lynx"), m_workingDir(CURR_DIR)
     {
-
+		Time::Init();
+		setWorkingDir(m_workingDir);
     }
 
     Application::~Application()
@@ -20,7 +21,7 @@ namespace Lynx
         while(true)
         {
 			Time::Update();
-			LogS("Application", "Running frame %d", Time::frameCount);
+			LogS(m_name, "Running frame %d", Time::frameCount);
 			SLEEP(1s);
 			
         }

@@ -2,8 +2,12 @@
 #define SLASH  '/'
 #elif PL_WINDOWS
 #define SLASH '\\'
+#define CURR_DIR ".\\"
+#define PREV_DIR "..\\"
 #else
 #define SLASH '/'
+#define CURR_DIR "./"
+#define PREV_DIR "../"
 #endif
 
 #if PL_WINDOWS

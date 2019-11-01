@@ -7,7 +7,8 @@ class Sandbox : public Lynx::Application
 public:
 	Sandbox()
 	{
-		printf("Starting project Sandbox\n");
+		m_name = "Sandbox";
+		//LogF("Starting project Sandbox\n");
 	}
 	~Sandbox()
 	{
