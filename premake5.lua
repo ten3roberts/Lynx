@@ -6,6 +6,9 @@ project "Lynx"
    kind "SharedLib"
    language "C++"
    targetdir "bin"
+   
+   pchheader "pch.h"
+   pchsource "Lynx/pch.cpp"
 
    files {"%{prj.name}/**.h", "%{prj.name}/**.cpp"}
       

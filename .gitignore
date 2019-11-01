@@ -3,6 +3,9 @@ bin/
 .vs/
 obj/
 
+Logs/
+*.log
+
 Makefile
 *.make
 

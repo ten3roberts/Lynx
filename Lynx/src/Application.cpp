@@ -1,3 +1,4 @@
+#include <pch.h>
 #include <src/Application.h>
 #include <stdio.h>
 
@@ -15,10 +16,13 @@ namespace Lynx
 
     void Application::Run()
     {
+		Time::Init();
         while(true)
         {
-            printf("Running \n");
-			SLEEP(1);
+			Time::Update();
+			LogS("Application", "Running frame %d", Time::frameCount);
+			SLEEP(1s);
+			
         }
     }
 }
