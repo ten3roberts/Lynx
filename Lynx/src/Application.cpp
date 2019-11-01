@@ -1,6 +1,7 @@
 #include <pch.h>
 #include <src/Application.h>
 #include <stdio.h>
+#include <GLFW/glfw3.h>
 
 namespace Lynx
 {
@@ -8,6 +9,7 @@ namespace Lynx
     {
 		Time::Init();
 		setWorkingDir(m_workingDir);
+		glfwInit();
     }
 
     Application::~Application()

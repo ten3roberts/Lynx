@@ -3,6 +3,8 @@ workspace "Lynx"
 	architecture "x64"
 	configurations { "Debug", "Release" }
 
+outputdir = ""
+
 IncludeDir = {}
 IncludeDir["GLFW"] = "Lynx/vendor/GLFW/include"
 
@@ -10,9 +12,11 @@ IncludeDir["GLFW"] = "Lynx/vendor/GLFW/include"
 include "Lynx/vendor/GLFW"
 
 project "Lynx"
+	location "Lynx"
 	kind "SharedLib"
 	language "C++"
-	targetdir "bin"
+	targetdir ("bin")
+	objdir ("obj")
 	
 	pchheader "pch.h"
 	pchsource "Lynx/pch.cpp"
@@ -22,11 +26,11 @@ project "Lynx"
 	includedirs
 	{
 		"%{prj.name}",
-		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.GLFW}"
 	}
 	links
 	{
-		"GLFW"
+		"GLFW",
 		"opengl32.lib"
 	}
 	
