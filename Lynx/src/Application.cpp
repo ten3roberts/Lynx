@@ -7,7 +7,6 @@ namespace Lynx
 {
     Application::Application() : m_name("Lynx")
     {
-		Time::Init();
 		glfwInit();
     }
 

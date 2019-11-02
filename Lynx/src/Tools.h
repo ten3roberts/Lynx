@@ -20,8 +20,6 @@
 std::string format(std::string format, ...);
 std::string vformat(std::string format, va_list vl);
 
-void LYNX_API Test(std::string str);
-
 namespace Tools
 {
 	//public:
@@ -78,12 +76,7 @@ namespace Tools
 	//Pads a string to a constant size by inserting characters to the left
 	inline std::string LYNX_API strPadLeft(const std::string& str, size_t size, char paddingChar = ' ');
 	//Pads a string to a constant size by inserting characters to the right
-	inline std::string LYNX_API strPadRight(const std::string& str, size_t size, char paddingChar = ' ') 
-	{
-		std::string result = str;
-		result.insert(result.size()-1, size - str.size(), paddingChar);
-		return result;
-	}
+	inline std::string LYNX_API strPadRight(const std::string& str, size_t size, char paddingChar = ' ');
 
 	//Will return a string vector of all folder in a specified directory
 	std::string LYNX_API ListTostring(float* list, size_t size, const std::string& separator = ", ");

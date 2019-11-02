@@ -221,11 +221,18 @@ std::string Tools::strPurgeAll(const std::string& str, const std::string& patter
 	return result + str.substr(c);
 }
 
-std::string LYNX_API Tools::strPadLeft(const std::string& str, size_t size, char paddingChar)
+std::string Tools::strPadLeft(const std::string& str, size_t size, char paddingChar)
 {
 	std::string result;
 	result.insert(0, size - str.size(), paddingChar);
 	return result + str;
+}
+
+std::string Tools::strPadRight(const std::string& str, size_t size, char paddingChar)
+{
+	std::string result = str;
+	result.insert(result.size() - 1, size - str.size(), paddingChar);
+	return result;
 }
 
 std::string Tools::ListTostring(float* list, size_t size, const std::string& separator)
@@ -784,11 +791,6 @@ std::string vformat(std::string format, va_list vl)
 		}
 	}
 	return result;
-}
-
-void LYNX_API Test(std::string str)
-{
-	printf("Hello World %s\n", str.c_str());
 }
 
 std::string format(std::string format, ...)

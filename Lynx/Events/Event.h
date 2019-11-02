@@ -20,6 +20,5 @@ namespace Lynx
 		Keyboard		= BIT(2),
 		Mouse			= BIT(3),
 		MouseButton		= BIT(4)
-
 	};
 }

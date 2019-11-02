@@ -9,7 +9,7 @@
 
 using namespace std::chrono_literals;
 
-class Time
+class LYNX_API Time
 {
 public:
 	enum TimePrecision

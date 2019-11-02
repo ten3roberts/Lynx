@@ -1,9 +1,12 @@
 #pragma once
 
+#include <src/Time.h>
+
 extern Lynx::Application* Lynx::CreateApplication();
 
 int main(int argc, char** argv)
 {
+	Time::Init();
 	//Sets the working directory
 	Tools::setWorkingDir(argv[0]);
 
