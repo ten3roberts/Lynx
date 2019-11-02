@@ -7,7 +7,7 @@
 
 namespace Lynx
 {
-    Application::Application() : m_name("Lynx")
+	Application::Application() : m_name("Lynx"), m_running(false)
     {
 		m_window = new Window();
     }
@@ -24,6 +24,8 @@ namespace Lynx
 		m_running = true;
         while(m_running)
         {
+			WindowResizeEvent e(1, 4);
+
 			glClearColor(0.5, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 			Time::Update();

@@ -1,5 +1,6 @@
 #pragma once
 #include <src/Core.h>
+#include <functional>
 #include <string>
 
 namespace Lynx
@@ -54,10 +55,12 @@ namespace Lynx
 	class LYNX_API EventDispatcher
 	{
 	public:
+		template <typename T>
+		using EventFn = std::function<void(T&)>;
 		EventDispatcher(Event& event) : m_event(event) {}
 
 		template <typename T>
-		bool Dispatch(void (*func)(T&))
+		bool Dispatch(EventFn<T> func)
 		{
 			//  If current event matches template event, run the func with event
 			if(m_event.getEventType() == T::getStaticType())
