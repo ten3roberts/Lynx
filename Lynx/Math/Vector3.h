@@ -49,9 +49,9 @@ struct Vector3
 		return str();
 	}
 
-	inline float& operator[](unsigned int index) { return *(&x + index); }
+	inline float& operator[](size_t index) { return *(&x + index); }
 	//Returns a costant reference and is therefore safe with cost&
-	const float& get(unsigned int index) const { return *(&x + index); }
+	const float& get(size_t index) const { return *(&x + index); }
 
 	void operator=(const Vector3& vec3);
 	void operator=(float setTo) { x = setTo; y = setTo; z = setTo; }

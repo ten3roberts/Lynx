@@ -27,7 +27,7 @@ Vector2::Vector2(const std::string& str) : x(0), y(0)
 {
 	//Removing spaces vector size if neccesary and splits into all the elements
 	std::vector<std::string> parts = strSplit(strSplit(str, ";")[0], " ");
-	for (unsigned int i = 0; i < min(2, parts.size()); i++)
+	for (size_t i = 0; i < min(2, parts.size()); i++)
 		(*this)[i] = numf(parts[i]);
 }
 
@@ -36,7 +36,7 @@ Vector2 Vector2::Parse(const std::string& str)
 	//Removing spaces vector size if neccesary and splits into all the elements
 	std::vector<std::string> parts = strSplit(strSplit(str, ";")[0], " ");
 	Vector2 result;
-	for (unsigned int i = 0; i < min(2, parts.size()); i++)
+	for (size_t i = 0; i < min(2, parts.size()); i++)
 		result[i] = numf(parts[i]);
 	return result;
 }

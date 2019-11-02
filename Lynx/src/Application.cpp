@@ -2,7 +2,7 @@
 #include <src/Application.h>
 #include <stdio.h>
 #include <GLFW/glfw3.h>
-#include <Events/Event.h>'
+#include <Events/Event.h>
 #include <Events/AppicationEvent.h>
 
 namespace Lynx

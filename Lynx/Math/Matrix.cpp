@@ -16,10 +16,10 @@ Matrix4 Matrix4::Parse(const std::string& str)
 	if (completeRows.size() == 1) //Inline format
 		return ParseInline(str);
 
-	for (unsigned int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		std::vector<std::string> cols = strSplit(completeRows[i], ",");
-		for (unsigned int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 			result(i, j) = numf(cols[j]);
 	}
 	return result;
@@ -29,7 +29,7 @@ Matrix4 Matrix4::ParseInline(const std::string& str)
 {
 	Matrix4 result;
 	std::vector<std::string> elems = strSplit(strPurge(str, " "), ",");
-	for (unsigned int i = 0; i < 16; i++)
+	for (size_t i = 0; i < 16; i++)
 		* result[i] = numf(elems[i]);
 	return result;
 }
@@ -137,9 +137,9 @@ Matrix4 Matrix4::Scale(const Vector3& scale)
 {
 	Matrix4 result;
 	Vector4 scaling(scale, 1);
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 
 			if (i == j)
@@ -155,9 +155,9 @@ Matrix4 Matrix4::Translate(Vector3 translation)
 {
 	Matrix4 result;
 	Vector4 trans(translation, 1);
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			if (i == 3)
 				result.m_data[i][j] = trans.get(j);
@@ -173,9 +173,9 @@ Matrix4 Matrix4::Translate(Vector3 translation)
 Matrix4 Matrix4::Translate(const Vector4& translation)
 {
 	Matrix4 result;
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			if (i == 3)
 				result.m_data[i][j] = translation.get(j);
@@ -191,9 +191,9 @@ Matrix4 Matrix4::Translate(const Vector4& translation)
 Matrix4 Matrix4::Scale(const Vector4& scale)
 {
 	Matrix4 result;
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			if (i = j)
 				result.m_data[i][j] = scale.get(j);
@@ -266,7 +266,7 @@ void Matrix4::operator=(const Matrix4& matrix)
 	memcpy(this, &matrix, sizeof(Matrix4));
 }
 
-float& Matrix4::operator()(int row, int col)
+float& Matrix4::operator()(size_t row, size_t col)
 {
 	return m_data[row][col];
 }
@@ -274,12 +274,12 @@ float& Matrix4::operator()(int row, int col)
 Matrix4 Matrix4::operator*(const Matrix4& matrix) const
 {
 	Matrix4 result;
-	for (unsigned int i = 0; i < 4; i++) //row
+	for (size_t i = 0; i < 4; i++) //row
 	{
-		for (unsigned int j = 0; j < 4; j++)//col
+		for (size_t j = 0; j < 4; j++)//col
 		{
 			//Loops through second matrix column and puts in result col
-			for (unsigned int d = 0; d < 4; d++)
+			for (size_t d = 0; d < 4; d++)
 				result(i, d) += get(i, j) * matrix.get(j, d);
 		}
 	}
@@ -289,12 +289,12 @@ Matrix4 Matrix4::operator*(const Matrix4& matrix) const
 void Matrix4::operator*=(const Matrix4& matrix)
 {
 	Matrix4 result;
-	for (unsigned int i = 0; i < 4; i++) //row
+	for (size_t i = 0; i < 4; i++) //row
 	{
-		for (unsigned int j = 0; j < 4; j++)//col
+		for (size_t j = 0; j < 4; j++)//col
 		{
 			//Loops through second matrix column and puts in result col
-			for (unsigned int d = 0; d < 4; d++)
+			for (size_t d = 0; d < 4; d++)
 				result(i, d) += get(i, j) * matrix.get(j, d);
 		}
 	}
@@ -308,13 +308,13 @@ Matrix Matrix::Parse(const std::string& str)
 	std::vector<std::vector<std::string>> elems;
 	elems.push_back(strSplit(completeRows[0], ","));
 
-	for (unsigned int i = 1; i < completeRows.size(); i++)
+	for (size_t i = 1; i < completeRows.size(); i++)
 		elems.push_back(strSplit(completeRows[i], ","));
 
 	Matrix result(elems[0].size(), elems.size());
 
-	for (unsigned int i = 0; i < elems.size(); i++)
-		for (unsigned int j = 0; j < elems[0].size(); j++)
+	for (size_t i = 0; i < elems.size(); i++)
+		for (size_t j = 0; j < elems[0].size(); j++)
 		{
 			result(i, j) = numf(elems[i][j]);
 		}
@@ -322,7 +322,7 @@ Matrix Matrix::Parse(const std::string& str)
 	return result;
 }
 
-Matrix Matrix::ParseInline(unsigned int width, unsigned int height, const std::string& str)
+Matrix Matrix::ParseInline(size_t width, size_t height, const std::string& str)
 {
 	return Matrix();
 }

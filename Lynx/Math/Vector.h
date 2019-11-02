@@ -11,11 +11,11 @@
 struct Vector
 {
 	Vector() : m_data(0), m_size(0) {}
-	Vector(unsigned int size);
+	Vector(size_t size);
 
 	Vector(std::initializer_list<float> list);
 
-	Vector(unsigned int size, float* list);
+	Vector(size_t size, float* list);
 
 	Vector(std::vector<float> list);
 
@@ -33,10 +33,10 @@ struct Vector
 		delete[] m_data;
 	}
 
-	static Vector OnSphere(unsigned int size, float radius = 1);
-	static Vector InSphere(unsigned int size, float outerRadius, float innerRadius = 0);
-	static Vector InSphereEven(unsigned int size, float outerRadius, float innerRadius = 0);
-	static Vector InCube(unsigned int size, float width);
+	static Vector OnSphere(size_t size, float radius = 1);
+	static Vector InSphere(size_t size, float outerRadius, float innerRadius = 0);
+	static Vector InSphereEven(size_t size, float outerRadius, float innerRadius = 0);
+	static Vector InCube(size_t size, float width);
 
 	//Operators:
 
@@ -45,10 +45,10 @@ struct Vector
 		return str();
 	}
 
-	inline float& operator[](unsigned int index) { return m_data[index]; }
+	inline float& operator[](size_t index) { return m_data[index]; }
 	//Returns a costant reference and is therefore safe with cost&
-	inline const float& get(unsigned int index) const { return m_data[index]; }
-	inline unsigned int size() const { return m_size; }
+	inline const float& get(size_t index) const { return m_data[index]; }
+	inline size_t size() const { return m_size; }
 
 	inline void operator=(const Vector& vec)
 	{
@@ -142,7 +142,7 @@ struct Vector
 	inline std::string str() const
 	{
 		std::string result;
-		for (unsigned int i = 0; i < m_size; i++)
+		for (size_t i = 0; i < m_size; i++)
 		{
 			result += std::to_string(m_data[i]);
 			if (i != m_size - 1)
@@ -153,7 +153,7 @@ struct Vector
 	inline std::string str_d()
 	{
 		std::string result;
-		for (unsigned int i = 0; i < m_size; i++)
+		for (size_t i = 0; i < m_size; i++)
 		{
 			result += std::to_string(m_data[i]);
 			if (i != m_size - 1)
@@ -175,7 +175,7 @@ struct Vector
 private:
 	//The element array
 	float* m_data;
-	unsigned int m_size;
+	size_t m_size;
 
 };
 

@@ -34,9 +34,9 @@ struct Vector4
 		return str();
 	}
 
-	inline float& operator[](int index) { return *(&x + index); }
+	inline float& operator[](size_t index) { return *(&x + index); }
 	//Returns a costant reference and is therefore safe with cost&
-	const float& get(unsigned int index) const { return *(&x + index); }
+	const float& get(size_t index) const { return *(&x + index); }
 
 	void operator=(const Vector4& vec4);
 	void operator=(float  setTo) { x = setTo; y = setTo; z = setTo; w = setTo; }

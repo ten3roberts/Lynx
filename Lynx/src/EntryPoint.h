@@ -8,7 +8,7 @@ int main(int argc, char** argv)
 {
 	Time::Init();
 	//Sets the working directory
-	Tools::setWorkingDir(argv[0]);
+	Tools::setWorkingDir(Tools::DirUp(argv[0]));
 
 	auto application = Lynx::CreateApplication();
     application->Run();

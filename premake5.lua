@@ -20,6 +20,7 @@ project "Lynx"
 	language "C++"
 	cppdialect "C++17"
 	targetdir "bin"
+	objdir "obj/%{prj.name}"
 	
 	-- Sets the working directory to bin when using integrated debugger
 	-- Determines where files are read and written to when using debuggers
@@ -65,7 +66,7 @@ project "Lynx"
 	
 	-- Specifies Windows and MSVC specific options and preprocessor definitions
 	filter "system:windows"
-		defines { "PL_WINDOWS=1", "LX_EXPORT"}
+		defines { "PL_WINDOWS=1", "_CRT_SECURE_NO_WARNINGS", "LX_EXPORT"}
 		staticruntime "off"
 		systemversion "latest"
 	
@@ -81,6 +82,7 @@ project "Sandbox"
 	language "C++"
 	cppdialect "C++17"
 	targetdir "bin"
+	objdir "obj/%{prj.name}"
 	
 	-- Sets the working directory to bin when using integrated debugger
 	-- Determines where files are read/write to when using IDE debuggers
@@ -109,7 +111,7 @@ project "Sandbox"
 		
 	-- Specifies Windows and MSVC specific options and preprocessor definitions
 	filter "system:windows"
-		defines { "PL_WINDOWS=1", "LX_IMPORT"}
+		defines { "PL_WINDOWS=1", "_CRT_SECURE_NO_WARNINGS", "LX_IMPORT"}
 		cppdialect "C++17"
 		staticruntime "off"
 		systemversion "latest"

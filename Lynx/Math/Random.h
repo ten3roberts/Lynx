@@ -1,8 +1,8 @@
 #pragma once
 //Namespace for generating random values, arrays, and vectors. No arguments yields a result between 0 and 1
-class Vector2;
-class Vector3;
-class Vector4;
+struct Vector2;
+struct Vector3;
+struct Vector4;
 #include <random>
 namespace Random
 {

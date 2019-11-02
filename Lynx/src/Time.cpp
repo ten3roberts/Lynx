@@ -55,7 +55,7 @@ std::string Time::getDateAndTime(const std::string& format)
 	return buf;
 }
 
-std::string Time::getDateAndTime(unsigned int timepoint, const std::string& format)
+std::string Time::getDateAndTime(time_t timepoint, const std::string& format)
 {
 	time_t     now = timepoint;
 	struct tm  tstruct;

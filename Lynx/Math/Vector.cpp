@@ -6,10 +6,10 @@
 using namespace Tools;
 
 
-Vector::Vector(unsigned int size) : m_size(size)
+Vector::Vector(size_t size) : m_size(size)
 {
 	m_data = new float[m_size];
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		m_data[i] = 0;
 }
 Vector::Vector(std::initializer_list<float> list) : m_size(list.size())
@@ -19,7 +19,7 @@ Vector::Vector(std::initializer_list<float> list) : m_size(list.size())
 	memcpy(m_data, list.begin(), m_size * sizeof(float));
 }
 
-Vector::Vector(unsigned int size, float* list) : m_size(size)
+Vector::Vector(size_t size, float* list) : m_size(size)
 {
 	m_data = new float[m_size];
 
@@ -29,7 +29,7 @@ Vector::Vector(unsigned int size, float* list) : m_size(size)
 Vector::Vector(std::vector<float> list) : m_size(list.size())
 {
 	m_data = new float[m_size];
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		m_data[i] = 0;
 	memcpy(m_data, &list[0], m_size * sizeof(float));
 }
@@ -54,7 +54,7 @@ Vector::Vector(const std::string& str) : m_data(0), m_size(0)
 	//Removing spaces vector size if neccesary and splits into all the elements
 	std::vector<std::string> parts = strSplit(strSplit(strPurge(str, " "), ";")[0], ",");
 	m_data = new float[parts.size()];
-	for (unsigned int i = 0; i < parts.size(); i++)
+	for (size_t i = 0; i < parts.size(); i++)
 		(*this)[i] = numf(parts[i]);
 }
 
@@ -63,25 +63,25 @@ Vector Vector::Parse(const std::string& str)
 	//Removing spaces vector size if neccesary and splits into all the elements
 	std::vector<std::string> parts = strSplit(strSplit(strPurge(str, " "), ";")[0], ",");
 	Vector result(parts.size());
-	for (unsigned int i = 0; i < parts.size(); i++)
+	for (size_t i = 0; i < parts.size(); i++)
 		result[i] = numf(parts[i]);
 	return result;
 }
 
-Vector Vector::OnSphere(unsigned int size, float radius)
+Vector Vector::OnSphere(size_t size, float radius)
 {
 	Vector result(size);
-	for(unsigned int i = 0; i < size; i++)
+	for(size_t i = 0; i < size; i++)
 		result[i] = (2.0f * std::rand() / RAND_MAX) - 1.0f;
 
-	return result.Normalize() * size;
+	return result.Normalize() * radius;
 }
 
-Vector Vector::InSphere(unsigned int size, float outerRadius, float innerRadius)
+Vector Vector::InSphere(size_t size, float outerRadius, float innerRadius)
 {
 	//Generates a random unit vector
 	Vector result(size);
-	for (unsigned int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 		result[i] = (2.0f * std::rand() / RAND_MAX) - 1.0f;
 
 	result.Normalize(&result);
@@ -93,10 +93,10 @@ Vector Vector::InSphere(unsigned int size, float outerRadius, float innerRadius)
 	return result;
 }
 
-Vector Vector::InSphereEven(unsigned int size, float outerRadius, float innerRadius)
+Vector Vector::InSphereEven(size_t size, float outerRadius, float innerRadius)
 {
 	Vector result(size);
-	for (unsigned int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 		result[i] = (2.0f * std::rand() / RAND_MAX) - 1.0f;
 
 	result.Normalize(&result);
@@ -107,10 +107,10 @@ Vector Vector::InSphereEven(unsigned int size, float outerRadius, float innerRad
 	return result;
 }
 
-Vector Vector::InCube(unsigned int size, float width)
+Vector Vector::InCube(size_t size, float width)
 {
 	Vector result(size);
-	for (unsigned int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 		result[i] = ((float)std::rand() / RAND_MAX) * width;
 
 	return result;
@@ -121,7 +121,7 @@ Vector Vector::operator+(const Vector& vec) const
 	ASSERT(m_size == vec.size());
 
 	Vector result(m_size);
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		result[i] = m_data[i] + vec.get(i);
 	return result;
 }
@@ -131,7 +131,7 @@ Vector Vector::operator-(const Vector& vec) const
 	ASSERT(m_size == vec.size());
 
 	Vector result(m_size);
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		result[i] = m_data[i] - vec.get(i);
 	return result;
 }
@@ -141,7 +141,7 @@ Vector Vector::operator*(const Vector& vec) const
 	ASSERT(m_size == vec.size());
 
 	Vector result(m_size);
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		result[i] = m_data[i] * vec.get(i);
 	return result;
 }
@@ -150,7 +150,7 @@ Vector Vector::operator/(const Vector& vec) const
 	ASSERT(m_size == vec.size());
 
 	Vector result(m_size);
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		result[i] = m_data[i] + vec.get(i);
 	return result;
 }
@@ -159,7 +159,7 @@ Vector Vector::operator/(const Vector& vec) const
 Vector Vector::operator+(float scalar) const
 {
 	Vector result(m_size);
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		result[i] = m_data[i] + scalar;
 	return result;
 }
@@ -167,7 +167,7 @@ Vector Vector::operator+(float scalar) const
 Vector Vector::operator-(float scalar) const
 {
 	Vector result(m_size);
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		result[i] = m_data[i] - scalar;
 	return result;
 }
@@ -175,7 +175,7 @@ Vector Vector::operator-(float scalar) const
 Vector Vector::operator*(float scalar) const
 {
 	Vector result(m_size);
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		result[i] = m_data[i] * scalar;
 	return result;
 }
@@ -183,7 +183,7 @@ Vector Vector::operator*(float scalar) const
 Vector Vector::operator/(float scalar) const
 {
 	Vector result(m_size);
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		result[i] = m_data[i] / scalar;
 	return result;
 }
@@ -195,7 +195,7 @@ void Vector::operator+=(const Vector& vec)
 {
 	ASSERT(m_size == vec.size());
 
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		m_data[i] += vec.get(i);
 }
 
@@ -203,7 +203,7 @@ void Vector::operator-=(const Vector& vec)
 {
 	ASSERT(m_size == vec.size());
 
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		m_data[i] -= vec.get(i);
 }
 
@@ -212,7 +212,7 @@ void Vector::operator*=(const Vector& vec)
 {
 	ASSERT(m_size == vec.size());
 
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		m_data[i] *= vec.get(i);
 }
 
@@ -220,32 +220,32 @@ void Vector::operator/=(const Vector& vec)
 {
 	ASSERT(m_size == vec.size());
 
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		m_data[i] /= vec.get(i);
 }
 
 void Vector::operator+=(float scalar)
 {
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		m_data[i] += scalar;
 }
 
 void Vector::operator-=(float scalar)
 {
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		m_data[i] -= scalar;
 }
 
 
 void Vector::operator*=(float scalar)
 {
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		m_data[i] *= scalar;
 }
 
 void Vector::operator/=(float scalar)
 {
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		m_data[i] /= scalar;
 }
 
@@ -253,7 +253,7 @@ void Vector::operator/=(float scalar)
 float Vector::SqrMagnitude() const
 {
 	float result = 0;
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		result += m_data[i] * m_data[i];
 	return result;
 }
@@ -262,7 +262,7 @@ float Vector::SqrMagnitude() const
 float Vector::Magnitude() const
 {
 	float result = 0;
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		result += m_data[i] * m_data[i];
 	return sqrtf(result);
 }
@@ -272,7 +272,7 @@ float Vector::Magnitude() const
 float Vector::Volume() const
 {
 	float result = 1;
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		result *= m_data[i];
 	return result;
 }
@@ -312,7 +312,7 @@ Vector Vector::ClampMaxMag(float max) const
 Vector Vector::strClamp(float min, float max) const
 {
 	Vector result(m_size);
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		result[i] = m_data[i] > max ? max : m_data[i] < min ? min : m_data[i];
 	return result;
 }
@@ -320,7 +320,7 @@ Vector Vector::strClamp(float min, float max) const
 Vector Vector::ClampMin(float min) const
 {
 	Vector result(m_size);
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		result[i] = m_data[i] < min ? min : m_data[i];
 	return result;
 }
@@ -329,7 +329,7 @@ Vector Vector::ClampMax(float max) const
 {
 	Vector result(m_size);
 
-	for (unsigned int i = 0; i < m_size; i++)
+	for (size_t i = 0; i < m_size; i++)
 		result[i] = m_data[i] > max ? max : m_data[i];
 	return result;
 }
@@ -339,7 +339,7 @@ float Vector::Dot(Vector a, Vector b)
 	ASSERT(a.size() == b.size());
 
 	float result = 0;
-	for (unsigned int i = 0; i < a.size(); i++)
+	for (size_t i = 0; i < a.size(); i++)
 		result += a[i] * b[i];
 	return result;
 }
@@ -349,7 +349,7 @@ Vector Vector::Lerp(Vector a, Vector b, float t)
 	ASSERT(a.size() == b.size());
 	t = Math::Clamp01(t);
 	Vector result(a.size());
-	for (unsigned int i = 0; i < a.size(); i++)
+	for (size_t i = 0; i < a.size(); i++)
 		result[i] = a[i] * (1 - t) + b[i] * t;
 	return result;
 }

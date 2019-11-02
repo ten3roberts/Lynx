@@ -22,7 +22,7 @@ public:
 	static void Update();
 
 	static std::string getDateAndTime(const std::string& format = "%Y-%m-%d_%H.%M.%S");
-	static std::string getDateAndTime(unsigned int timepoint, const std::string& format = "%Y-%m-%d_%H.%M.%S");
+	static std::string getDateAndTime(time_t timepoint, const std::string& format = "%Y-%m-%d_%H.%M.%S");
 
 public:
 	static float frameRate;

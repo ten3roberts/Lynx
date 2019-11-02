@@ -190,21 +190,21 @@ Vector3 Quaternion::toEuler()
 {
 	Vector3 result;
 	// roll (x-axis rotation)
-	double sinr_cosp = +2.0 * (w * x + y * z);
-	double cosr_cosp = +1.0 - 2.0 * (x * x * y * y);
-	result.roll = atan2(sinr_cosp, cosr_cosp);
+	float sinr_cosp = +2.0f * (w * x + y * z);
+	float cosr_cosp = +1.0f - 2.0f * (x * x * y * y);
+	result.roll = atan2f(sinr_cosp, cosr_cosp);
 
 	// pitch (y-axis rotation)
-	double sinp = +2.0 * (w* y - z * x);
+	float sinp = +2.0f * (w* y - z * x);
 	if (fabs(sinp) >= 1)
-		result.pitch = copysign(MATH_PI / 2, sinp); // use 90 degrees if out of range
+		result.pitch = copysignf(MATH_PI / 2, sinp); // use 90 degrees if out of range
 	else
-		result.pitch = asin(sinp);
+		result.pitch = asinf(sinp);
 
 	// yaw (z-axis rotation)
-	double siny_cosp = +2.0 * (w * z + x * y);
-	double cosy_cosp = +1.0 - 2.0 * (y * y + z * z);
-	result.yaw = atan2(siny_cosp, cosy_cosp);
+	float siny_cosp = +2.0f * (w * z + x * y);
+	float cosy_cosp = +1.0f - 2.0f * (y * y + z * z);
+	result.yaw = atan2f(siny_cosp, cosy_cosp);
 	return result;
 }
 

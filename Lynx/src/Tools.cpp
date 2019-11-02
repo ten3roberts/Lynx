@@ -55,7 +55,7 @@ std::string Tools::getAppdata()
 std::string Tools::Capitalize(const std::string& str)
 {
 	std::string result(str.size(), ' ');
-	for (unsigned int i = 0; i < str.size(); i++)
+	for (size_t i = 0; i < str.size(); i++)
 	{
 		result[i] = toupper(str[i]);
 	}
@@ -65,7 +65,7 @@ std::string Tools::Capitalize(const std::string& str)
 std::string Tools::Uncapitalize(const std::string& str)
 {
 	std::string result(str.size(), ' ');
-	for (unsigned int i = 0; i < str.size(); i++)
+	for (size_t i = 0; i < str.size(); i++)
 	{
 		result[i] = tolower(str[i]);
 	}
@@ -153,7 +153,7 @@ std::vector<std::string> Tools::strSplit(const std::string& str, char keyW, bool
 	return results;
 }
 
-std::string Tools::strClamp(const std::string& str, unsigned int size)
+std::string Tools::strClamp(const std::string& str, size_t size)
 {
 	return str.substr(0, size);
 }
@@ -238,9 +238,9 @@ std::string Tools::strPadRight(const std::string& str, size_t size, char padding
 std::string Tools::ListTostring(float* list, size_t size, const std::string& separator)
 {
 	std::string result;
-	for (unsigned int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 	{
-		result += (list[i]);
+		result += STR((list[i]));
 		if (i != size - 1) //Putting carriage return on all entries except the last
 			result += separator;
 	}
@@ -250,9 +250,9 @@ std::string Tools::ListTostring(float* list, size_t size, const std::string& sep
 std::string Tools::ListTostring(float* list, size_t size, char separator)
 {
 	std::string result;
-	for (unsigned int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 	{
-		result += (list[i]);
+		result += STR(list[i]);
 		if (i != size - 1) //Putting carriage return on all entries except the last
 			result += separator;
 	}
@@ -262,7 +262,7 @@ std::string Tools::ListTostring(float* list, size_t size, char separator)
 std::string Tools::ListTostring(const std::vector<std::string>& list, const std::string& separator)
 {
 	std::string result;
-	for (unsigned int i = 0; i < list.size(); i++)
+	for (size_t i = 0; i < list.size(); i++)
 	{
 		result += (list[i]);
 		if (i != list.size() - 1) //Putting carriage return on all entries except the last
@@ -274,7 +274,7 @@ std::string Tools::ListTostring(const std::vector<std::string>& list, const std:
 std::string Tools::ListTostring(const std::vector<std::string>& list, char separator)
 {
 	std::string result;
-	for (unsigned int i = 0; i < list.size(); i++)
+	for (size_t i = 0; i < list.size(); i++)
 	{
 		result += (list[i]);
 		if (i != list.size() - 1) //Putting carriage return on all entries except the last
@@ -298,22 +298,22 @@ int Tools::ParseTime(const std::string& str)
 
 		if (parts[i] == "second")
 		{
-			seconds += numf(parts[i - 1]);
+			seconds += numi(parts[i - 1]);
 		}
 
 		else if (parts[i] == "minute")
 		{
-			seconds += numf(parts[i - 1]) * 60;
+			seconds += numi(parts[i - 1]) * 60;
 		}
 
 		else if (parts[i] == "hour")
 		{
-			seconds += numf(parts[i - 1]) * 3600;
+			seconds += numi(parts[i - 1]) * 3600;
 		}
 
 		else if (parts[i] == "day")
 		{
-			seconds += numf(parts[i - 1]) * 86400;
+			seconds += numi(parts[i - 1]) * 86400;
 		}
 	}
 	return seconds;
@@ -341,7 +341,7 @@ std::string Tools::FormatTime(int seconds)
 
 	//Indicates whetger the gor loop has yet encountered a nonzero time value
 	bool beginned = false;
-	for (unsigned int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		if (times[i] > 0)
 			beginned = true;
@@ -586,7 +586,7 @@ bool Tools::Rename(const std::string& oldPath, const std::string& newPath)
 
 std::string Tools::getExtension(const std::string& path)
 {
-	unsigned int dotIndex = path.find_last_of(".");
+	size_t dotIndex = path.find_last_of(".");
 	return path.substr(dotIndex == std::string::npos ? path.size() : dotIndex);
 }
 
@@ -609,21 +609,22 @@ std::string Tools::ShortenPath(const std::string& path, int depth, bool omitIndi
 	return  (omitIndicator ? "" : "...") + path.substr(pos[pos.size() - depth]);
 }
 
-std::string Tools::ShortenString(const std::string& str, unsigned int size, bool omitIndicator)
+std::string Tools::ShortenString(const std::string& str, size_t size, bool omitIndicator)
 {
+	//Making space for "..."
 	size -= 3;
-	int start = (str.size() - size);
+	size_t start = (str.size() - size);
 	if (start > 0)
 		return (omitIndicator ? "" : "...") + str.substr(start);
 	return str;
 }
 
-std::string Tools::DirUp(const std::string& path, unsigned int steps)
+std::string Tools::DirUp(const std::string& path, size_t steps)
 {
 	std::string text = getPath(path);
 	std::vector<size_t> folders = strFind(text, SLASH);
 
-	unsigned int lastFolder = *(folders.end() - steps - 1);
+	size_t lastFolder = *(folders.end() - steps - 1);
 
 	//Edge case for relative path
 	if (text == CURR_DIR) return PREV_DIR;

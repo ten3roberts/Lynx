@@ -36,7 +36,7 @@ struct Matrix4
 	static Matrix4 Random()
 	{
 		Matrix4 result;
-		for (unsigned int i = 0; i < 16; i++)
+		for (size_t i = 0; i < 16; i++)
 			* result[i] = (float)std::rand() / RAND_MAX;
 		return result;
 	}
@@ -44,7 +44,7 @@ struct Matrix4
 	static Matrix4 Random(float min, float max)
 	{
 		Matrix4 result;
-		for (unsigned int i = 0; i < 16; i++)
+		for (size_t i = 0; i < 16; i++)
 			* result[i] = ((float)std::rand() / RAND_MAX) * (max - min) + min;
 		return result;
 	}
@@ -85,12 +85,12 @@ struct Matrix4
 
 	void operator=(const Matrix4& matrix);
 
-	float& operator()(int row, int col);
+	float& operator()(size_t row, size_t col);
 
 	//Returns the element at $index; treating the matrix as a 1D array
-	float* operator[](unsigned int index) { return &m_data[index / 4][index % 4]; }
-	const float& get(unsigned int row, unsigned int col) const { return m_data[row][col]; }
-	const float& get(unsigned index) const { return m_data[index / 4][index % 4]; }
+	float* operator[](size_t index) { return &m_data[index / 4][index % 4]; }
+	const float& get(size_t row, size_t col) const { return m_data[row][col]; }
+	const float& get(size_t index) const { return m_data[index / 4][index % 4]; }
 
 
 	operator std::string() const
@@ -101,9 +101,9 @@ struct Matrix4
 	std::string str() const
 	{
 		std::string result;
-		for (int i = 0; i < 4; i++)
+		for (size_t i = 0; i < 4; i++)
 		{
-			for (int j = 0; j < 4; j++)
+			for (size_t j = 0; j < 4; j++)
 			{
 				result += std::to_string(m_data[i][j]);
 				if (j < 3)
@@ -117,7 +117,7 @@ struct Matrix4
 	std::string strInline()
 	{
 		std::string result;
-		for (int i = 0; i < 16; i++)
+		for (size_t i = 0; i < 16; i++)
 		{
 			result += std::to_string(get(i));
 			if (i < 15)
@@ -130,8 +130,8 @@ struct Matrix4
 	Matrix4 Transpose() const
 	{
 		Matrix4 result;
-		for (unsigned int i = 0; i < 4; i++)
-			for (unsigned int j = 0; j < 4; j++)
+		for (size_t i = 0; i < 4; i++)
+			for (size_t j = 0; j < 4; j++)
 				result(j, i) = m_data[i][j];
 		return result;
 	}
@@ -149,13 +149,13 @@ struct Matrix
 	Matrix() : m_height(0), m_width(0), m_size(0), m_data(0) {}
 
 	//Sets all to zero
-	Matrix(unsigned int height, unsigned int width) : m_height(height), m_width(width), m_size(height* width)
+	Matrix(size_t height, size_t width) : m_height(height), m_width(width), m_size(height* width)
 	{
 		m_data = new float[m_size];
-		for (unsigned int i = 0; i < m_size; i++)
+		for (size_t i = 0; i < m_size; i++)
 			m_data[i] = 0;
 	}
-	Matrix(unsigned int height, unsigned int width, std::initializer_list<float> list) : m_height(height), m_width(width), m_size(height* width)
+	Matrix(size_t height, size_t width, std::initializer_list<float> list) : m_height(height), m_width(width), m_size(height* width)
 	{
 		ASSERT(m_size == list.size());
 
@@ -163,7 +163,7 @@ struct Matrix
 
 		memcpy(m_data, list.begin(), m_size * sizeof(float));
 	}
-	Matrix(unsigned int height, unsigned int width, std::vector<float> list) : m_height(height), m_width(width), m_size(height* width)
+	Matrix(size_t height, size_t width, std::vector<float> list) : m_height(height), m_width(width), m_size(height* width)
 	{
 		ASSERT(m_size == list.size());
 
@@ -172,7 +172,7 @@ struct Matrix
 		memcpy(m_data, &list[0], m_size * sizeof(float));
 	}
 
-	Matrix(unsigned int height, unsigned int width, float min, float max) { memcpy(m_data, Random(height, width, min, max)[0], height * width * sizeof(float)); }
+	Matrix(size_t height, size_t width, float min, float max) { memcpy(m_data, Random(height, width, min, max)[0], height * width * sizeof(float)); }
 
 
 	Matrix(const Matrix& matrix)
@@ -191,14 +191,14 @@ struct Matrix
 
 	//Parsing
 	static Matrix Parse(const std::string& str);
-	static Matrix ParseInline(unsigned int width, unsigned int height, const std::string& str);
+	static Matrix ParseInline(size_t width, size_t height, const std::string& str);
 
-	static Matrix Identity(unsigned int height, unsigned int width)
+	static Matrix Identity(size_t height, size_t width)
 	{
 		Matrix result(height, width);
-		for (unsigned int i = 0; i < height; i++) //row
+		for (size_t i = 0; i < height; i++) //row
 		{
-			for (unsigned int j = 0; j < width; j++) //col
+			for (size_t j = 0; j < width; j++) //col
 				if (i == j)
 					result(i, j) = 1;
 				else
@@ -206,25 +206,25 @@ struct Matrix
 		}
 		return result;
 	}
-	static Matrix Zero(unsigned int height, unsigned int width)
+	static Matrix Zero(size_t height, size_t width)
 	{
 		Matrix result(height, width);
-		for (unsigned int i = 0; i < height; i++)
-			for (unsigned int j = 0; j < width; j++)
+		for (size_t i = 0; i < height; i++)
+			for (size_t j = 0; j < width; j++)
 				result(i, j) = 0;
 		return result;
 	}
-	static Matrix Random(unsigned int height, unsigned int width)
+	static Matrix Random(size_t height, size_t width)
 	{
 		Matrix result(height, width);
-		for (unsigned int i = 0; i < result.size(); i++)
+		for (size_t i = 0; i < result.size(); i++)
 			* result[i] = (float)std::rand() / RAND_MAX;
 		return result;
 	}
-	static Matrix Random(unsigned int height, unsigned int width, float min, float max)
+	static Matrix Random(size_t height, size_t width, float min, float max)
 	{
 		Matrix result(height, width);
-		for (unsigned int i = 0; i < result.size(); i++)
+		for (size_t i = 0; i < result.size(); i++)
 			* result[i] = ((float)std::rand() / RAND_MAX) * (max - min) + min;
 		return result;
 	}
@@ -232,8 +232,8 @@ struct Matrix
 	Vector operator*(const Vector& colVec)
 	{
 		Vector result(m_height);
-		for (unsigned int row = 0; row < m_height; row++)
-			for (unsigned int col = 0; col < m_width; col++)
+		for (size_t row = 0; row < m_height; row++)
+			for (size_t col = 0; col < m_width; col++)
 			{
 				result[row] += get(row, col) * colVec.get(col);
 			}
@@ -247,12 +247,12 @@ struct Matrix
 
 		Matrix result = Matrix::Zero(m_height, matrix.width());
 
-		for (unsigned int i = 0; i < m_height; i++) //row
+		for (size_t i = 0; i < m_height; i++) //row
 		{
-			for (unsigned int j = 0; j < m_width; j++)//col
+			for (size_t j = 0; j < m_width; j++)//col
 			{
 				//Loops through second matrix column and puts in result col
-				for (unsigned int d = 0; d < matrix.height(); d++)
+				for (size_t d = 0; d < matrix.height(); d++)
 					result(i, d) += get(i, j) * matrix.get(j, d);
 			}
 		}
@@ -263,7 +263,7 @@ struct Matrix
 	Matrix operator*(const float& scalar)
 	{
 		Matrix result(m_width, m_height);
-		for (unsigned int i = 0; i < m_size; i++)
+		for (size_t i = 0; i < m_size; i++)
 			* result[i] = get(i) * scalar;
 		return result;
 	}
@@ -273,7 +273,7 @@ struct Matrix
 		ASSERT((*this) == matrix);
 
 		Matrix result(m_height, m_width);
-		for (unsigned int i = 0; i < m_size; i++)
+		for (size_t i = 0; i < m_size; i++)
 			* result[i] = get(i) + matrix.get(i);
 		return result;
 	}
@@ -283,7 +283,7 @@ struct Matrix
 		ASSERT((*this) == matrix);
 
 		Matrix result(m_height, m_width);
-		for (unsigned int i = 0; i < m_size; i++)
+		for (size_t i = 0; i < m_size; i++)
 			* result[i] = get(i) - matrix.get(i);
 		return result;
 	}
@@ -294,16 +294,16 @@ struct Matrix
 		return (m_height == matrix.height() && m_width == matrix.width());
 	}
 
-	inline float& operator()(unsigned int row, unsigned int col) { return m_data[row * m_width + col]; }
+	inline float& operator()(size_t row, size_t col) { return m_data[row * m_width + col]; }
 
 	//Returns the element at $index; treating the matrix as a 1D array
-	inline float* operator[](unsigned int index) { return m_data + index; }
-	const float& get(unsigned int row, unsigned int col) const { return m_data[row * m_width + col]; }
-	const float& get(unsigned int index) const { return m_data[index]; }
+	inline float* operator[](size_t index) { return m_data + index; }
+	const float& get(size_t row, size_t col) const { return m_data[row * m_width + col]; }
+	const float& get(size_t index) const { return m_data[index]; }
 
-	unsigned int size() const { return m_size; }
-	unsigned int height() const { return m_height; }
-	unsigned int width() const { return m_width; }
+	size_t size() const { return m_size; }
+	size_t height() const { return m_height; }
+	size_t width() const { return m_width; }
 
 
 
@@ -315,9 +315,9 @@ struct Matrix
 	std::string str() const
 	{
 		std::string result;
-		for (unsigned int i = 0; i < m_height; i++)
+		for (size_t i = 0; i < m_height; i++)
 		{
-			for (unsigned int j = 0; j < m_width; j++)
+			for (size_t j = 0; j < m_width; j++)
 			{
 				result += std::to_string(get(i, j));
 				if (j < m_height - 1)
@@ -331,7 +331,7 @@ struct Matrix
 	std::string strInline()
 	{
 		std::string result;
-		for (unsigned int i = 0; i < m_size; i++)
+		for (size_t i = 0; i < m_size; i++)
 		{
 			result += std::to_string(get(i));
 			if (i < m_size - 1)
@@ -344,8 +344,8 @@ struct Matrix
 	Matrix Transpose() const
 	{
 		Matrix result(m_width, m_height);
-		for (unsigned int i = 0; i < m_height; i++)
-			for (unsigned int j = 0; j < m_width; j++)
+		for (size_t i = 0; i < m_height; i++)
+			for (size_t j = 0; j < m_width; j++)
 				result(j, i) = get(i, j);
 		return result;
 	}
@@ -355,7 +355,7 @@ struct Matrix
 private:
 	//row, col //Goes down then right
 	float* m_data;
-	unsigned int m_width, m_height, m_size;
+	size_t m_width, m_height, m_size;
 
 };
 

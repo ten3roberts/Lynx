@@ -46,7 +46,7 @@ namespace Tools
 	std::vector<std::string> LYNX_API strSplit(const std::string& str, const std::string& keyW, bool ignore_quotes = false);
 	std::vector<std::string> LYNX_API strSplit(const std::string& str, char keyW, bool ignore_quotes = false);
 
-	std::string LYNX_API strClamp(const std::string& str, unsigned int size);
+	std::string LYNX_API strClamp(const std::string& str, size_t size);
 
 	//Will return a string to the keyW
 	std::string LYNX_API strStop(const std::string& str, std::string keyW);
@@ -161,10 +161,10 @@ namespace Tools
 	std::string LYNX_API ShortenPath(const std::string& path, int depth = 3, bool omitIndicator = false);
 
 	//Will strClamp the string preserving the end to a set size and add "..." to the beginning
-	std::string LYNX_API ShortenString(const std::string& str, unsigned int size, bool omitIndicator = false);
+	std::string LYNX_API ShortenString(const std::string& str, size_t size, bool omitIndicator = false);
 
 	//Will return the file path moved up one directory
-	std::string LYNX_API DirUp(const std::string& path, unsigned int steps = 1);
+	std::string LYNX_API DirUp(const std::string& path, size_t steps = 1);
 };
 
 /*std::ostream& operator<<(std::ostream& os, std::vector<std::string> in)
@@ -210,11 +210,14 @@ static std::string FormatBool(bool boolean)
 }
 
 
-inline float LYNX_API numi(const std::string& str) { return atoi(str.c_str()); }
-inline float LYNX_API numf(const std::string& str) { return atof(str.c_str()); }
+inline int LYNX_API numi(const std::string& str) { return atoi(str.c_str()); }
+inline float LYNX_API numf(const std::string& str) { return (float)atof(str.c_str()); }
+
 
 inline float LYNX_API min(float a, float b) { return a < b ? a : b; };
-inline int LYNX_API min(int a, int b) { return a < b ? a : b; };
+//inline int LYNX_API min(int a, int b) { return a < b ? a : b; };
+inline size_t LYNX_API min(size_t a, size_t b) { return a < b ? a : b; };
+//inline float LYNX_API min(float a, float b) { return a < b ? a : b; };
 //inline unsigned int min(unsigned int a, unsigned int b) { return a < b ? a : b; };
 
 inline float LYNX_API max(float a, float b) { return a > b ? a : b; };
