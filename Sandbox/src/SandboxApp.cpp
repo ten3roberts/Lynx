@@ -7,10 +7,6 @@ public:
 	Sandbox()
 	{
 		m_name = "Sandbox";
-		//LogF("Starting project Sandbox\n");
-		//std::string str = Tools::strPadLeft("Hello", 10, '-');
-		std::string str = "Hello";
-		Test(str);
 	}
 	~Sandbox()
 	{

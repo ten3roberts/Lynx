@@ -62,6 +62,7 @@ void LogS(const std::string& author, std::string format, ...)
 
 	writeColor(fullMsg, 2);
 	logFile.write(fullMsg.c_str(), fullMsg.size());
+	logFile.flush();
 	va_end(vl);
 }
 
@@ -91,6 +92,7 @@ void LogF(std::string format, ...)
 	fullMsg += '\n';
 	writeColor(fullMsg, 2);
 	logFile.write(fullMsg.c_str(), fullMsg.size());
+	logFile.flush();
 	va_end(vl);
 }
 
@@ -125,8 +127,11 @@ void LogE(const std::string& author, std::string format, ...)
 	fullMsg += '\n';
 	writeColor(fullMsg, 12);
 	logFile.write(fullMsg.c_str(), fullMsg.size());
+	logFile.flush();
 	va_end(vl);
-	//SLEEPFOR(error_delay);
+	#if ERROR_DELAY
+		SLEEPFOR(ERROR_DELAY);
+	#endif
 }
 
 void LogW(const std::string& author, std::string format, ...)
@@ -160,5 +165,6 @@ void LogW(const std::string& author, std::string format, ...)
 	fullMsg += '\n';
 	writeColor(fullMsg, 6);
 	logFile.write(fullMsg.c_str(), fullMsg.size());
+	logFile.flush();
 	va_end(vl);
 }

@@ -5,16 +5,15 @@
 
 namespace Lynx
 {
-    Application::Application() : m_name("Lynx"), m_workingDir(CURR_DIR)
+    Application::Application() : m_name("Lynx")
     {
 		Time::Init();
-		setWorkingDir(m_workingDir);
 		glfwInit();
     }
 
     Application::~Application()
     {
-
+		glfwTerminate();
     }
 
     void Application::Run()
@@ -23,7 +22,7 @@ namespace Lynx
         while(true)
         {
 			Time::Update();
-			LogS(m_name, "Running frame %d. FPS : %g %c my full name %g", Time::frameCount, Time::frameRate, "HEllo my name is Time roberts", (float)time(NULL));
+			LogS(m_name, "Running frame %d", Time::frameCount);
 			SLEEP(1s);
 			
         }
