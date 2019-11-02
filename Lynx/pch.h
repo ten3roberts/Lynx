@@ -20,6 +20,8 @@
 #include <Math/Quaternion.h>
 #include <Math/Matrix.h>
 
+#include <Math/Random.h>
+
 #include <src/Tools.h>
 #include <src/Logger.h>
 //#include <src/XMLParser.h>
