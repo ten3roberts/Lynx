@@ -3,6 +3,7 @@ workspace "Lynx"
 	-- Only x64 architecture is verifiably supported
 	architecture "x64"
 	configurations { "Debug", "Release"}
+	startproject "Sandbox"
 	
 -- variable is required for GLFW's premake5 file
 outputdir = ""
