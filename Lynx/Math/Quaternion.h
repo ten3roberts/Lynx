@@ -8,18 +8,18 @@ struct Quaternion
 {
 public:
 	Quaternion();
-	Quaternion(const Vector3& axis, float angle); //Axis angle rotations
+	Quaternion(const Vector3& axis, float angle); // Axis angle rotations
 	Quaternion(float x, float y, float z, float w);
 	explicit Quaternion(const Vector3& euler);
 
 	~Quaternion();
 	static Quaternion Identity();
-	//Creates a quaternion from an euler rotation
+	// Creates a quaternion from an euler rotation
 	static Quaternion Euler(const Vector3& euler);
 
-	//Will create a new quaternion pointing along to specified direction. Direction does not need to be Normalized
+	// Will create a new quaternion pointing along to specified direction. Direction does not need to be Normalized
 	static Quaternion PointTo(const Vector3& direction);
-	//Will create a new quaternion to rotate from its current position to %direction%
+	// Will create a new quaternion to rotate from its current position to %direction%
 	static Quaternion PointTo(const Vector3& sourcePoint, const Vector3& destinationPoint);
 
 	
@@ -38,7 +38,7 @@ public:
 	Quaternion operator+ (const Quaternion& q) const;
 	Quaternion operator- (const Quaternion& q) const;
 
-	//Vector transformation
+	// Vector transformation
 	Vector3 operator*(const Vector3& vec) const;
 
 	void operator*=(float scalar);
@@ -56,17 +56,17 @@ public:
 	float SqrMagnitude() const;
 	float Magnitude() const;
 
-	//Will rotate the quaternion angle radians
+	// Will rotate the quaternion angle radians
 	Quaternion Rotate(float angle);
 	Quaternion ScaleRotate(float scale);
 
-	//Returns false if the vector doesnt have a direction or length
+	// Returns false if the vector doesnt have a direction or length
 	inline bool Valid() const { return SqrMagnitude() > 0.00001; }
 	inline bool Defined() const { return SqrMagnitude() > 0.00001; }
 
 	inline std::string str() const { return std::string(STR(x) + ", " + STR(y) + ", " + STR(z) + ", " + STR(w)); }
 
-	//Quaternion should always be a unit quaternion; only use for debugging purposes
+	// Quaternion should always be a unit quaternion; only use for debugging purposes
 	inline std::string str_d() const { return std::string(STR(x) + ", " + STR(y) + ", " + STR(z) + ", " + STR(w) + "; " + STR(Magnitude())); }
 
 

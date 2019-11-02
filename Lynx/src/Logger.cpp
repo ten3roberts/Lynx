@@ -25,7 +25,7 @@ void writeColor(const std::string& msg, int color)
 }
 
 
-//Checks to see if the frame changes to put a divider between log calls on different frames
+// Checks to see if the frame changes to put a divider between log calls on different frames
 static int frame;
 void LogS(const std::string& author, std::string format, ...)
 {
@@ -42,7 +42,7 @@ void LogS(const std::string& author, std::string format, ...)
 
 	if (!logFile.is_open())
 	{
-		//Creates one logfile for each minute
+		// Creates one logfile for each minute
 		std::string logfile_name = WORKDIR + "Logs" + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
 		
 		Tools::GenerateFile(logfile_name, "");

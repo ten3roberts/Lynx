@@ -4,7 +4,7 @@
 
 namespace Lynx
 {
-	//Events block the whole event until they are handled
+	// Events block the whole event until they are handled
 
 	enum class EventType
 	{
@@ -39,11 +39,11 @@ namespace Lynx
 		friend class EventDispatcher;
 	public:
 		virtual EventType getEventType() const = 0;
-		//Returns the bitfield of the catagories of the event
+		// Returns the bitfield of the catagories of the event
 		virtual int getCategories() const = 0;
 		virtual std::string getName() const = 0;
 		
-		//Returns true if event is in the given category
+		// Returns true if event is in the given category
 		inline bool CheckCategory(EventCategory category) { return getCategories() & category; }
 
 		void setHandled(bool handled) { m_handled = handled; }
@@ -59,10 +59,10 @@ namespace Lynx
 		template <typename T>
 		bool Dispatch(void (*func)(T&))
 		{
-			//If current event matches template event, run the func with event
+			//  If current event matches template event, run the func with event
 			if(m_event.getEventType() == T::getStaticType())
 			{
-				//The function sets if the event have been handled
+				//  The function sets if the event have been handled
 				func(*(T*)&m_event);
 				return true;
 			}

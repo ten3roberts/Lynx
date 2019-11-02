@@ -1,5 +1,5 @@
-//Vector math
-	//Will return a vector to a random point on a sphere
+// Vector math
+	// Will return a vector to a random point on a sphere
 #include <pch.h>
 
 Vector2 Random::OnCircle(float radius)
@@ -9,12 +9,12 @@ Vector2 Random::OnCircle(float radius)
 
 Vector2 Random::InCircle(float outerRadius, float innerRadius)
 {
-	//Generates a random unit vector
+	// Generates a random unit vector
 	Vector2 result((2.0f * std::rand() / RAND_MAX) - 1.0f,
 		(2.0f * std::rand() / RAND_MAX) - 1.0f);
 	result.Normalize(&result);
 
-	//Scales it with a random length
+	// Scales it with a random length
 	float randomLength = (float)std::rand() / RAND_MAX;
 
 	result *= randomLength * (outerRadius - innerRadius) + innerRadius;
@@ -24,12 +24,12 @@ Vector2 Random::InCircle(float outerRadius, float innerRadius)
 
 Vector2 Random::InCircle()
 {
-	//Generates a random unit vector
+	// Generates a random unit vector
 	Vector2 result((2.0f * std::rand() / RAND_MAX) - 1.0f,
 		(2.0f * std::rand() / RAND_MAX) - 1.0f);
 	result.Normalize(&result);
 
-	//Scales it with a random length
+	// Scales it with a random length
 	float randomLength = (float)std::rand() / RAND_MAX;
 
 	result *= randomLength;
@@ -44,7 +44,7 @@ Vector2 Random::InCircleEven(float outerRadius, float innerRadius)
 
 	result.Normalize(&result);
 
-	float randomLength = sqrt(((float)std::rand() / RAND_MAX) / MATH_PI); //Accounting sparser distrobution
+	float randomLength = sqrt(((float)std::rand() / RAND_MAX) / MATH_PI); // Accounting sparser distrobution
 	result *= randomLength * (outerRadius - innerRadius) + innerRadius;
 
 	return result;
@@ -57,7 +57,7 @@ Vector2 Random::InCircleEven()
 
 	result.Normalize(&result);
 
-	float randomLength = sqrt(((float)std::rand() / RAND_MAX) / MATH_PI); //Accounting sparser distrobution
+	float randomLength = sqrt(((float)std::rand() / RAND_MAX) / MATH_PI); // Accounting sparser distrobution
 	result *= randomLength;
 
 	return result;
@@ -68,7 +68,7 @@ Vector3 Random::OnSphere(float radius)
 	return Vector3 (Random::RandNorm(), Random::RandNorm(), Random::RandNorm()).Normalize() * radius;
 }
 
-//Will return a vector to a random point on a sphere
+// Will return a vector to a random point on a sphere
 Vector3 Random::OnSphere(float radius, unsigned int seed)
 {
 	std::srand(seed);
@@ -76,10 +76,10 @@ Vector3 Random::OnSphere(float radius, unsigned int seed)
 	return vec.Normalize()* radius;
 }
 
-//Will return a a vector with a random direction and magnitude. (Equal chance for each magnitude; sparser further result)
+// Will return a a vector with a random direction and magnitude. (Equal chance for each magnitude; sparser further result)
 Vector3 Random::InSphere(float outerRadius, float innerRadius)
 {
-	//Generates a random unit vector
+	// Generates a random unit vector
 	Vector3 result((2.0f * std::rand() / RAND_MAX) - 1.0f,
 
 		(2.0f * std::rand() / RAND_MAX) - 1.0f,
@@ -88,7 +88,7 @@ Vector3 Random::InSphere(float outerRadius, float innerRadius)
 
 	result.Normalize(&result);
 
-	//Scales it with a random length
+	// Scales it with a random length
 	float randomLength = (float)std::rand() / RAND_MAX;
 
 	result *= randomLength * (outerRadius - innerRadius) + innerRadius;
@@ -98,7 +98,7 @@ Vector3 Random::InSphere(float outerRadius, float innerRadius)
 
 Vector3 Random::InSphere()
 {
-	//Generates a random unit vector
+	// Generates a random unit vector
 	Vector3 result((2.0f * std::rand() / RAND_MAX) - 1.0f,
 
 		(2.0f * std::rand() / RAND_MAX) - 1.0f,
@@ -107,14 +107,14 @@ Vector3 Random::InSphere()
 
 	result.Normalize(&result);
 
-	//Scales it with a random length
+	// Scales it with a random length
 	float randomLength = (float)std::rand() / RAND_MAX;
 	result *= randomLength;
 
 	return result;
 }
 
-//Will return a vector to a random point inside a sphere. (Unequal chance for each magnitude; even spread throughout whole sphere)
+// Will return a vector to a random point inside a sphere. (Unequal chance for each magnitude; even spread throughout whole sphere)
 Vector3 Random::InSphereEven(float outerRadius, float innerRadius)
 {
 	Vector3 result((2.0f * std::rand() / RAND_MAX) - 1.0f,
@@ -125,7 +125,7 @@ Vector3 Random::InSphereEven(float outerRadius, float innerRadius)
 
 	result.Normalize(&result);
 
-	float randomLength = sqrt(((float)std::rand() / RAND_MAX) / MATH_PI); //Accounting sparser distrobution
+	float randomLength = sqrt(((float)std::rand() / RAND_MAX) / MATH_PI); // Accounting sparser distrobution
 	result *= randomLength * (outerRadius - innerRadius) + innerRadius;
 
 	return result;
@@ -133,7 +133,7 @@ Vector3 Random::InSphereEven(float outerRadius, float innerRadius)
 
 Vector3 Random::InSphereEven()
 {
-	//Generates a random unit vector
+	// Generates a random unit vector
 	Vector3 result((2.0f * std::rand() / RAND_MAX) - 1.0f,
 
 		(2.0f * std::rand() / RAND_MAX) - 1.0f,
@@ -142,7 +142,7 @@ Vector3 Random::InSphereEven()
 
 	result.Normalize(&result);
 
-	float randomLength = sqrt(((float)std::rand() / RAND_MAX) / MATH_PI); //Accounting sparser distrobution
+	float randomLength = sqrt(((float)std::rand() / RAND_MAX) / MATH_PI); // Accounting sparser distrobution
 	result *= randomLength;
 
 	return result;

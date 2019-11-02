@@ -32,7 +32,7 @@
 using namespace std::chrono_literals;
 #define STR(x) std::to_string(x)
 #define SLEEP(t) std::this_thread::sleep_for(t)
-//Pauses the current thread for (float)x seconds
+// Pauses the current thread for (float)x seconds
 #define SLEEPFOR(s) std::this_thread::sleep_for(std::chrono::milliseconds((long long)(s*1000)))
 
 #define BIT(x) (1 << x)

@@ -25,7 +25,7 @@ Vector2::~Vector2()
 
 Vector2::Vector2(const std::string& str) : x(0), y(0)
 {
-	//Removing spaces vector size if neccesary and splits into all the elements
+	// Removing spaces vector size if neccesary and splits into all the elements
 	std::vector<std::string> parts = strSplit(strSplit(str, ";")[0], " ");
 	for (size_t i = 0; i < min(2, parts.size()); i++)
 		(*this)[i] = numf(parts[i]);
@@ -33,7 +33,7 @@ Vector2::Vector2(const std::string& str) : x(0), y(0)
 
 Vector2 Vector2::Parse(const std::string& str)
 {
-	//Removing spaces vector size if neccesary and splits into all the elements
+	// Removing spaces vector size if neccesary and splits into all the elements
 	std::vector<std::string> parts = strSplit(strSplit(str, ";")[0], " ");
 	Vector2 result;
 	for (size_t i = 0; i < min(2, parts.size()); i++)
@@ -87,7 +87,7 @@ Vector2 Vector2::operator/(float scalar) const
 	return Vector2(x / scalar, y / scalar);
 }
 
-//operator "?=":
+// operator "?=":
 void Vector2::operator+=(const Vector2 & vec2)
 {
 	x += vec2.x;

@@ -21,7 +21,7 @@ struct Vector
 
 	Vector(const Vector& vec);
 
-	//Append constructor
+	// Append constructor
 	Vector(const Vector& a, const Vector& b);
 
 	Vector(const std::string& str);
@@ -38,7 +38,7 @@ struct Vector
 	static Vector InSphereEven(size_t size, float outerRadius, float innerRadius = 0);
 	static Vector InCube(size_t size, float width);
 
-	//Operators:
+	// Operators:
 
 	operator std::string()
 	{
@@ -46,7 +46,7 @@ struct Vector
 	}
 
 	inline float& operator[](size_t index) { return m_data[index]; }
-	//Returns a costant reference and is therefore safe with cost&
+	// Returns a costant reference and is therefore safe with cost&
 	inline const float& get(size_t index) const { return m_data[index]; }
 	inline size_t size() const { return m_size; }
 
@@ -55,7 +55,7 @@ struct Vector
 		memcpy(m_data, vec.m_data, m_size * sizeof(float));
 	}
 
-	//Assumes the list is as big or bigger than the vector
+	// Assumes the list is as big or bigger than the vector
 	inline void operator=(float* list)
 	{
 		memcpy(m_data, list, m_size * sizeof(float));
@@ -79,7 +79,7 @@ struct Vector
 
 
 
-	//operator "?=":
+	// operator "?=":
 	void operator+=(const Vector& vec);
 
 	void operator-=(const Vector& vec);
@@ -104,17 +104,17 @@ struct Vector
 
 	float Magnitude() const;
 
-	//Multiplies the components together
+	// Multiplies the components together
 	inline float Volume() const;
 
 
-	//Returns the Normalized version of the vector; does not modify the vector
+	// Returns the Normalized version of the vector; does not modify the vector
 	inline Vector Normalize() const
 	{
 		return *this / Magnitude();
 	}
 
-	//Normalizes the vector and assigns it to $out. Out can be the same as self
+	// Normalizes the vector and assigns it to $out. Out can be the same as self
 	inline void Normalize(Vector* out)
 	{
 		if (out)
@@ -133,7 +133,7 @@ struct Vector
 
 	Vector ClampMax(float max) const;
 
-	//Returns false if the vector doesnt have a direction or length
+	// Returns false if the vector doesnt have a direction or length
 	inline bool Valid() { return SqrMagnitude() > 0.00001; }
 	inline bool Defined() { return SqrMagnitude() > 0.00001; }
 
@@ -166,14 +166,14 @@ struct Vector
 	static const Vector green;
 	static const Vector blue;
 
-	//Calculates the dot product between two vectors
+	// Calculates the dot product between two vectors
 	static float Dot(Vector a, Vector b);
 
-	//Linearly interpolates a and b between t
+	// Linearly interpolates a and b between t
 	static Vector Lerp(Vector a, Vector b, float t);
 
 private:
-	//The element array
+	// The element array
 	float* m_data;
 	size_t m_size;
 

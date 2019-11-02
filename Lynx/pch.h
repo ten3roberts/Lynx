@@ -12,7 +12,7 @@
 
 #include <src/Core.h>
 
-//#include <src/rsc.h>
+// #include <src/rsc.h>
 
 #include <Math/Vector2.h>
 #include <Math/Vector3.h>
@@ -24,7 +24,7 @@
 
 #include <src/Tools.h>
 #include <src/Logger.h>
-//#include <src/XMLParser.h>
+// #include <src/XMLParser.h>
 #include <src/Time.h>
 
 #include <src/Timer.h>

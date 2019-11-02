@@ -40,7 +40,7 @@ Vector::Vector(const Vector& vec) : m_size(vec.size())
 	memcpy(m_data, vec.m_data, m_size * sizeof(float));
 }
 
-//Append constructor
+// Append constructor
 Vector::Vector(const Vector& a, const Vector& b)
 {
 	m_size = a.size() + b.size();
@@ -51,7 +51,7 @@ Vector::Vector(const Vector& a, const Vector& b)
 
 Vector::Vector(const std::string& str) : m_data(0), m_size(0)
 {
-	//Removing spaces vector size if neccesary and splits into all the elements
+	// Removing spaces vector size if neccesary and splits into all the elements
 	std::vector<std::string> parts = strSplit(strSplit(strPurge(str, " "), ";")[0], ",");
 	m_data = new float[parts.size()];
 	for (size_t i = 0; i < parts.size(); i++)
@@ -60,7 +60,7 @@ Vector::Vector(const std::string& str) : m_data(0), m_size(0)
 
 Vector Vector::Parse(const std::string& str)
 {
-	//Removing spaces vector size if neccesary and splits into all the elements
+	// Removing spaces vector size if neccesary and splits into all the elements
 	std::vector<std::string> parts = strSplit(strSplit(strPurge(str, " "), ";")[0], ",");
 	Vector result(parts.size());
 	for (size_t i = 0; i < parts.size(); i++)
@@ -79,14 +79,14 @@ Vector Vector::OnSphere(size_t size, float radius)
 
 Vector Vector::InSphere(size_t size, float outerRadius, float innerRadius)
 {
-	//Generates a random unit vector
+	// Generates a random unit vector
 	Vector result(size);
 	for (size_t i = 0; i < size; i++)
 		result[i] = (2.0f * std::rand() / RAND_MAX) - 1.0f;
 
 	result.Normalize(&result);
 
-	//Scales it with a random length
+	// Scales it with a random length
 	float randomLength = (float)std::rand() / RAND_MAX;
 	result *= randomLength * (outerRadius - innerRadius) + innerRadius;
 
@@ -101,7 +101,7 @@ Vector Vector::InSphereEven(size_t size, float outerRadius, float innerRadius)
 
 	result.Normalize(&result);
 
-	float randomLength = sqrt(((float)std::rand() / RAND_MAX) / MATH_PI); //Accounting sparser distrobution
+	float randomLength = sqrt(((float)std::rand() / RAND_MAX) / MATH_PI); // Accounting sparser distrobution
 	result *= randomLength * (outerRadius - innerRadius) + innerRadius;
 
 	return result;
@@ -190,7 +190,7 @@ Vector Vector::operator/(float scalar) const
 
 
 
-//operator "?=":
+// operator "?=":
 void Vector::operator+=(const Vector& vec)
 {
 	ASSERT(m_size == vec.size());
@@ -268,7 +268,7 @@ float Vector::Magnitude() const
 }
 
 
-//Multiplies the components together
+// Multiplies the components together
 float Vector::Volume() const
 {
 	float result = 1;

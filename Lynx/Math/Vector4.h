@@ -24,10 +24,10 @@ struct Vector4
 			float r, g, b, a;
 		};
 	};
-	//float &r = x, &g = y, &b = z, &a = w;
+	// float &r = x, &g = y, &b = z, &a = w;
 
 
-	//Operators:
+	// Operators:
 
 	operator std::string()
 	{
@@ -35,7 +35,7 @@ struct Vector4
 	}
 
 	inline float& operator[](size_t index) { return *(&x + index); }
-	//Returns a costant reference and is therefore safe with cost&
+	// Returns a costant reference and is therefore safe with cost&
 	const float& get(size_t index) const { return *(&x + index); }
 
 	void operator=(const Vector4& vec4);
@@ -56,7 +56,7 @@ struct Vector4
 	Vector4 operator/(float scalar) const;
 
 
-	//operator "?=":
+	// operator "?=":
 	void operator+=(const Vector4& vec4);
 	void operator-=(const Vector4& vec4);
 
@@ -71,30 +71,30 @@ struct Vector4
 
 	float SqrMagnitude() const;
 	float Magnitude() const;
-	inline float Volume() const { return x * y* z* w; }  //Multiplies the components together
+	inline float Volume() const { return x * y* z* w; }  // Multiplies the components together
 
 
-	//Returns the Normalized version of the vector; does not modify the vector
+	// Returns the Normalized version of the vector; does not modify the vector
 	Vector4 Normalize() const;
 
-	//Normalizes the vector and assigns it to $out. Out can be the same as self
+	// Normalizes the vector and assigns it to $out. Out can be the same as self
 	void Normalize(Vector4* out);
 
-	//Will strClamp the vector's magnitude between a minimum and maximum value
+	// Will strClamp the vector's magnitude between a minimum and maximum value
 	Vector4 ClampMag(float min, float max) const;
-	//Will strClamp the vector's magnitude to a minimum value
+	// Will strClamp the vector's magnitude to a minimum value
 	Vector4 ClampMinMag(float min) const;
-	//Will strClamp the vector's magnitude to a maximum value
+	// Will strClamp the vector's magnitude to a maximum value
 	Vector4 ClampMaxMag(float max) const;
 
-	//Will strClamp all the vectors components individually between a minimum and maximum value;
+	// Will strClamp all the vectors components individually between a minimum and maximum value;
 	Vector4 strClamp(float min, float max) const;
-	//Will strClamp all the vectors components individually to a minimum;
+	// Will strClamp all the vectors components individually to a minimum;
 	Vector4 ClampMin(float min) const;
-	//Will strClamp all the vectors components individually to a maximum value;
+	// Will strClamp all the vectors components individually to a maximum value;
 	Vector4 ClampMax(float max) const;
 
-	//Returns false if the vector doesnt have a direction or length
+	// Returns false if the vector doesnt have a direction or length
 	inline bool Valid() const { return SqrMagnitude() > 0.00001; }
 	inline bool Defined() const { return SqrMagnitude() > 0.00001; }
 
@@ -112,15 +112,15 @@ struct Vector4
 	static const Vector4 black;
 	
 
-	//Calculates the dot product between two vectors
+	// Calculates the dot product between two vectors
 	static float Dot(const Vector4& a, const Vector4& b);
 
-	//Returns a vector projected onto an axis
+	// Returns a vector projected onto an axis
 	static Vector4 Project(const Vector4& vector, const Vector4& axis);
-	//Returns the length of a vector projected onto an axis
+	// Returns the length of a vector projected onto an axis
 	static float ProjectFlat(const Vector4& vector, const Vector4& axis);
 
-	//Linearly interpolates a and b between t
+	// Linearly interpolates a and b between t
 	static Vector4 Lerp(const Vector4& a, const Vector4& b, float t);
 };
 

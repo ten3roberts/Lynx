@@ -14,7 +14,7 @@ namespace Lynx
 		EVENT_CLASS(MouseMoved, EventCategoryMouse | EventCategoryInput);
 
 	private:
-		//The new absolute position of the mouse
+		// The new absolute position of the mouse
 		float m_mouseX, m_mouseY;
 	};
 
@@ -29,7 +29,7 @@ namespace Lynx
 		EVENT_CLASS(MouseScrolled, EventCategoryMouse | EventCategoryInput)
 
 	private:
-		//The position of the scroll wheel
+		// The position of the scroll wheel
 		float m_xScroll, m_yScroll;
 	};
 

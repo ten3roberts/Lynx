@@ -13,7 +13,7 @@ Matrix4 Matrix4::Parse(const std::string& str)
 {
 	Matrix4 result;
 	std::vector<std::string> completeRows = strSplit(strPurge(str, " "), "\n");
-	if (completeRows.size() == 1) //Inline format
+	if (completeRows.size() == 1) // Inline format
 		return ParseInline(str);
 
 	for (size_t i = 0; i < 4; i++)
@@ -50,14 +50,14 @@ Matrix4 Matrix4::Zero()
 
 Matrix4 Matrix4::Euler(Vector3 euler)
 {
-	// Calculate rotation about x axis
+	//  Calculate rotation about x axis
 	Matrix4 pitchM =
 	{
 		1, 0, 0, 0,
 		0, cosf(euler.pitch), -sinf(euler.pitch), 0,
 		0, sinf(euler.pitch), cosf(euler.pitch), 0,
 		0, 0, 0, 0 };
-	// Calculate rotation about y axis
+	//  Calculate rotation about y axis
 	Matrix4 yawM =
 	{
 		cosf(euler.yaw), 0, sinf(euler.yaw), 0,
@@ -66,7 +66,7 @@ Matrix4 Matrix4::Euler(Vector3 euler)
 		0, 0, 0, 0
 	};
 
-	// Calculate rotation about z axis
+	//  Calculate rotation about z axis
 	Matrix4 rollM =
 	{
 		cosf(euler.roll), -sinf(euler.roll), 0,
@@ -76,8 +76,8 @@ Matrix4 Matrix4::Euler(Vector3 euler)
 	};
 
 
-	// Combined rotation matrix
-	//Matrix4 R = R_z * R_y * R_x;
+	//  Combined rotation matrix
+	// Matrix4 R = R_z * R_y * R_x;
 
 	return (yawM * pitchM * rollM);
 }
@@ -274,11 +274,11 @@ float& Matrix4::operator()(size_t row, size_t col)
 Matrix4 Matrix4::operator*(const Matrix4& matrix) const
 {
 	Matrix4 result;
-	for (size_t i = 0; i < 4; i++) //row
+	for (size_t i = 0; i < 4; i++) // row
 	{
-		for (size_t j = 0; j < 4; j++)//col
+		for (size_t j = 0; j < 4; j++)// col
 		{
-			//Loops through second matrix column and puts in result col
+			// Loops through second matrix column and puts in result col
 			for (size_t d = 0; d < 4; d++)
 				result(i, d) += get(i, j) * matrix.get(j, d);
 		}
@@ -289,11 +289,11 @@ Matrix4 Matrix4::operator*(const Matrix4& matrix) const
 void Matrix4::operator*=(const Matrix4& matrix)
 {
 	Matrix4 result;
-	for (size_t i = 0; i < 4; i++) //row
+	for (size_t i = 0; i < 4; i++) // row
 	{
-		for (size_t j = 0; j < 4; j++)//col
+		for (size_t j = 0; j < 4; j++)// col
 		{
-			//Loops through second matrix column and puts in result col
+			// Loops through second matrix column and puts in result col
 			for (size_t d = 0; d < 4; d++)
 				result(i, d) += get(i, j) * matrix.get(j, d);
 		}

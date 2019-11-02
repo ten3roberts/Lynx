@@ -28,7 +28,7 @@ public:
 	static float frameRate;
 	static float deltaTime;
 	static float unscaledDeltaTime;
-	//Tick speed
+	// Tick speed
 	static float fixedDeltaTime;
 	static float elapsedTime;
 	static float unscaledElapsedTime;

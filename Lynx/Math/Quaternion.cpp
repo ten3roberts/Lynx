@@ -15,7 +15,7 @@ Quaternion::Quaternion(const Vector3& axis, float angle)
 	x = axis.x * sinAngle;
 	y = axis.y * sinAngle;
 	z = axis.z * sinAngle;
-	w = cosf(angle / 2);// sqrt(1 - sinAngle * sinAngle); //Cosine of half angle
+	w = cosf(angle / 2);//  sqrt(1 - sinAngle * sinAngle); // Cosine of half angle
 	*this = Normalize();
 }
 
@@ -189,19 +189,19 @@ Matrix4 Quaternion::toMatrix()
 Vector3 Quaternion::toEuler()
 {
 	Vector3 result;
-	// roll (x-axis rotation)
+	//  roll (x-axis rotation)
 	float sinr_cosp = +2.0f * (w * x + y * z);
 	float cosr_cosp = +1.0f - 2.0f * (x * x * y * y);
 	result.roll = atan2f(sinr_cosp, cosr_cosp);
 
-	// pitch (y-axis rotation)
+	//  pitch (y-axis rotation)
 	float sinp = +2.0f * (w* y - z * x);
 	if (fabs(sinp) >= 1)
-		result.pitch = copysignf(MATH_PI / 2, sinp); // use 90 degrees if out of range
+		result.pitch = copysignf(MATH_PI / 2, sinp); //  use 90 degrees if out of range
 	else
 		result.pitch = asinf(sinp);
 
-	// yaw (z-axis rotation)
+	//  yaw (z-axis rotation)
 	float siny_cosp = +2.0f * (w * z + x * y);
 	float cosy_cosp = +1.0f - 2.0f * (y * y + z * z);
 	result.yaw = atan2f(siny_cosp, cosy_cosp);
@@ -213,7 +213,7 @@ Quaternion Quaternion::Normalize() const
 	if (!Valid())
 		return *this;
 	float magnitude = Magnitude();
-	if (abs(magnitude - 1) < 0.001) //If its already Normalized
+	if (abs(magnitude - 1) < 0.001) // If its already Normalized
 	{
 		return *this;
 	}
@@ -237,7 +237,7 @@ void Quaternion::Normalize(Quaternion* out)
 
 
 	float magnitude = Magnitude();
-	if (abs(magnitude - 1) < 0.001) //If its already Normalized
+	if (abs(magnitude - 1) < 0.001) // If its already Normalized
 	{
 		*out = *this;
 	}
@@ -319,15 +319,15 @@ float Quaternion::Dot(const Quaternion& q0, const Quaternion& q1)
 
 Quaternion Quaternion::Slerp(const Quaternion& a, const Quaternion& b, float t)
 {
-	// Only unit quaternions are valid rotations.
-	// Normalize to avoid undefined behavior.
+	//  Only unit quaternions are valid rotations.
+	//  Normalize to avoid undefined behavior.
 	Quaternion q0 = a.Normalize();
 	Quaternion q1 = b.Normalize();
 
-	// get the dot product between the two quaternions
+	//  get the dot product between the two quaternions
 	float dot = Dot(q0, q1);
 
-	// Makes it take the shortest path
+	//  Makes it take the shortest path
 	if (dot < 0)
 	{
 		q1 = q1 * -1;
@@ -337,21 +337,21 @@ Quaternion Quaternion::Slerp(const Quaternion& a, const Quaternion& b, float t)
 	const float CLOSEST_DOT = 0.9995f;
 	if (dot > CLOSEST_DOT)
 	{
-		// If the inputs are too close, linearly interpolate
-		// and Normalize the result.
+		//  If the inputs are too close, linearly interpolate
+		//  and Normalize the result.
 
 		Quaternion result = q0 + (q1 - q0) * t;
 		result = result.Normalize();
 		return result;
 	}
 
-	// acos is safe because the cos between q0, q1 is less than closetsDot
-	float angle = acosf(dot);        // theta_0 = angle between input vectors
-	float partAngle = angle * t;          // theta = angle between v0 and result
-	float sinPart = sinf(partAngle);     // compute this value only once sinTheta
-	float sinAngle = sqrtf(1 - dot * dot); // compute this value only once sintheta0
+	//  acos is safe because the cos between q0, q1 is less than closetsDot
+	float angle = acosf(dot);        //  theta_0 = angle between input vectors
+	float partAngle = angle * t;          //  theta = angle between v0 and result
+	float sinPart = sinf(partAngle);     //  compute this value only once sinTheta
+	float sinAngle = sqrtf(1 - dot * dot); //  compute this value only once sintheta0
 
-	float s0 = cosf(partAngle) - dot * sinPart / sinAngle;  // == sin(theta_0 - theta) / sin(theta_0)
+	float s0 = cosf(partAngle) - dot * sinPart / sinAngle;  //  == sin(theta_0 - theta) / sin(theta_0)
 	float s1 = sinPart / sinAngle;
 
 	return (q0 * s0) + (q1 * s1);
@@ -359,8 +359,8 @@ Quaternion Quaternion::Slerp(const Quaternion& a, const Quaternion& b, float t)
 
 Quaternion Quaternion::Lerp(const Quaternion& a, const Quaternion& b, float t)
 {
-	// If the inputs are too close, linearly interpolate
-	// and Normalize the result.
+	//  If the inputs are too close, linearly interpolate
+	//  and Normalize the result.
 	t = Math::Clamp01(t);
 	Quaternion result = a + (b - a) * t;
 	result = result.Normalize();

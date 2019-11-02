@@ -34,31 +34,31 @@ struct Vector3;
 
 namespace Math
 {
-	//public:
+	// public:
 	inline static float logn(float x, float base)
 	{
 		return log(x) / log(base);
 	}
 	
-	//Clamps value between min and max
+	// Clamps value between min and max
 	inline static float Clamp(float value, float min, float max)
 	{
 		return value > max ? max : value < min ? min : value;
 	}
 
-	//Clamps value between 0 and infinity
+	// Clamps value between 0 and infinity
 	inline static float ClampPos(float value)
 	{
 		return value < 0 ? 0 : value;
 	}
 
-	//Clamps value between 0 and negative infinity
+	// Clamps value between 0 and negative infinity
 	inline static float ClampNeg(float value)
 	{
 		return value > 0 ? 0 : value;
 	}
 
-	//Clamps value between 0 and 1
+	// Clamps value between 0 and 1
 	inline static float Clamp01(float value)
 	{
 		return value > 1 ? 1 : value < 0 ? 0 : value;
@@ -74,20 +74,20 @@ namespace Math
 		return (180.0f / MATH_PI) * rad;
 	}
 
-	int getMax(float* elements, int size); //Return the index of the greatest value in elements
+	int getMax(float* elements, int size); // Return the index of the greatest value in elements
 
 	int getMax(std::vector<float> elements);
 
 	int getMax(int n, ...);
 
-	// Returns the index of the smallest value in elements
+	//  Returns the index of the smallest value in elements
 	int getMin(float* elements, int size);
 
 	int getMin(std::vector<float> elements);
 
 	int getMin(int n, ...);
 
-	//Will generate a sine wave between two thresholds
+	// Will generate a sine wave between two thresholds
 	inline float SineWave(float min, float max, float frequency, float t) { return sinf(t * frequency) / 2 * (max - min) + (max + min) / 2; }
 	inline float CosineWave(float min, float max, float frequency, float t) { return cosf(t * frequency) / 2 * (max - min) + (max + min) / 2; }
 
@@ -108,52 +108,52 @@ namespace Math
 	}
 
 #pragma region "Vector functions"
-	//Vector2
+	// Vector2
 	inline float Dot(const Vector2& a, const Vector2& b) { return Vector2::Dot(a, b); }
 
-	//Returns a vector projected onto an axis
+	// Returns a vector projected onto an axis
 	inline Vector2 Project(const Vector2& vector, const Vector2& axis) { return Vector2::Project(vector, axis); }
-	//Returns the length of a vector projected onto an axis
+	// Returns the length of a vector projected onto an axis
 	inline float ProjectFlat(const Vector2& vector, const Vector2& axis) { return Vector2::ProjectFlat(vector, axis); }
 
-	//Linearly interpolates a and b between t
+	// Linearly interpolates a and b between t
 	inline Vector2 Lerp(const Vector2& a, const Vector2& b, float t) { return Vector2::Lerp(a, b, t); }
 
-	//Vector3
-	//Calculates the dot product between two vectors
+	// Vector3
+	// Calculates the dot product between two vectors
 	inline float Dot(const Vector3& a, const Vector3& b) { return Vector3::Dot(a, b); }
 
-	//Returns a vector projected onto an axis
+	// Returns a vector projected onto an axis
 	inline Vector3 Project(const Vector3& vector, const Vector3& axis) { return Vector3::Project(vector, axis); }
-	//Returns the length of a vector projected onto an axis
+	// Returns the length of a vector projected onto an axis
 	inline float ProjectFlat(const Vector3& vector, const Vector3& axis) { return Vector3::ProjectFlat(vector, axis); }
 
-	//Returns a vector perpendicular to a and b
+	// Returns a vector perpendicular to a and b
 	inline Vector3 Cross(const Vector3& a, const Vector3& b) { return Vector3::Cross(a, b); }
 
-	//Returns the vector when the ray has been reflected from the normal
+	// Returns the vector when the ray has been reflected from the normal
 	inline Vector3 Reflect(const Vector3& ray, const Vector3& normal) { return Vector3::Reflect(ray, normal); }
 
-	//Linearly interpolates a and b between t
+	// Linearly interpolates a and b between t
 	inline Vector3 Lerp(const Vector3& a, const Vector3& b, float t) { return Vector3::Lerp(a, b, t); }
 
-	//Spherically interpolates a and b between t
+	// Spherically interpolates a and b between t
 	inline Vector3 Slerp(const Vector3& a, const Vector3& b, float t) { return Vector3::Slerp(a, b, t); }
 
-	//Vector4
+	// Vector4
 	inline float Dot(const Vector4& a, const Vector4& b) { return Vector4::Dot(a, b); }
 
-	//Returns a vector projected onto an axis
+	// Returns a vector projected onto an axis
 	inline Vector4 Project(const Vector4& vector, const Vector4& axis) { return Vector4::Project(vector, axis); }
-	//Returns the length of a vector projected onto an axis
+	// Returns the length of a vector projected onto an axis
 	inline float ProjectFlat(const Vector4& vector, const Vector4& axis) { return Vector4::ProjectFlat(vector, axis); }
 
-	//Linearly interpolates a and b between t
+	// Linearly interpolates a and b between t
 	inline Vector4 Lerp(const Vector4& a, const Vector4& b, float t) { return Vector4::Lerp(a, b, t); }
 #pragma endregion
 };
 
-//Merge Sorting:
+// Merge Sorting:
 template<typename T>
 struct Sorter
 {

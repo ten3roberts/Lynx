@@ -39,7 +39,7 @@ std::string Tools::getWorkingDir()
 
 std::string Tools::getAppdata()
 {
-	//Automatically use Windows appdata or Linux home directory accordingly
+	// Automatically use Windows appdata or Linux home directory accordingly
 #ifdef CSIDL_APPDATA
 	TCHAR szPath[MAX_PATH];
 
@@ -114,14 +114,14 @@ std::vector<std::string> Tools::strSplit(const std::string& str, const std::stri
 	int c = 0;
 	for (size_t i = 0, c = 0; i < str.size(); i++)
 	{
-		//Checks if current part is in an opening or closing quote that is not escaped
+		// Checks if current part is in an opening or closing quote that is not escaped
 		if (str[i] == '"' && !(i > 0 && str[i - 1] == '\\'))
 			in_quote = !in_quote;
 
-		if (str.substr(i, keyW.size()) == keyW && !(in_quote && ignore_quotes)) //Cursor att keyword
+		if (str.substr(i, keyW.size()) == keyW && !(in_quote && ignore_quotes)) // Cursor att keyword
 		{
-			results.push_back(str.substr(c, i)); //Push left bit to results
-			c = i + 1; //Forward the left iterator to what i was
+			results.push_back(str.substr(c, i)); // Push left bit to results
+			c = i + 1; // Forward the left iterator to what i was
 			i = 0;
 		}
 	}
@@ -137,14 +137,14 @@ std::vector<std::string> Tools::strSplit(const std::string& str, char keyW, bool
 	int c = 0;
 	for (size_t i = 0, c = 0; i < str.size(); i++)
 	{
-		//Checks if current part is in an opening or closing quote that is not escaped
+		// Checks if current part is in an opening or closing quote that is not escaped
 		if (str[i] == '"' && !(i > 0 && str[i - 1] == '\\'))
 			in_quote = !in_quote;
 
-		if (str[i] == keyW && !(in_quote && ignore_quotes)) //Cursor att keyword
+		if (str[i] == keyW && !(in_quote && ignore_quotes)) // Cursor att keyword
 		{
-			results.push_back(str.substr(c, i)); //Push left bit to results
-			c = i + 1; //Forward the left iterator to what i was
+			results.push_back(str.substr(c, i)); // Push left bit to results
+			c = i + 1; // Forward the left iterator to what i was
 			i = 0;
 		}
 	}
@@ -166,15 +166,15 @@ std::string Tools::strStop(const std::string& str, std::string keyW)
 std::string Tools::strPurge(const std::string& str, const std::string& keyW)
 {
 	std::string result;
-	//Left part iterator
+	// Left part iterator
 	size_t c = 0;
 	for (size_t i = 0; i < str.size(); i++)
 	{
-		if (str.substr(i, keyW.size()) == keyW) //Adding left part of string
+		if (str.substr(i, keyW.size()) == keyW) // Adding left part of string
 		{
 			result += str.substr(c, i - c);
 
-			//Cathing up with left iterator
+			// Cathing up with left iterator
 			c = i+1;
 		}
 	}
@@ -184,15 +184,15 @@ std::string Tools::strPurge(const std::string& str, const std::string& keyW)
 std::string Tools::strPurge(const std::string& str, char chr)
 {
 	std::string result;
-	//Left part iterator
+	// Left part iterator
 	size_t c = 0;
 	for (size_t i = 0; i < str.size(); i++)
 	{
-		if (str[i] == chr) //Adding left part of string
+		if (str[i] == chr) // Adding left part of string
 		{
 			result += str.substr(c, i - c);
 
-			//Cathing up with left iterator
+			// Cathing up with left iterator
 			c = i+1;
 		}
 	}
@@ -202,7 +202,7 @@ std::string Tools::strPurge(const std::string& str, char chr)
 std::string Tools::strPurgeAll(const std::string& str, const std::string& pattern)
 {
 	std::string result;
-	//Left part iterator
+	// Left part iterator
 	size_t c = 0;
 	for (size_t i = 0; i < str.size(); i++)
 	{
@@ -212,7 +212,7 @@ std::string Tools::strPurgeAll(const std::string& str, const std::string& patter
 			{
 				result += str.substr(c, i - c);
 
-				//Cathing up with left iterator
+				// Cathing up with left iterator
 				c = i+1;
 				break;
 			}
@@ -241,7 +241,7 @@ std::string Tools::ListTostring(float* list, size_t size, const std::string& sep
 	for (size_t i = 0; i < size; i++)
 	{
 		result += STR((list[i]));
-		if (i != size - 1) //Putting carriage return on all entries except the last
+		if (i != size - 1) // Putting carriage return on all entries except the last
 			result += separator;
 	}
 	return result;
@@ -253,7 +253,7 @@ std::string Tools::ListTostring(float* list, size_t size, char separator)
 	for (size_t i = 0; i < size; i++)
 	{
 		result += STR(list[i]);
-		if (i != size - 1) //Putting carriage return on all entries except the last
+		if (i != size - 1) // Putting carriage return on all entries except the last
 			result += separator;
 	}
 	return result;
@@ -265,7 +265,7 @@ std::string Tools::ListTostring(const std::vector<std::string>& list, const std:
 	for (size_t i = 0; i < list.size(); i++)
 	{
 		result += (list[i]);
-		if (i != list.size() - 1) //Putting carriage return on all entries except the last
+		if (i != list.size() - 1) // Putting carriage return on all entries except the last
 			result += separator;
 	}
 	return result;
@@ -277,7 +277,7 @@ std::string Tools::ListTostring(const std::vector<std::string>& list, char separ
 	for (size_t i = 0; i < list.size(); i++)
 	{
 		result += (list[i]);
-		if (i != list.size() - 1) //Putting carriage return on all entries except the last
+		if (i != list.size() - 1) // Putting carriage return on all entries except the last
 			result += separator;
 	}
 	return result;
@@ -291,7 +291,7 @@ int Tools::ParseTime(const std::string& str)
 
 	for (size_t i = 1; i < parts.size(); i++)
 	{
-		//Removes plural 's'
+		// Removes plural 's'
 		if (parts[i].back() == 's')
 			parts[i].pop_back();
 
@@ -321,7 +321,7 @@ int Tools::ParseTime(const std::string& str)
 
 std::string Tools::FormatTime(int seconds)
 {
-	int times[4] = { 0, 0, 0, 0 };//Days, Hours, Minutes, Seconds
+	int times[4] = { 0, 0, 0, 0 };// Days, Hours, Minutes, Seconds
 
 	const std::string timesDef[] = { "day", "hour", "minute", "second" };
 
@@ -339,7 +339,7 @@ std::string Tools::FormatTime(int seconds)
 
 	std::string result;
 
-	//Indicates whetger the gor loop has yet encountered a nonzero time value
+	// Indicates whetger the gor loop has yet encountered a nonzero time value
 	bool beginned = false;
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -347,7 +347,7 @@ std::string Tools::FormatTime(int seconds)
 			beginned = true;
 
 		result += (times[i] > 0 ? std::to_string(times[i]) + " " + timesDef[i] : "") + (times[i] > 1 ? "s" : "");
-		if (beginned && i < 3 && times[i + 1] > 0) //Not last filled
+		if (beginned && i < 3 && times[i + 1] > 0) // Not last filled
 			result += ", ";
 	}
 
@@ -401,7 +401,7 @@ std::vector<std::string> Tools::ListDir(const std::string& directory)
 	return r;
 }
 
-//Will list all sub-directories in specified directory
+// Will list all sub-directories in specified directory
 std::vector<std::string> Tools::ListDirectories(const std::string& directory)
 {
 	std::vector<std::string> r;
@@ -451,7 +451,7 @@ std::vector<std::string> Tools::ListAll(const std::string& directory)
 
 std::string Tools::FindFile(const std::string& filename, const std::string& directory)
 {
-	//Makes sure to remove any preceding path to the filename we're searching for
+	// Makes sure to remove any preceding path to the filename we're searching for
 	std::string fname = getFilename(filename, true);
 
 	std::vector<std::string> files = ListAllFiles(directory);
@@ -468,7 +468,7 @@ std::string Tools::FindFile(const std::string& filename, const std::string& dire
 
 std::string Tools::FindFile(const std::string& filename, bool useExtension, const std::string& directory)
 {
-	//Makes sure to remove any preceding path to the filename we're searching for
+	// Makes sure to remove any preceding path to the filename we're searching for
 	std::string fname = getFilename(filename, useExtension);
 
 	std::vector<std::string> files = ListAllFiles(directory);
@@ -520,7 +520,7 @@ std::vector<std::string> Tools::ReadFileLines(const std::string& filepath, bool 
 
 void Tools::GeneratePath(const std::string& path)
 {
-	//path is to long
+	// path is to long
 	if (path.size() >= 248)
 	{
 		LogE("Tools", "Couldn't generate directory; path is too long");
@@ -532,7 +532,7 @@ void Tools::GeneratePath(const std::string& path)
 
 void Tools::GenerateFile(const std::string& path, const std::string& contents, bool append)
 {
-	//Path is to long
+	// Path is to long
 	if (path.size() >= 248)
 	{
 		LogE("Tools", "Couldn't generate file; path is too long");
@@ -541,7 +541,7 @@ void Tools::GenerateFile(const std::string& path, const std::string& contents, b
 
 	std::filesystem::create_directories(path.substr(0, path.find_last_of(SLASH)));
 
-	//Creates the file at the end and pushing optional data into it
+	// Creates the file at the end and pushing optional data into it
 	std::ofstream fstream(path, (append ? std::ios::app : std::ios::trunc));
 	fstream.write(contents.c_str(), contents.size());
 	fstream.close();
@@ -562,15 +562,15 @@ bool Tools::Copy(const std::string& oldPath, const std::string& newPath)
 		oldFile.close();
 		newFile.close();
 	}
-	else //Copying entire directories
+	else // Copying entire directories
 	{
-		//Retrieves all subdirs in oldPath recursively
+		// Retrieves all subdirs in oldPath recursively
 		std::vector<std::string> dirs = ListAllDirectories(oldPath);
 		std::vector<std::string> files = ListAllFiles(oldPath);
 
-		//Copies the directory structure
+		// Copies the directory structure
 		for (std::string& dir : dirs)
-			//Cuts off parent path and adds new parent path
+			// Cuts off parent path and adds new parent path
 			GeneratePath(strLead(newPath, SLASH) + dir.substr(oldPath.size()));
 
 		for (std::string& file : files)
@@ -611,7 +611,7 @@ std::string Tools::ShortenPath(const std::string& path, int depth, bool omitIndi
 
 std::string Tools::ShortenString(const std::string& str, size_t size, bool omitIndicator)
 {
-	//Making space for "..."
+	// Making space for "..."
 	size -= 3;
 	size_t start = (str.size() - size);
 	if (start > 0)
@@ -626,10 +626,10 @@ std::string Tools::DirUp(const std::string& path, size_t steps)
 
 	size_t lastFolder = *(folders.end() - steps - 1);
 
-	//Edge case for relative path
+	// Edge case for relative path
 	if (text == CURR_DIR) return PREV_DIR;
 
-	//There are no folder names; only ../../
+	// There are no folder names; only ../../
 	if (text.find_first_of("abcdefghijklmnopqrstuvwxyz") == std::string::npos) return "../" + text;
 
 	return strLead(text.substr(0, lastFolder), SLASH);
@@ -646,22 +646,22 @@ std::string vformat(std::string format, va_list vl)
 	for (size_t i = 0; i < format.size(); i += 2)
 	{
 		std::string a;
-		//Is a two wide substr of fmt
-		if (format[i] == '%' && !(i > 0 && format[i - 1] == SLASH) || flag != Flag::None) //Format expected
-			switch (format[i + 1]) //Checks next
+		// Is a two wide substr of fmt
+		if (format[i] == '%' && !(i > 0 && format[i - 1] == SLASH) || flag != Flag::None) // Format expected
+			switch (format[i + 1]) // Checks next
 			{
-			case 'd': //Signed decimal integer
+			case 'd': // Signed decimal integer
 				result += std::to_string(flag == Flag::None ? va_arg(vl, long int) : va_arg(vl, int));
 				break;
 
-			case 'i': //Signed decimal integer
+			case 'i': // Signed decimal integer
 				result += std::to_string(flag == Flag::None ? va_arg(vl, long int) : va_arg(vl, int));
 				break;
 
-			case 'u': //Unsigned decimal integer
+			case 'u': // Unsigned decimal integer
 				result += std::to_string(flag == Flag::None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int));
 				break;
-			case 't': //size_t
+			case 't': // size_t
 				result += std::to_string(va_arg(vl, size_t));
 				break;
 			case 'v':
@@ -682,7 +682,7 @@ std::string vformat(std::string format, va_list vl)
 				default:
 					break;
 				}
-				i++; //Skipping vector size indicator
+				i++; // Skipping vector size indicator
 				break;
 			case 'V':
 				switch (format[i + 2])
@@ -720,28 +720,28 @@ std::string vformat(std::string format, va_list vl)
 					result += va_arg(vl, Matrix).str();
 					break;
 				}
-			case 'o': //Unsigned octal
+			case 'o': // Unsigned octal
 				result += Math::ToOctal(flag == Flag::None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int));
 				break;
 
-			case 'x': //Unsigned hexadecimal integer (lowercase)
+			case 'x': // Unsigned hexadecimal integer (lowercase)
 				result += Math::ToHex(flag == Flag::None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int), false);
 				break;
-			case 'X': //Unsigned hexadecimal integer (uppercase)
+			case 'X': // Unsigned hexadecimal integer (uppercase)
 				result += Math::ToHex(flag == Flag::None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int), true);
 				break;
-			case 'f': //Decimal double (lowercase)
+			case 'f': // Decimal double (lowercase)
 				result += std::to_string(va_arg(vl, double));
 				break;
-			case 'F': //Decimal double (uppercase)
+			case 'F': // Decimal double (uppercase)
 				result += std::to_string(va_arg(vl, double));
 				break;
-			case 'e': //Scientific notation lowercase
+			case 'e': // Scientific notation lowercase
 			{char buffer[max_loglength];
 			snprintf(buffer, max_loglength, "%e", va_arg(vl, double));
 			result.append(buffer);
 			break; }
-			case 'E': //Scientific notation uppercase
+			case 'E': // Scientific notation uppercase
 			{char buffer[max_loglength];
 			snprintf(buffer, max_loglength, "%E", va_arg(vl, double));
 			result.append(buffer);
@@ -766,10 +766,10 @@ std::string vformat(std::string format, va_list vl)
 			snprintf(buffer, max_loglength, "%A", va_arg(vl, double));
 			result.append(buffer);
 			break; }
-			case 'c': //Character
+			case 'c': // Character
 				result += va_arg(vl, char*);
 				break;
-			case 's': //String
+			case 's': // String
 				result += va_arg(vl, std::string);
 				break;
 			case 'p':
@@ -777,7 +777,7 @@ std::string vformat(std::string format, va_list vl)
 			snprintf(buffer, max_loglength, "%p", va_arg(vl, void*));
 			result.append(buffer);
 			break; }
-			case '%': //String
+			case '%': // String
 				result += "%";
 				break;
 			default:

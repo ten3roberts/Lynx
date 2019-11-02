@@ -7,7 +7,7 @@
 float Time::frameRate = 0.0;
 float Time::deltaTime = 0.0;
 float Time::unscaledDeltaTime = 0.0;
-float Time::fixedDeltaTime = 1 / 50.0f; //Tick speed
+float Time::fixedDeltaTime = 1 / 50.0f; // Tick speed
 float Time::timeScale = 1;
 float Time::elapsedTime = 0.0;
 float Time::unscaledElapsedTime = 0.0;
@@ -18,7 +18,6 @@ int Time::frameCount = 0;
 std::chrono::high_resolution_clock::time_point Time::startTime = std::chrono::high_resolution_clock::now();
 std::chrono::high_resolution_clock::time_point Time::prevTime = std::chrono::high_resolution_clock::now();
 std::chrono::high_resolution_clock::time_point Time::currentTime = std::chrono::high_resolution_clock::now();
-
 
 using namespace Tools;
 

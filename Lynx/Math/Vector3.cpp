@@ -46,7 +46,7 @@ Vector3::Vector3(float setTo) : x(setTo), y(setTo), z(setTo)
 
 Vector3::Vector3(const std::string& str) : x(0), y(0), z(0)
 {
-	//Removing spaces vector size if neccesary and splits into all the elements
+	// Removing spaces vector size if neccesary and splits into all the elements
 	std::vector<std::string> parts = strSplit(strSplit(str, ";")[0], " ");
 	for (size_t i = 0; i < min(3, parts.size()); i++)
 		(*this)[i] = numf(parts[i]);
@@ -54,7 +54,7 @@ Vector3::Vector3(const std::string& str) : x(0), y(0), z(0)
 
 Vector3 Vector3::Parse(const std::string& str)
 {
-	//Removing spaces vector size if neccesary and splits into all the elements
+	// Removing spaces vector size if neccesary and splits into all the elements
 	std::vector<std::string> parts = strSplit(strSplit(str, ";")[0], " ");
 	Vector3 result;
 	for (size_t i = 0; i < min(3, parts.size()); i++)
@@ -70,7 +70,7 @@ Vector3 Vector3::HSV(float h, float s, float v)
 	float hh, p, q, t, ff;
 	long i;
 
-	if (s <= 0.0f) {       // < is bogus, just shuts up warnings
+	if (s <= 0.0f) {       //  < is bogus, just shuts up warnings
 		out.r = v;
 		out.g = v;
 		out.b = v;
@@ -150,7 +150,7 @@ Vector3 Vector3::HSV(Vector3 hsv)
 	float hh, p, q, t, ff;
 	long i;
 
-	if (hsv.s <= 0.0f) {       // < is bogus, just shuts up warnings
+	if (hsv.s <= 0.0f) {       //  < is bogus, just shuts up warnings
 		out.r = hsv.v;
 		out.g = hsv.v;
 		out.b = hsv.v;
@@ -258,7 +258,7 @@ Vector3 Vector3::operator/(float scalar) const
 	return Vector3(x / scalar, y / scalar, z / scalar);
 }
 
-//operator "?=":
+// operator "?=":
 
 void Vector3::operator+=(const Vector3& vec3)
 {
@@ -446,16 +446,16 @@ Vector3 Vector3::Lerp(const Vector3& a, const Vector3& b, float t)
 Vector3 Vector3::Slerp(const Vector3& a, const Vector3& b, float t)
 {
 	t = Math::Clamp01(t);
-	// get the axis of rotation between from and to
+	//  get the axis of rotation between from and to
 	Vector3 axis = Cross(b, a);
 	axis.Normalize(&axis);
 
-	// get the angle to rotate around the axis 
-	// NOTE: from and to must be of unit length!!!
+	//  get the angle to rotate around the axis 
+	//  NOTE: from and to must be of unit length!!!
 	float angleRads = acosf(Dot(b, a));
 
-	// Build a quaternion to rotate between 'from' and 'to'
-	// NOTE: interval must be between 0 and 1!!
+	//  Build a quaternion to rotate between 'from' and 'to'
+	//  NOTE: interval must be between 0 and 1!!
 	Quaternion rot(axis, angleRads * t);
 
 	Vector3 result = rot * b;

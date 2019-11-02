@@ -21,7 +21,7 @@ struct Matrix4
 	Matrix4(float min, float max) { memcpy(m_data, Random(min, max)[0], 16 * sizeof(float)); }
 	~Matrix4();
 
-	//Parsing
+	// Parsing
 	static Matrix4 Parse(const std::string& str);
 	static Matrix4 ParseInline(const std::string& str);
 
@@ -51,7 +51,7 @@ struct Matrix4
 
 	
 
-	//Rotates in the order Yaw, Pitch, Roll. x : pitch, y : yaw, z : roll. Yaw clockwise
+	// Rotates in the order Yaw, Pitch, Roll. x : pitch, y : yaw, z : roll. Yaw clockwise
 	static Matrix4 Euler(Vector3 euler);
 	static Matrix4 RotateX(float amount);
 	static Matrix4 RotateY(float amount);
@@ -64,13 +64,13 @@ struct Matrix4
 	static Matrix4 Translate(const Vector4& translation);
 	static Matrix4 Scale(const Vector4& scale);
 
-	//Will create an orthographic porjection matrix with the edges specified
+	// Will create an orthographic porjection matrix with the edges specified
 	static Matrix4 Ortho(float left, float right, float bottom, float top, float nearZ, float farZ);
 
-	//Will create an orthographic porjection matrix with the size specified centered around 0,0
+	// Will create an orthographic porjection matrix with the size specified centered around 0,0
 	static Matrix4 Ortho(float width, float height, float nearZ, float farZ);
 
-	//Will create an orthographic porjection matrix with the hieght and aspect ratio specified centered around 0,0
+	// Will create an orthographic porjection matrix with the hieght and aspect ratio specified centered around 0,0
 	inline static Matrix4 OrthoAspect(float height, float aspect, float nearZ, float farZ) { return Matrix4::Ortho(height * aspect, height, nearZ, farZ); }
 
 
@@ -87,7 +87,7 @@ struct Matrix4
 
 	float& operator()(size_t row, size_t col);
 
-	//Returns the element at $index; treating the matrix as a 1D array
+	// Returns the element at $index; treating the matrix as a 1D array
 	float* operator[](size_t index) { return &m_data[index / 4][index % 4]; }
 	const float& get(size_t row, size_t col) const { return m_data[row][col]; }
 	const float& get(size_t index) const { return m_data[index / 4][index % 4]; }
@@ -126,7 +126,7 @@ struct Matrix4
 		return result;
 	}
 
-	//Return a copy of the matrix with the columns and rows swapped
+	// Return a copy of the matrix with the columns and rows swapped
 	Matrix4 Transpose() const
 	{
 		Matrix4 result;
@@ -138,17 +138,17 @@ struct Matrix4
 
 
 private:
-	//row, col
+	// row, col
 	float m_data[4][4];
 
 };
 
 struct Matrix
 {
-	//Doesn't allocate any memory
+	// Doesn't allocate any memory
 	Matrix() : m_height(0), m_width(0), m_size(0), m_data(0) {}
 
-	//Sets all to zero
+	// Sets all to zero
 	Matrix(size_t height, size_t width) : m_height(height), m_width(width), m_size(height* width)
 	{
 		m_data = new float[m_size];
@@ -189,16 +189,16 @@ struct Matrix
 		delete[] m_data;
 	}
 
-	//Parsing
+	// Parsing
 	static Matrix Parse(const std::string& str);
 	static Matrix ParseInline(size_t width, size_t height, const std::string& str);
 
 	static Matrix Identity(size_t height, size_t width)
 	{
 		Matrix result(height, width);
-		for (size_t i = 0; i < height; i++) //row
+		for (size_t i = 0; i < height; i++) // row
 		{
-			for (size_t j = 0; j < width; j++) //col
+			for (size_t j = 0; j < width; j++) // col
 				if (i == j)
 					result(i, j) = 1;
 				else
@@ -242,16 +242,16 @@ struct Matrix
 
 	Matrix operator*(const Matrix& matrix) const
 	{
-		//Matrix multiplication is not compatible
+		// Matrix multiplication is not compatible
 		ASSERT(matrix.height() == m_width);
 
 		Matrix result = Matrix::Zero(m_height, matrix.width());
 
-		for (size_t i = 0; i < m_height; i++) //row
+		for (size_t i = 0; i < m_height; i++) // row
 		{
-			for (size_t j = 0; j < m_width; j++)//col
+			for (size_t j = 0; j < m_width; j++)// col
 			{
-				//Loops through second matrix column and puts in result col
+				// Loops through second matrix column and puts in result col
 				for (size_t d = 0; d < matrix.height(); d++)
 					result(i, d) += get(i, j) * matrix.get(j, d);
 			}
@@ -259,7 +259,7 @@ struct Matrix
 		return result;
 	}
 
-	//Will multiply all elements by $scalar
+	// Will multiply all elements by $scalar
 	Matrix operator*(const float& scalar)
 	{
 		Matrix result(m_width, m_height);
@@ -288,7 +288,7 @@ struct Matrix
 		return result;
 	}
 
-	//Returns true if the matrices are the same dimensions
+	// Returns true if the matrices are the same dimensions
 	bool operator==(const Matrix& matrix) const
 	{
 		return (m_height == matrix.height() && m_width == matrix.width());
@@ -296,7 +296,7 @@ struct Matrix
 
 	inline float& operator()(size_t row, size_t col) { return m_data[row * m_width + col]; }
 
-	//Returns the element at $index; treating the matrix as a 1D array
+	// Returns the element at $index; treating the matrix as a 1D array
 	inline float* operator[](size_t index) { return m_data + index; }
 	const float& get(size_t row, size_t col) const { return m_data[row * m_width + col]; }
 	const float& get(size_t index) const { return m_data[index]; }
@@ -340,7 +340,7 @@ struct Matrix
 		return result;
 	}
 
-	//Return a copy of the matrix with the columns and rows swapped
+	// Return a copy of the matrix with the columns and rows swapped
 	Matrix Transpose() const
 	{
 		Matrix result(m_width, m_height);
@@ -353,7 +353,7 @@ struct Matrix
 
 
 private:
-	//row, col //Goes down then right
+	// row, col // Goes down then right
 	float* m_data;
 	size_t m_width, m_height, m_size;
 

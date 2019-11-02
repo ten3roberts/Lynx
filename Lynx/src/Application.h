@@ -16,6 +16,6 @@ namespace Lynx
 		std::string m_name;
     };
 
-    //To be defined in client
+    // To be defined in client
 	Application* CreateApplication();
 }
