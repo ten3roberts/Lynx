@@ -90,8 +90,13 @@ project "Sandbox"
 	
 	files { "%{prj.name}/**.h", "%{prj.name}/**.cpp" }
 	
-	-- Adds all files inside Sandbox and Lynx recursively to project
-	includedirs("Lynx", "Sandbox")
+	-- Adds compiler include directories for Lynx and GLFW
+	includedirs
+	{
+		"Lynx",
+		"%{prj.name}",
+		"%{IncludeDir.GLFW}"
+	}
 	
 	-- Links the Lynx DLL to Sandbox - GLFW are statically linked to Lynx
 	links("Lynx")

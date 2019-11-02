@@ -9,24 +9,25 @@ namespace Lynx
 {
     Application::Application() : m_name("Lynx")
     {
-		glfwInit();
+		m_window = new Window();
     }
 
     Application::~Application()
     {
+		delete m_window;
 		glfwTerminate();
     }
 
     void Application::Run()
     {
 		Time::Init();
-        while(true)
+		m_running = true;
+        while(m_running)
         {
+			glClearColor(0.5, 0, 1, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
 			Time::Update();
-
-			LogS(m_name, "Running frame %d", Time::frameCount);
-			SLEEP(1s);
-			
+			m_window->onUpdate();			
         }
     }
 }
