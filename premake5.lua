@@ -15,9 +15,9 @@ project "Lynx"
 	location "Lynx"
 	kind "SharedLib"
 	language "C++"
-	targetdir ("bin")
-	objdir ("obj")
-	
+	cppdialect "C++17"
+	staticruntime "off"
+	targetdir "bin"
 	pchheader "pch.h"
 	pchsource "Lynx/pch.cpp"
 	
@@ -38,26 +38,28 @@ project "Lynx"
 		buildoptions{"-std=c++17"}
 		
 	filter "configurations:Debug"
-		defines {"DEBUG", "COMPILE_DLL"}
-		flags {"Symbols"}
+		defines {"DEBUG"}
+		symbols "on"
 		
 	filter "configurations:Release"
-		defines {"NDEBUG", "COMPILE_DLL"}
-		optimize "On"
+		defines {"NDEBUG"}
+		optimize "on"
 	
 	filter "system:windows"
-		defines { "PL_WINDOWS=1", "LX_EXPORT" }
-		cppdialect "C++17"
-		staticruntime "On"
-		systemversion "latest"
+		defines { "PL_WINDOWS=1", "LX_EXPORT"}
+		buildoptions "/MDd"
+
 	
 	filter "system:linux"
 		defines{ "PL_LINUX=1" }
 	
 	
 project "Sandbox"
+	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
+	cppdialect "C++17"
+	staticruntime "off"
 	targetdir "bin"
 	
 	files { "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp" }
@@ -67,22 +69,22 @@ project "Sandbox"
 	includedirs("Lynx", "Sandbox")
 	
 	configuration {"linux", "gmake2"}
-		buildoptions{"-std=c++17", "-pthread"}
-	
+		buildoptions{"-std=c++17"}
+		
 	filter "configurations:Debug"
-	defines { "DEBUG" }
-	symbols "On"
-	
+		defines {"DEBUG"}
+		symbols "on"
+		
 	filter "configurations:Release"
-	defines { "NDEBUG" }
-	optimize "On"
-	
+		defines {"NDEBUG"}
+		optimize "on"
 	
 	filter "system:windows"
-	defines { "PL_WINDOWS=1", "LX_IMPORT"}
-	cppdialect "C++17"
-	staticruntime "On"
-	systemversion "latest"
+		defines { "PL_WINDOWS=1", "LX_IMPORT"}
+		cppdialect "C++17"
+		staticruntime "on"
+		systemversion "latest"
+		buildoptions "/MDd"
 	
 	filter "system:linux"
-	defines{ "PL_LINUX=1" }
+		defines{ "PL_LINUX=1" }

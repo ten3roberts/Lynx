@@ -64,7 +64,7 @@ std::string Tools::Capitalize(const std::string& str)
 
 std::string Tools::Uncapitalize(const std::string& str)
 {
-	std::string result = str;
+	std::string result(str.size(), ' ');
 	for (unsigned int i = 0; i < str.size(); i++)
 	{
 		result[i] = tolower(str[i]);
@@ -79,11 +79,11 @@ std::string Tools::Title(const std::string& str)
 	return result;
 }
 
-std::vector<unsigned int> Tools::strFind(const std::string& str, const std::string& keyW)
+std::vector<size_t> Tools::strFind(const std::string& str, const std::string& keyW)
 {
-	std::vector<unsigned int> results;
+	std::vector<size_t> results;
 
-	for (unsigned int i = 0; i < str.size() - (keyW.size() - 1); i++)
+	for (size_t i = 0; i < str.size() - (keyW.size() - 1); i++)
 	{
 		if (str.substr(i, keyW.size()) == keyW)
 		{
@@ -93,11 +93,11 @@ std::vector<unsigned int> Tools::strFind(const std::string& str, const std::stri
 	return results;
 }
 
-std::vector<unsigned int> Tools::strFind(const std::string& str, char c)
+std::vector<size_t> Tools::strFind(const std::string& str, char c)
 {
-	std::vector<unsigned int> results;
+	std::vector<size_t> results;
 
-	for (unsigned int i = 0; i < str.size(); i++)
+	for (size_t i = 0; i < str.size(); i++)
 	{
 		if (str[i] == c)
 		{
@@ -109,51 +109,47 @@ std::vector<unsigned int> Tools::strFind(const std::string& str, char c)
 
 std::vector<std::string> Tools::strSplit(const std::string& str, const std::string& keyW, bool ignore_quotes)
 {
-	//Terminating string with keyW
-	std::string text = str;
-	if (!(text.substr(text.size() - keyW.size(), keyW.size()) == keyW))
-		text += keyW;
-
 	std::vector<std::string> results;
 	bool in_quote = false;
-	for (size_t i = 0; i < text.size(); i++)
+	int c = 0;
+	for (size_t i = 0, c = 0; i < str.size(); i++)
 	{
-		if (text[i] == '"' && !(i > 0 && text[i - 1] == SLASH))
+		//Checks if current part is in an opening or closing quote that is not escaped
+		if (str[i] == '"' && !(i > 0 && str[i - 1] == '\\'))
 			in_quote = !in_quote;
 
-		if (text.substr(i, keyW.size()) == keyW && !(in_quote && ignore_quotes)) //Cursor att keyword
+		if (str.substr(i, keyW.size()) == keyW && !(in_quote && ignore_quotes)) //Cursor att keyword
 		{
-			results.push_back(text.substr(0, i)); //Push left bit to results
-			text = text.substr(i + 1); //And remove it from string and reset cursor
+			results.push_back(str.substr(c, i)); //Push left bit to results
+			c = i + 1; //Forward the left iterator to what i was
 			i = 0;
 		}
 	}
-
+	if (c < str.size())
+		results.push_back(str.substr(c));
 	return results;
 }
 
 std::vector<std::string> Tools::strSplit(const std::string& str, char keyW, bool ignore_quotes)
 {
-	//Terminating string with keyW
-	std::string text = str;
-	if (!(text.back() == keyW))
-		text += keyW;
-
 	std::vector<std::string> results;
 	bool in_quote = false;
-	for (size_t i = 0; i < text.size(); i++)
+	int c = 0;
+	for (size_t i = 0, c = 0; i < str.size(); i++)
 	{
-		if (text[i] == '"' && !(i > 0 && text[i - 1] == SLASH))
+		//Checks if current part is in an opening or closing quote that is not escaped
+		if (str[i] == '"' && !(i > 0 && str[i - 1] == '\\'))
 			in_quote = !in_quote;
 
-		if (text[i] == keyW && !(in_quote && ignore_quotes)) //Cursor att keyword
+		if (str[i] == keyW && !(in_quote && ignore_quotes)) //Cursor att keyword
 		{
-			results.push_back(text.substr(0, i)); //Push left bit to results
-			text = text.substr(i + 1); //And remove it from string and reset cursor
+			results.push_back(str.substr(c, i)); //Push left bit to results
+			c = i + 1; //Forward the left iterator to what i was
 			i = 0;
 		}
 	}
-
+	if (c < str.size())
+		results.push_back(str.substr(c));
 	return results;
 }
 
@@ -178,11 +174,8 @@ std::string Tools::strPurge(const std::string& str, const std::string& keyW)
 		{
 			result += str.substr(c, i - c);
 
-			//Skipping past keyW
-			i += keyW.size();
-
 			//Cathing up with left iterator
-			c = i;
+			c = i+1;
 		}
 	}
 	return result + str.substr(c);
@@ -199,11 +192,8 @@ std::string Tools::strPurge(const std::string& str, char chr)
 		{
 			result += str.substr(c, i - c);
 
-			//Skipping past chr
-			i++;
-
 			//Cathing up with left iterator
-			c = i;
+			c = i+1;
 		}
 	}
 	return result + str.substr(c);
@@ -213,35 +203,68 @@ std::string Tools::strPurgeAll(const std::string& str, const std::string& patter
 {
 	std::string result;
 	//Left part iterator
-	bool ok = true;
+	size_t c = 0;
 	for (size_t i = 0; i < str.size(); i++)
 	{
 		for (size_t j = 0; j < pattern.size(); j++)
+		{
 			if (str[i] == pattern[j])
 			{
-				ok = false;
-				continue;
+				result += str.substr(c, i - c);
+
+				//Cathing up with left iterator
+				c = i+1;
+				break;
 			}
-		if (ok)
-			result += str[i];
-		ok = true;
+		}
 	}
-	return result;
+	return result + str.substr(c);
 }
 
-std::string Tools::ListTostring(float* list, int size)
+std::string LYNX_API Tools::strPadLeft(const std::string& str, size_t size, char paddingChar)
 {
 	std::string result;
-	for (int i = 0; i < size; i++)
+	result.insert(0, size - str.size(), paddingChar);
+	return result + str;
+}
+
+std::string Tools::ListTostring(float* list, size_t size, const std::string& separator)
+{
+	std::string result;
+	for (unsigned int i = 0; i < size; i++)
 	{
-		result += std::to_string(list[i]);
-		if (i != size - 1)
-			result += "\n";
+		result += (list[i]);
+		if (i != size - 1) //Putting carriage return on all entries except the last
+			result += separator;
 	}
 	return result;
 }
 
-std::string Tools::ListTostring(std::vector<std::string> list, const std::string& separator)
+std::string Tools::ListTostring(float* list, size_t size, char separator)
+{
+	std::string result;
+	for (unsigned int i = 0; i < size; i++)
+	{
+		result += (list[i]);
+		if (i != size - 1) //Putting carriage return on all entries except the last
+			result += separator;
+	}
+	return result;
+}
+
+std::string Tools::ListTostring(const std::vector<std::string>& list, const std::string& separator)
+{
+	std::string result;
+	for (unsigned int i = 0; i < list.size(); i++)
+	{
+		result += (list[i]);
+		if (i != list.size() - 1) //Putting carriage return on all entries except the last
+			result += separator;
+	}
+	return result;
+}
+
+std::string Tools::ListTostring(const std::vector<std::string>& list, char separator)
 {
 	std::string result;
 	for (unsigned int i = 0; i < list.size(); i++)
@@ -256,15 +279,13 @@ std::string Tools::ListTostring(std::vector<std::string> list, const std::string
 int Tools::ParseTime(const std::string& str)
 {
 	int seconds = 0;
-	std::string text = str;
-	text = Uncapitalize(str);
 
-	std::vector<std::string> parts = strSplit(text, " ");
+	std::vector<std::string> parts = strSplit(Uncapitalize(str), " ");
 
-	for (unsigned int i = 1; i < parts.size(); i++)
+	for (size_t i = 1; i < parts.size(); i++)
 	{
 		//Removes plural 's'
-		if (parts[i][parts[i].size() - 1] == 's')
+		if (parts[i].back() == 's')
 			parts[i].pop_back();
 
 
@@ -336,12 +357,11 @@ std::string Tools::FormatSeconds(float seconds)
 		return std::to_string(seconds * 1000000) + "us";
 	else
 		return std::to_string(seconds * 1000000000) + "ns";
-
 }
 
 bool Tools::Contains(std::vector<std::string> list, const std::string& item)
 {
-	for (unsigned int i = 0; i < list.size(); i++)
+	for (size_t i = 0; i < list.size(); i++)
 	{
 		if (list[i] == item)
 			return true;
@@ -435,7 +455,7 @@ std::string Tools::FindFile(const std::string& filename, const std::string& dire
 			return files[i];
 		}
 	}
-	LogS("FindFile", "No file found with name: %s", filename);
+	LogW("FindFile", "No file found with name: %s", filename);
 	return "";
 }
 
@@ -452,7 +472,7 @@ std::string Tools::FindFile(const std::string& filename, bool useExtension, cons
 			return files[i];
 		}
 	}
-	LogS("FindFile", "No file found with name: %s", filename);
+	LogW("FindFile", "No file found with name: %s", filename);
 	return "";
 }
 
@@ -462,32 +482,33 @@ std::string Tools::ReadFile(const std::string& filepath, bool create)
 		GenerateFile(filepath, "");
 
 	std::ifstream file(filepath);
-	std::string line;
-	std::string fileCont; //File content
-
+	std::string tmp, file_cont = "";
 	if (file.is_open())
-	{
-		int i = 0;
-		while (file.good())
-		{
-			getline(file, line);
-			fileCont += line;
-
-			i++;
-		}
-	}
+		while (std::getline(file, tmp)) { file_cont += tmp; }
 	else
-	{
-		LogS("Unable to open file: %s", ShortenString(filepath, 35));
-	}
-	file.close();
-	return fileCont;
+		LogW("Unable to open file: %s", ShortenString(filepath, 35));
 
+	return file_cont;
+
+	file.close();
 }
 
-std::vector<std::string> Tools::ReadFileLines(const std::string& filePath, bool create)
+std::vector<std::string> Tools::ReadFileLines(const std::string& filepath, bool create)
 {
-	return std::vector<std::string>();
+	if (create)
+		GenerateFile(filepath, "");
+
+	std::ifstream file(filepath);
+	std::string tmp;
+	std::vector<std::string> file_cont;
+	if (file.is_open())
+		while (std::getline(file, tmp)) { file_cont.push_back(tmp); }
+	else
+		LogW("Unable to open file: %s", ShortenString(filepath, 35));
+
+	return file_cont;
+
+	file.close();
 }
 
 void Tools::GeneratePath(const std::string& path)
@@ -512,17 +533,9 @@ void Tools::GenerateFile(const std::string& path, const std::string& contents, b
 	}
 
 	std::filesystem::create_directories(path.substr(0, path.find_last_of(SLASH)));
-	/*//Creates all directories leading up to the file
-	std::vector<unsigned int> folders = strFind(path, "/");
-	for (unsigned int i = 1; i < folders.size(); i++)
-	{
-		std::string tmpPath = path.substr(0, folders[i]);
-		std::filesystem::create_directory(tmpPath);
-		//CreateDirectory(tmpPath.c_str(), nullptr);
-	}*/
 
 	//Creates the file at the end and pushing optional data into it
-	std::ofstream fstream(path, append ? std::ios::app : std::ios::trunc);
+	std::ofstream fstream(path, (append ? std::ios::app : std::ios::trunc));
 	fstream.write(contents.c_str(), contents.size());
 	fstream.close();
 }
@@ -583,7 +596,7 @@ std::string Tools::getPath(const std::string& path)
 
 std::string Tools::ShortenPath(const std::string& path, int depth, bool omitIndicator)
 {
-	std::vector<unsigned int> pos = strFind(path, "/");
+	std::vector<size_t> pos = strFind(path, SLASH);
 	if (depth >= pos.size())
 		return path;
 	return  (omitIndicator ? "" : "...") + path.substr(pos[pos.size() - depth]);
@@ -601,12 +614,12 @@ std::string Tools::ShortenString(const std::string& str, unsigned int size, bool
 std::string Tools::DirUp(const std::string& path, unsigned int steps)
 {
 	std::string text = getPath(path);
-	std::vector<unsigned int> folders = strFind(text, SLASH);
+	std::vector<size_t> folders = strFind(text, SLASH);
 
 	unsigned int lastFolder = *(folders.end() - steps - 1);
 
 	//Edge case for relative path
-	if (text == "./") return "../";
+	if (text == CURR_DIR) return PREV_DIR;
 
 	//There are no folder names; only ../../
 	if (text.find_first_of("abcdefghijklmnopqrstuvwxyz") == std::string::npos) return "../" + text;
@@ -616,29 +629,29 @@ std::string Tools::DirUp(const std::string& path, unsigned int steps)
 
 std::string vformat(std::string format, va_list vl)
 {
-	enum Flag
+	enum class Flag
 	{
 		None, Long
 	};
 	std::string result;
-	Flag flag = None;
+	Flag flag = Flag::None;
 	for (size_t i = 0; i < format.size(); i += 2)
 	{
 		std::string a;
 		//Is a two wide substr of fmt
-		if (format[i] == '%' && !(i > 0 && format[i - 1] == SLASH) || flag) //Format expected
+		if (format[i] == '%' && !(i > 0 && format[i - 1] == SLASH) || flag != Flag::None) //Format expected
 			switch (format[i + 1]) //Checks next
 			{
 			case 'd': //Signed decimal integer
-				result += std::to_string(flag == None ? va_arg(vl, long int) : va_arg(vl, int));
+				result += std::to_string(flag == Flag::None ? va_arg(vl, long int) : va_arg(vl, int));
 				break;
 
 			case 'i': //Signed decimal integer
-				result += std::to_string(flag == None ? va_arg(vl, long int) : va_arg(vl, int));
+				result += std::to_string(flag == Flag::None ? va_arg(vl, long int) : va_arg(vl, int));
 				break;
 
 			case 'u': //Unsigned decimal integer
-				result += std::to_string(flag == None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int));
+				result += std::to_string(flag == Flag::None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int));
 				break;
 			case 't': //size_t
 				result += std::to_string(va_arg(vl, size_t));
@@ -700,14 +713,14 @@ std::string vformat(std::string format, va_list vl)
 					break;
 				}
 			case 'o': //Unsigned octal
-				result += Math::ToOctal(flag == None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int));
+				result += Math::ToOctal(flag == Flag::None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int));
 				break;
 
 			case 'x': //Unsigned hexadecimal integer (lowercase)
-				result += Math::ToHex(flag == None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int), false);
+				result += Math::ToHex(flag == Flag::None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int), false);
 				break;
 			case 'X': //Unsigned hexadecimal integer (uppercase)
-				result += Math::ToHex(flag == None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int), true);
+				result += Math::ToHex(flag == Flag::None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int), true);
 				break;
 			case 'f': //Decimal double (lowercase)
 				result += std::to_string(va_arg(vl, double));
@@ -771,6 +784,11 @@ std::string vformat(std::string format, va_list vl)
 		}
 	}
 	return result;
+}
+
+void LYNX_API Test(std::string str)
+{
+	printf("Hello World %s\n", str.c_str());
 }
 
 std::string format(std::string format, ...)

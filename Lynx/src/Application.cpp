@@ -23,7 +23,7 @@ namespace Lynx
         while(true)
         {
 			Time::Update();
-			LogS(m_name, "Running frame %d", Time::frameCount);
+			LogS(m_name, "Running frame %d. FPS : %g %c my full name %g", Time::frameCount, Time::frameRate, "HEllo my name is Time roberts", (float)time(NULL));
 			SLEEP(1s);
 			
         }

@@ -20,6 +20,8 @@
 std::string format(std::string format, ...);
 std::string vformat(std::string format, va_list vl);
 
+void LYNX_API Test(std::string str);
+
 namespace Tools
 {
 	//public:
@@ -37,10 +39,10 @@ namespace Tools
 	std::string LYNX_API Title(const std::string& str);
 
 	//Will return a list of all indices of keyW in str
-	std::vector<unsigned int> LYNX_API strFind(const std::string& str, const std::string& keyW);
+	std::vector<size_t> LYNX_API strFind(const std::string& str, const std::string& keyW);
 
 	//Will return a list of all indices of c
-	std::vector<unsigned int> LYNX_API strFind(const std::string& str, char c);
+	std::vector<size_t> LYNX_API strFind(const std::string& str, char c);
 
 	//Will divide the string at every keyW(default space)
 	std::vector<std::string> LYNX_API strSplit(const std::string& str, const std::string& keyW, bool ignore_quotes = false);
@@ -73,11 +75,23 @@ namespace Tools
 		return str + lead;
 	}
 
+	//Pads a string to a constant size by inserting characters to the left
+	inline std::string LYNX_API strPadLeft(const std::string& str, size_t size, char paddingChar = ' ');
+	//Pads a string to a constant size by inserting characters to the right
+	inline std::string LYNX_API strPadRight(const std::string& str, size_t size, char paddingChar = ' ') 
+	{
+		std::string result = str;
+		result.insert(result.size()-1, size - str.size(), paddingChar);
+		return result;
+	}
+
 	//Will return a string vector of all folder in a specified directory
-	std::string LYNX_API ListTostring(float* list, int length);
+	std::string LYNX_API ListTostring(float* list, size_t size, const std::string& separator = ", ");
+	std::string LYNX_API ListTostring(float* list, size_t size, char separator);
 
 
-	std::string LYNX_API ListTostring(std::vector<std::string> list, const std::string& separator = ", ");
+	std::string LYNX_API ListTostring(const std::vector<std::string>& list, const std::string& separator = ", ");
+	std::string LYNX_API ListTostring(const std::vector<std::string>& list, char separator);
 	int LYNX_API ParseTime(const std::string& str);
 
 	std::string LYNX_API FormatTime(int seconds);
@@ -131,11 +145,12 @@ namespace Tools
 	std::string LYNX_API ReadFile(const std::string& filePath, bool create = false);
 
 	//Will return the file as a string vector with each element being a separate line
-	std::vector<std::string> LYNX_API ReadFileLines(const std::string& filePath, bool create = false);
+	std::vector<std::string> LYNX_API ReadFileLines(const std::string& filepath, bool create = false);
 
 
-	//Will create the specified path
+	//Will create the specified path with all directories leading to up
 	void LYNX_API GeneratePath(const std::string& path);
+	//Will create a file, and if append is false, it will truncate the file if it already exists
 	void LYNX_API GenerateFile(const std::string& path, const std::string& contents, bool append = true);
 
 	bool LYNX_API Copy(const std::string& oldPath, const std::string& newPath);
