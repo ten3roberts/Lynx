@@ -15,7 +15,7 @@ IncludeDir["GLFW"] = "Lynx/vendor/GLFW/include"
 include "Lynx/vendor/GLFW"
 
 project "Lynx"
-	-- Sets type, language, and output directory
+	-- Sets type, language, and output directory for binaries and intermediates
 	objdir "obj/%{prj.name}"
 	location "Lynx"
 	kind "SharedLib"
@@ -77,7 +77,7 @@ project "Lynx"
 	
 	
 project "Sandbox"
-	-- Sets type, language, and output directory
+	-- Sets type, language, and output directory for binaries and intermediates
 	objdir "obj/%{prj.name}"
 	location "Sandbox"
 	kind "ConsoleApp"
