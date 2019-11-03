@@ -16,12 +16,12 @@ include "Lynx/vendor/GLFW"
 
 project "Lynx"
 	-- Sets type, language, and output directory
+	objdir "obj/%{prj.name}"
 	location "Lynx"
 	kind "SharedLib"
 	language "C++"
 	cppdialect "C++17"
 	targetdir "bin"
-	objdir "obj/%{prj.name}"
 	
 	-- Sets the working directory to bin when using integrated debugger
 	-- Determines where files are read and written to when using debuggers
@@ -78,12 +78,12 @@ project "Lynx"
 	
 project "Sandbox"
 	-- Sets type, language, and output directory
+	objdir "obj/%{prj.name}"
 	location "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
 	targetdir "bin"
-	objdir "obj/%{prj.name}"
 	
 	-- Sets the working directory to bin when using integrated debugger
 	-- Determines where files are read/write to when using IDE debuggers
