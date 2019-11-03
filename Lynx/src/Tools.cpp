@@ -175,7 +175,7 @@ std::string Tools::strPurge(const std::string& str, const std::string& keyW)
 			result += str.substr(c, i - c);
 
 			// Cathing up with left iterator
-			c = i+1;
+			c = i + 1;
 		}
 	}
 	return result + str.substr(c);
@@ -193,7 +193,7 @@ std::string Tools::strPurge(const std::string& str, char chr)
 			result += str.substr(c, i - c);
 
 			// Cathing up with left iterator
-			c = i+1;
+			c = i + 1;
 		}
 	}
 	return result + str.substr(c);
@@ -213,7 +213,7 @@ std::string Tools::strPurgeAll(const std::string& str, const std::string& patter
 				result += str.substr(c, i - c);
 
 				// Cathing up with left iterator
-				c = i+1;
+				c = i + 1;
 				break;
 			}
 		}
@@ -767,8 +767,11 @@ std::string vformat(std::string format, va_list vl)
 			result.append(buffer);
 			break; }
 			case 'c': // Character
-				result += va_arg(vl, char*);
+			{
+				char* tmp = va_arg(vl, char*);
+				result += (tmp ? tmp : "(null)");
 				break;
+			}
 			case 's': // String
 				result += va_arg(vl, std::string);
 				break;

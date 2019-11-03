@@ -13,11 +13,13 @@ namespace Lynx
 		Windowed, Borderless, Fullscreen
 	};
 
+	//Represents a crossplatform window class. Stores vSync, resoulution, style, title. Set width and height to -1 to use native resolution
+	//TODO : Handle events
 	class LYNX_API Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;
-		Window(std::string title = APPNAME, unsigned int width = 800, unsigned int height = 600, WindowStyle style = WindowStyle::Windowed);
+		Window(std::string title = APPNAME, int width = 800, int height = 600, WindowStyle style = WindowStyle::Windowed);
 		~Window() { Close(); }
 		void onUpdate();
 
@@ -25,6 +27,8 @@ namespace Lynx
 
 		void enableVSync(bool enable);
 		bool isVSync() const { return m_data.vSync; }
+		std::string getTitle() const { return m_data.title; }
+		void setTitle(const std::string title);
 	private:
 		void Init();
 
@@ -38,5 +42,6 @@ namespace Lynx
 		WindowData m_data;
 		GLFWwindow* m_window;
 		WindowStyle m_style;
+		bool m_nativeSize;
 	};
 }

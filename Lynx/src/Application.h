@@ -4,6 +4,7 @@
 #include <src/Tools.h>
 #include <string>
 #include <src/Window.h>
+
 namespace Lynx
 {
     class LYNX_API Application

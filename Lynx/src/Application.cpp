@@ -8,28 +8,31 @@
 namespace Lynx
 {
 	Application::Application() : m_name("Lynx"), m_running(false)
-    {
-		m_window = new Window();
-    }
+	{
+		m_window = new Window(APPNAME, 800, 600, WindowStyle::Windowed);
 
-    Application::~Application()
-    {
+		
+	}
+
+	Application::~Application()
+	{
 		delete m_window;
 		glfwTerminate();
-    }
+	}
 
-    void Application::Run()
-    {
+	void Application::Run()
+	{
 		Time::Init();
 		m_running = true;
-        while(m_running)
-        {
-			WindowResizeEvent e(1, 4);
-
-			glClearColor(0.5, 0, 1, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+		while (m_running)
+		{
 			Time::Update();
-			m_window->onUpdate();			
-        }
-    }
+
+			m_window->setTitle(format("%c fps : %d", APPNAME, (int)Time::frameRate));
+
+			glClearColor(0.5, 0, 1, 0);
+			glClear(GL_COLOR_BUFFER_BIT);
+			m_window->onUpdate();
+		}
+	}
 }
