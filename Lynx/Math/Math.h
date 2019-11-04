@@ -7,8 +7,6 @@
 #include <cmath>
 #include <limits.h>
 
-struct Vector3;
-
 #define MATH_PI 3.141593f
 #define MATH_E  2.718282f
 

@@ -26,13 +26,16 @@ namespace Lynx
 		EventCategoryMouseButton		= BIT(5)
 	};
 
-#define EVENT_CLASS_TYPE(type)			static EventType getStaticType() { return EventType::##type; }\
+#define EVENT_CLASS_TYPE(type)			static EventType getStaticType() { return EventType::type; }\
 										virtual EventType getEventType() const override { return getStaticType(); }\
 										virtual std::string getName() const override { return #type; }
 
 #define EVENT_CLASS_CATEGORY(category)	virtual int getCategories() const override { return category; }
 
-#define EVENT_CLASS(type, category)		EVENT_CLASS_TYPE(type) EVENT_CLASS_CATEGORY(category)
+#define EVENT_CLASS(type, category)		static EventType getStaticType() { return EventType::type; }\
+										virtual EventType getEventType() const override { return getStaticType(); }\
+										virtual std::string getName() const override { return #type; }\
+										virtual int getCategories() const override { return category; }
 
 
 	class LYNX_API Event

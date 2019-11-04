@@ -1,6 +1,4 @@
-#if PL_LINUX
-#define SLASH  '/'
-#elif PL_WINDOWS
+#if PL_WINDOWS
 #define SLASH '\\'
 #define CURR_DIR ".\\"
 #define PREV_DIR "..\\"
@@ -26,6 +24,7 @@
 
 #include <thread>
 #include <chrono>
+#include <cstdlib>
 
 #define APPNAME "Lynx"
 
@@ -36,3 +35,5 @@ using namespace std::chrono_literals;
 #define SLEEPFOR(s) std::this_thread::sleep_for(std::chrono::milliseconds((long long)(s*1000)))
 
 #define BIT(x) (1 << x)
+
+#define ASSERT(x) if (!(x)) abort();

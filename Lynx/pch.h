@@ -1,5 +1,3 @@
-#pragma once
-
 #include <string>
 #include <thread>
 #include <array>
@@ -18,6 +16,7 @@
 #include <Math/Vector3.h>
 #include <Math/Vector4.h>
 #include <Math/Quaternion.h>
+#include <Math/Math.h>
 #include <Math/Matrix.h>
 
 #include <Math/Random.h>

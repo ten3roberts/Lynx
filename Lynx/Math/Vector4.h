@@ -1,5 +1,4 @@
 #pragma once
-#include <pch.h>
 
 struct Vector3;
 struct Vector4

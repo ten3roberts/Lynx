@@ -1,5 +1,4 @@
 #pragma once
-#include <pch.h>
 #include "Vector.h"
 
 struct Matrix4;

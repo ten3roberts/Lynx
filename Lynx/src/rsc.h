@@ -26,9 +26,9 @@ public:
 	scoped_pointer(C pData) : m_pData(nullptr)
 	{
 		Remove();
-		m_pData = dynamic_cast<R*>(pData);
+		m_pData = dynamic_cast<P*>(pData);
 		if (!m_pData && pData)
-			LogE("scoped_pointer", "Couldn't convert from type %c to %c", typeid(pData).name(), typeid(R*).name());
+			LogE("scoped_pointer", "Couldn't convert from type %c to %c", typeid(pData).name(), typeid(P*).name());
 	}
 
 	void operator=(P* pData)
@@ -43,7 +43,7 @@ public:
 		Remove();
 		m_pData = dynamic_cast<P*>(pData);
 		if (!m_pData && pData)
-			LogE("scoped_pointer", "Couldn't convert from type %c to %c", typeid(pData).name(), typeid(R*).name());
+			LogE("scoped_pointer", "Couldn't convert from type %c to %c", typeid(pData).name(), typeid(P*).name());
 	}
 
 private:

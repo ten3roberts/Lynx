@@ -1,5 +1,4 @@
 #pragma once
-#include <pch.h>
 
 // x : right, red channel; y : up, green channel; z : forward, blue channel
 struct Vector3

@@ -9,10 +9,10 @@ workspace "Lynx"
 outputdir = ""
 
 IncludeDir = {}
-IncludeDir["GLFW"] = "Lynx/vendor/GLFW/include"
+IncludeDir["GLFW"] = "Lynx/vendor/glfw/include"
 
 -- Includes the premake5 file from glfw
-include "Lynx/vendor/GLFW"
+include "Lynx/vendor/glfw"
 
 project "Lynx"
 	-- Sets type, language, and output directory for binaries and intermediates
@@ -44,8 +44,7 @@ project "Lynx"
 	-- Links GLFW and opengl32 to the Lynx
 	links
 	{
-		"GLFW",
-		"opengl32.lib"
+		"GLFW"
 	}
 	
 	-- Specifies GCC options
@@ -70,10 +69,12 @@ project "Lynx"
 		defines { "PL_WINDOWS=1", "_CRT_SECURE_NO_WARNINGS", "LX_EXPORT"}
 		staticruntime "off"
 		systemversion "latest"
+		links "opengl32.lib"
 	
 	-- Specifies Linux specific preprocessor definitions
 	filter "system:linux"
 		defines{ "PL_LINUX=1" }
+		links "GL"
 	
 	
 project "Sandbox"
