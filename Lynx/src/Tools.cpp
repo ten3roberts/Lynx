@@ -495,9 +495,10 @@ std::string Tools::ReadFile(const std::string& filepath, bool create)
 	else
 		LogW("Unable to open file: %s", ShortenString(filepath, 35));
 
+	file.close();
+
 	return file_cont;
 
-	file.close();
 }
 
 std::vector<std::string> Tools::ReadFileLines(const std::string& filepath, bool create)
@@ -513,9 +514,9 @@ std::vector<std::string> Tools::ReadFileLines(const std::string& filepath, bool 
 	else
 		LogW("Unable to open file: %s", ShortenString(filepath, 35));
 
-	return file_cont;
-
 	file.close();
+	
+	return file_cont;
 }
 
 void Tools::GeneratePath(const std::string& path)

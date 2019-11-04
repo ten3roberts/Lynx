@@ -4,6 +4,7 @@
 #include <src/Tools.h>
 #include <string>
 #include <src/Window.h>
+#include "Events/ApplicationEvent.h"
 
 namespace Lynx
 {
@@ -14,6 +15,10 @@ namespace Lynx
             virtual ~Application();
 
             void Run();
+
+            void onEvent(Event& e);
+
+            void onWindowClose(WindowCloseEvent& e);
 	protected:
 		std::string m_name;
 		scoped_pointer<Window> m_window;

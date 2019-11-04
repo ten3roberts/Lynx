@@ -37,3 +37,5 @@ using namespace std::chrono_literals;
 #define BIT(x) (1 << x)
 
 #define ASSERT(x) if (!(x)) abort();
+
+#define BIND(func) std::bind(&func, this, std::placeholders::_1)

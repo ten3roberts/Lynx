@@ -13,6 +13,11 @@ namespace Lynx
 
 		EVENT_CLASS(MouseMoved, EventCategoryMouse | EventCategoryInput);
 
+		std::string getString() const override 
+		{
+			return format("MouseMovedEvent : [%f %f]", m_mouseX, m_mouseY);
+		}
+
 	private:
 		// The new absolute position of the mouse
 		float m_mouseX, m_mouseY;
@@ -27,7 +32,11 @@ namespace Lynx
 		inline float getYScroll() const { return m_yScroll; }
 
 		EVENT_CLASS(MouseScrolled, EventCategoryMouse | EventCategoryInput)
-
+		
+		std::string getString() const override 
+		{
+			return format("MouseScrolledEvent : [%f %f]", m_xScroll, m_yScroll);
+		}
 	private:
 		// The position of the scroll wheel
 		float m_xScroll, m_yScroll;
@@ -51,6 +60,11 @@ namespace Lynx
 		MouseButtonPressedEvent(int button) : MouseButtonEvent(button) {}
 
 		EVENT_CLASS_TYPE(MouseButtonPressed)
+
+		std::string getString() const override 
+		{
+			return format("MouseButtonPressedEvent : %d", m_button);
+		}
 	};
 
 	class LYNX_API MouseButtonReleasedEvent : public MouseButtonEvent
@@ -59,5 +73,10 @@ namespace Lynx
 		MouseButtonReleasedEvent(int button) : MouseButtonEvent(button) {}
 
 		EVENT_CLASS_TYPE(MouseButtonReleased)
+
+		std::string getString() const override 
+		{
+			return format("MouseButtonReleasedEvent : %d", m_button);
+		}
 	};
 }

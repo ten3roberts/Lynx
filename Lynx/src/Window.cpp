@@ -1,13 +1,25 @@
 #include <pch.h>
 #include <src/Window.h>
+#include "Events/Event.h"
+#include "Events/ApplicationEvent.h"
+#include "Events/KeyEvent.h"
+#include "Events/MouseEvent.h"
 
 namespace Lynx
 {
+
+	static void GLFWError(int code, const char* description)
+	{
+		LogE("GLFW Error", "Error : %d, %c", code, description);
+	}
+
 	Window::Window(std::string title, int width, int height, WindowStyle style) : m_style(style)
 	{
 		m_data.title = title;
 		m_data.width = width;
 		m_data.height = height;
+		m_data.vSync = false;
+		m_data.inFocus = false;
 		
 		Init();
 	}
@@ -22,6 +34,11 @@ namespace Lynx
 	{
 		m_data.title = title;
 		glfwSetWindowTitle(m_window, title.c_str());
+	}
+
+	void Window::setEventCallback(const EventCallbackFn& callback)
+	{
+		m_data.eventCallback = callback;
 	}
 
 	void Window::Init()
@@ -43,6 +60,8 @@ namespace Lynx
 				LogE("Window : " + m_data.title, "Could not initialize GLFW");
 				return;
 			}
+
+			glfwSetErrorCallback(GLFWError);
 		}
 
 		GLFWmonitor* primary = glfwGetPrimaryMonitor();
@@ -80,6 +99,100 @@ namespace Lynx
 
 		glfwMakeContextCurrent(m_window);
 		glfwSetWindowUserPointer(m_window, &m_data);
+		setVSync(true);
+		glfwSetWindowSizeCallback(m_window, [](GLFWwindow* window, int width, int height)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			data.width = width;
+			data.height = height;
+
+			WindowResizeEvent event(width, height);
+			data.eventCallback(event);
+		});
+		glfwSetWindowCloseCallback(m_window, [](GLFWwindow* window)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);	
+			WindowCloseEvent event;
+			data.eventCallback(event);
+		});
+
+		glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			switch (action)
+			{
+			case GLFW_PRESS :
+			{
+				KeyPressedEvent event(key, 0);
+				data.eventCallback(event);
+				break;
+			}
+			case GLFW_RELEASE :
+			{
+				KeyReleasedEvent event(key);
+				data.eventCallback(event);
+				break;
+			}
+			case GLFW_REPEAT :
+			{	
+				KeyPressedEvent event(key, 1);
+				data.eventCallback(event);
+				break;
+			}
+			default:
+				break;
+			}
+		});
+
+		glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int key, int action, int mods)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			switch (action)
+			{
+			case GLFW_PRESS :
+			{
+				MouseButtonPressedEvent event(key);
+				data.eventCallback(event);
+				break;
+			}
+			case GLFW_RELEASE :
+			{
+				MouseButtonReleasedEvent event(key);
+				data.eventCallback(event);
+				break;
+			}
+			default:
+				break;
+			}
+		});
+
+		glfwSetScrollCallback(m_window, [](GLFWwindow* window, double xScroll, double yScroll)
+		{
+			WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			MouseScrolledEvent event((float)xScroll, (float)yScroll);
+
+			data.eventCallback(event);
+		});
+
+		glfwSetWindowFocusCallback(m_window, [](GLFWwindow* window, int focus)
+		{
+			WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+			data.inFocus = focus;
+
+			WindowFocusEvent event(focus);
+			data.eventCallback(event);
+		});
+
+		glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double x, double y)
+		{
+			WindowData data = *(WindowData*)glfwGetWindowUserPointer(window);
+			MouseMovedEvent event((float)x, (float)y);
+			data.eventCallback(event);
+		});
 	}
 
 	void Window::Close()
@@ -87,7 +200,7 @@ namespace Lynx
 		LogS("Window " + m_data.title, "Destroying window");
 		glfwDestroyWindow(m_window);
 	}
-	void Window::enableVSync(bool enable)
+	void Window::setVSync(bool enable)
 	{
 		glfwSwapInterval(enable);
 		m_data.vSync = enable;

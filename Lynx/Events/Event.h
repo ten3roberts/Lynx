@@ -10,7 +10,7 @@ namespace Lynx
 	enum class EventType
 	{
 		None = 0,
-		WindowClose, WindowResize, WindowsFocus, WindowLostFocus, WindowMoved,
+		WindowClose, WindowResize, WindowsFocus, WindowLostFocus, WindowMoved, WindowFocus,
 		AppTick, AppUpdate, AppRender,
 		KeyPressed, KeyReleased,
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
@@ -46,7 +46,7 @@ namespace Lynx
 		// Returns the bitfield of the catagories of the event
 		virtual int getCategories() const = 0;
 		virtual std::string getName() const = 0;
-		
+		virtual std::string getString() const { return "Base Event"; }
 		// Returns true if event is in the given category
 		inline bool CheckCategory(EventCategory category) { return getCategories() & category; }
 
@@ -62,6 +62,7 @@ namespace Lynx
 		using EventFn = std::function<void(T&)>;
 		EventDispatcher(Event& event) : m_event(event) {}
 
+		//Dispatches event and returns true if types matched
 		template <typename T>
 		bool Dispatch(EventFn<T> func)
 		{

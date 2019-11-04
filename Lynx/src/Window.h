@@ -25,10 +25,15 @@ namespace Lynx
 
 		void Close();
 
-		void enableVSync(bool enable);
-		bool isVSync() const { return m_data.vSync; }
+		void setVSync(bool enable);
+		bool getVSync() const { return m_data.vSync; }
+
 		std::string getTitle() const { return m_data.title; }
 		void setTitle(const std::string title);
+
+		bool inFocus() const { return m_data.inFocus; }
+
+		void setEventCallback(const EventCallbackFn& callback);
 	private:
 		void Init();
 
@@ -37,6 +42,7 @@ namespace Lynx
 			std::string title;
 			unsigned int width, height;
 			bool vSync;
+			bool inFocus;
 			EventCallbackFn eventCallback;
 		};
 	private:

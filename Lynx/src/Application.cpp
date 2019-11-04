@@ -3,13 +3,14 @@
 #include <stdio.h>
 #include <GLFW/glfw3.h>
 #include <Events/Event.h>
-#include <Events/AppicationEvent.h>
+#include <Events/ApplicationEvent.h>
 
 namespace Lynx
 {
 	Application::Application() : m_name("Lynx"), m_running(false)
 	{
 		m_window = new Window(APPNAME, 800, 600, WindowStyle::Windowed);
+		m_window->setEventCallback(BIND(Application::onEvent));
 	}
 
 	Application::~Application()
@@ -17,6 +18,8 @@ namespace Lynx
 		LogS("Application", "Terminating");
 		glfwTerminate();
 	}
+
+	
 
 	void Application::Run()
 	{
@@ -26,11 +29,29 @@ namespace Lynx
 		{
 			Time::Update();
 
+
 			m_window->setTitle(format("%c fps : %d", APPNAME, (int)Time::frameRate));
 
+			//LogF(FormatBool(m_window->inFocus()));
+
 			glClearColor(0.5, 0, 1, 0);
+
 			glClear(GL_COLOR_BUFFER_BIT);
 			m_window->onUpdate();
 		}
 	}
+
+	void Application::onEvent(Event& e)
+	{
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(BIND(Application::onWindowClose));
+		//LogS("Application : onEvent", e.getString());
+	}
+
+	void Application::onWindowClose(WindowCloseEvent& e)
+	{
+		m_running = false;
+		e.setHandled(true);
+	}
+
 }
