@@ -32,8 +32,6 @@ namespace Lynx
 
 			m_window->setTitle(format("%c fps : %d", APPNAME, (int)Time::frameRate));
 
-			//LogF(FormatBool(m_window->inFocus()));
-
 			glClearColor(0.5, 0, 1, 0);
 
 			glClear(GL_COLOR_BUFFER_BIT);
