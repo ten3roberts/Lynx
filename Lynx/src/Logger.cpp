@@ -63,7 +63,7 @@ void LogS(const std::string& author, std::string format, ...)
 		Tools::GenerateFile(logfile_name, "");
 		
 		logFile.open(logfile_name);
-		LogW("Logger", "Creating new logfile %s", logfile_name);
+		LogW("Logger", "Creating new logfile %S", logfile_name);
 	}
 
 	if (frame != Time::frameCount)
@@ -93,7 +93,7 @@ void LogF(std::string format, ...)
 		std::string logfile_name = WORKDIR + "Logs" + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
 		Tools::GenerateFile(logfile_name, "");
 		logFile.open(logfile_name);
-		LogW("Logger", "Creating new logfile %s", logfile_name);
+		LogW("Logger", "Creating new logfile %S", logfile_name);
 	}
 
 	if (frame != Time::frameCount)
@@ -129,7 +129,7 @@ void LogE(const std::string& author, std::string format, ...)
 		std::string logfile_name = WORKDIR + "Logs" + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
 		Tools::GenerateFile(logfile_name, "");
 		logFile.open(logfile_name);
-		LogW("Logger", "Creating new logfile %s", logfile_name);
+		LogW("Logger", "Creating new logfile %S", logfile_name);
 	}
 
 	if (frame != Time::frameCount)
@@ -167,7 +167,7 @@ void LogW(const std::string& author, std::string format, ...)
 		std::string logfile_name = WORKDIR + "Logs" + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
 		Tools::GenerateFile(logfile_name, "");
 		logFile.open(logfile_name);
-		LogW("Logger", "Creating new logfile %s", logfile_name);
+		LogW("Logger", "Creating new logfile %S", logfile_name);
 	}
 
 	if (frame != Time::frameCount)

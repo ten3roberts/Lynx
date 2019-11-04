@@ -28,7 +28,7 @@ public:
 		Remove();
 		m_pData = dynamic_cast<P*>(pData);
 		if (!m_pData && pData)
-			LogE("scoped_pointer", "Couldn't convert from type %c to %c", typeid(pData).name(), typeid(P*).name());
+			LogE("scoped_pointer", "Couldn't convert from type %s to %s", typeid(pData).name(), typeid(P*).name());
 	}
 
 	void operator=(P* pData)
@@ -43,7 +43,7 @@ public:
 		Remove();
 		m_pData = dynamic_cast<P*>(pData);
 		if (!m_pData && pData)
-			LogE("scoped_pointer", "Couldn't convert from type %c to %c", typeid(pData).name(), typeid(P*).name());
+			LogE("scoped_pointer", "Couldn't convert from type %s to %s", typeid(pData).name(), typeid(P*).name());
 	}
 
 private:
@@ -131,7 +131,7 @@ public:
 		m_pData = dynamic_cast<R*>(pData);
 		if (!m_pData && pData)
 		{
-			LogE("rsc", "Couldn't convert from type %c to %c", typeid(pData).name(), typeid(R*).name());
+			LogE("rsc", "Couldn't convert from type %s to %s", typeid(pData).name(), typeid(R*).name());
 			m_refCount = nullptr;
 			m_weakRefCount = nullptr;
 			return;
@@ -160,7 +160,7 @@ public:
 
 		if (!m_pData && resource.m_pData)
 		{
-			LogE("rsc", "Couldn't convert from type %c to %c", typeid(resource.m_pData).name(), typeid(R*).name());
+			LogE("rsc", "Couldn't convert from type %s to %s", typeid(resource.m_pData).name(), typeid(R*).name());
 			m_refCount = nullptr;
 			m_weakRefCount = nullptr;
 			return;
@@ -188,7 +188,7 @@ public:
 		m_pData = dynamic_cast<R*>(resource.m_pData);
 		if (!m_pData && resource.m_pData)
 		{
-			LogE("rsc", "Couldn't convert from type %c to %c", typeid(resource.m_pData).name(), typeid(R*).name());
+			LogE("rsc", "Couldn't convert from type %s to %s", typeid(resource.m_pData).name(), typeid(R*).name());
 			m_refCount = nullptr;
 			m_weakRefCount = nullptr;
 			return;
@@ -219,7 +219,7 @@ public:
 
 		if (!m_pData && resource.m_pData)
 		{
-			LogE("rsc", "Couldn't convert from type %c to %c", typeid(resource.m_pData).name(), typeid(R*).name());
+			LogE("rsc", "Couldn't convert from type %s to %s", typeid(resource.m_pData).name(), typeid(R*).name());
 			m_refCount = nullptr;
 			m_weakRefCount = nullptr;
 			return;
@@ -253,7 +253,7 @@ public:
 
 		if (!m_pData && resource.m_pData)
 		{
-			LogE("rsc", "Couldn't convert from type %c to %c", typeid(resource.m_pData).name(), typeid(R*).name());
+			LogE("rsc", "Couldn't convert from type %s to %s", typeid(resource.m_pData).name(), typeid(R*).name());
 			m_refCount = nullptr;
 			m_weakRefCount = nullptr;
 			return;
@@ -289,7 +289,7 @@ public:
 
 		if (!m_pData && pData)
 		{
-			LogE("rsc", "Couldn't convert from type %c to %c", typeid(pData).name(), typeid(R*).name());
+			LogE("rsc", "Couldn't convert from type %s to %s", typeid(pData).name(), typeid(R*).name());
 			m_refCount = nullptr;
 			m_weakRefCount = nullptr;
 			return;
@@ -363,7 +363,7 @@ public:
 
 		if (!m_pData && pData)
 		{
-			LogE("rsc", "Couldn't convert from type %c to %c", typeid(pData).name(), typeid(W*).name());
+			LogE("rsc", "Couldn't convert from type %s to %s", typeid(pData).name(), typeid(W*).name());
 			m_refCount = nullptr;
 			m_weakRefCount = nullptr;
 			return;
@@ -393,7 +393,7 @@ public:
 
 		if (!m_pData && resource.m_pData)
 		{
-			LogE("rsc", "Couldn't convert from type %c to %c", typeid(resource.m_pData).name(), typeid(W*).name());
+			LogE("rsc", "Couldn't convert from type %s to %s", typeid(resource.m_pData).name(), typeid(W*).name());
 			m_refCount = nullptr;
 			m_weakRefCount = nullptr;
 			return;
@@ -421,7 +421,7 @@ public:
 		m_pData = dynamic_cast<W*>(resource.m_pData);
 		if (!m_pData && resource.m_pData)
 		{
-			LogE("rsc", "Couldn't convert from type %c to %c", typeid(resource.m_pData).name(), typeid(W*).name());
+			LogE("rsc", "Couldn't convert from type %s to %s", typeid(resource.m_pData).name(), typeid(W*).name());
 			m_refCount = nullptr;
 			m_weakRefCount = nullptr;
 			return;
@@ -451,7 +451,7 @@ public:
 		m_pData = dynamic_cast<W*>(resource.m_pData);
 		if (!m_pData && resource.m_pData)
 		{
-			LogE("rsc", "Couldn't convert from type %c to %c", typeid(resource.m_pData).name(), typeid(W*).name());
+			LogE("rsc", "Couldn't convert from type %s to %s", typeid(resource.m_pData).name(), typeid(W*).name());
 			m_refCount = nullptr;
 			m_weakRefCount = nullptr;
 			return;
@@ -483,7 +483,7 @@ public:
 		m_pData = dynamic_cast<W*>(resource.m_pData);
 		if (!m_pData && resource.m_pData)
 		{
-			LogE("rsc", "Couldn't convert from type %c to %c", typeid(resource.m_pData).name(), typeid(W*).name());
+			LogE("rsc", "Couldn't convert from type %s to %s", typeid(resource.m_pData).name(), typeid(W*).name());
 			m_refCount = nullptr;
 			m_weakRefCount = nullptr;
 			return;
@@ -517,7 +517,7 @@ public:
 		m_pData = dynamic_cast<W*>(pData);
 		if (!m_pData && pData)
 		{
-			LogE("rsc", "Couldn't convert from type %c to %c", typeid(m_pData).name(), typeid(W*).name());
+			LogE("rsc", "Couldn't convert from type %s to %s", typeid(m_pData).name(), typeid(W*).name());
 			m_refCount = nullptr;
 			m_weakRefCount = nullptr;
 			return;

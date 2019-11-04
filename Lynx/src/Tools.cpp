@@ -29,7 +29,7 @@ void Tools::setWorkingDir(const std::string& dir)
 
 	s_workingDir = getPath(dir);
 
-	LogS("Tools", "Working directory changed from \"%s %c %s %c", oldDir, "\" to \"", s_workingDir, "\"");
+	LogS("Tools", "Working directory changed from \"%S %s %S %s", oldDir, "\" to \"", s_workingDir, "\"");
 }
 
 std::string Tools::getWorkingDir()
@@ -462,7 +462,7 @@ std::string Tools::FindFile(const std::string& filename, const std::string& dire
 			return files[i];
 		}
 	}
-	LogW("FindFile", "No file found with name: %s", filename);
+	LogW("FindFile", "No file found with name: %S", filename);
 	return "";
 }
 
@@ -479,7 +479,7 @@ std::string Tools::FindFile(const std::string& filename, bool useExtension, cons
 			return files[i];
 		}
 	}
-	LogW("FindFile", "No file found with name: %s", filename);
+	LogW("FindFile", "No file found with name: %S", filename);
 	return "";
 }
 
@@ -493,7 +493,7 @@ std::string Tools::ReadFile(const std::string& filepath, bool create)
 	if (file.is_open())
 		while (std::getline(file, tmp)) { file_cont += tmp; }
 	else
-		LogW("Unable to open file: %s", ShortenString(filepath, 35));
+		LogW("Unable to open file: %S", ShortenString(filepath, 35));
 
 	file.close();
 
@@ -512,7 +512,7 @@ std::vector<std::string> Tools::ReadFileLines(const std::string& filepath, bool 
 	if (file.is_open())
 		while (std::getline(file, tmp)) { file_cont.push_back(tmp); }
 	else
-		LogW("Unable to open file: %s", ShortenString(filepath, 35));
+		LogW("Unable to open file: %S", ShortenString(filepath, 35));
 
 	file.close();
 	
@@ -556,7 +556,7 @@ bool Tools::Copy(const std::string& oldPath, const std::string& newPath)
 		std::ofstream newFile(newPath, std::ios::binary);
 		if (!oldFile.is_open())
 		{
-			LogS("CopyFile", "Couldn't open file: %s", oldPath);
+			LogS("CopyFile", "Couldn't open file: %S", oldPath);
 			return true;
 		}
 		newFile << oldFile.rdbuf();
@@ -737,6 +737,9 @@ std::string vformat(std::string format, va_list vl)
 			case 'F': // Decimal double (uppercase)
 				result += std::to_string(va_arg(vl, double));
 				break;
+			case 'b':
+				result += (va_arg(vl, int) ? "true" : "false");
+				break;
 			case 'e': // Scientific notation lowercase
 			{char buffer[max_loglength];
 			snprintf(buffer, max_loglength, "%e", va_arg(vl, double));
@@ -768,12 +771,14 @@ std::string vformat(std::string format, va_list vl)
 			result.append(buffer);
 			break; }
 			case 'c': // Character
+			result += va_arg(vl, int);
+			case 's': // C String
 			{
 				char* tmp = va_arg(vl, char*);
 				result += (tmp ? tmp : "(null)");
 				break;
 			}
-			case 's': // String
+			case 'S': //C++ std::string
 				result += va_arg(vl, std::string);
 				break;
 			case 'p':

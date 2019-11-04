@@ -30,7 +30,7 @@ namespace Lynx
 			Time::Update();
 
 
-			m_window->setTitle(format("%c fps : %d", APPNAME, (int)Time::frameRate));
+			m_window->setTitle(format("%s fps : %d", APPNAME, (int)Time::frameRate));
 
 			glClearColor(0.5, 0, 1, 0);
 

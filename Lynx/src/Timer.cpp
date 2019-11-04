@@ -46,9 +46,9 @@ Timer::~Timer()
 	if (result)
 		* result = duration.count();
 	else if (itemCount > 1)
-		LogS("Timer: " + name, "Duration: %s; time per item %s", FormatSeconds(duration.count()), FormatSeconds(duration.count() / itemCount));
+		LogS("Timer: " + name, "Duration: %S; time per item %S", FormatSeconds(duration.count()), FormatSeconds(duration.count() / itemCount));
 	else
-		LogS("Timer: " + name, "Duration: %s", FormatSeconds(duration.count()));
+		LogS("Timer: " + name, "Duration: %S", FormatSeconds(duration.count()));
 }
 
 

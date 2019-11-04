@@ -10,7 +10,7 @@ namespace Lynx
 
 	static void GLFWError(int code, const char* description)
 	{
-		LogE("GLFW Error", "Error : %d, %c", code, description);
+		LogE("GLFW Error", "Error : %d, %s", code, description);
 	}
 
 	Window::Window(std::string title, int width, int height, WindowStyle style) : m_style(style)
