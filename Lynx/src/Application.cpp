@@ -10,13 +10,11 @@ namespace Lynx
 	Application::Application() : m_name("Lynx"), m_running(false)
 	{
 		m_window = new Window(APPNAME, 800, 600, WindowStyle::Windowed);
-
-		
 	}
 
 	Application::~Application()
 	{
-		delete m_window;
+		LogS("Application", "Terminating");
 		glfwTerminate();
 	}
 

@@ -12,7 +12,7 @@
 
 #include <src/Core.h>
 
-// #include <src/rsc.h>
+#include <src/rsc.h>
 
 #include <Math/Vector2.h>
 #include <Math/Vector3.h>

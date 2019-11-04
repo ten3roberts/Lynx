@@ -16,7 +16,7 @@ namespace Lynx
             void Run();
 	protected:
 		std::string m_name;
-		Window* m_window;
+		scoped_pointer<Window> m_window;
 		// Indicates if the update loop should continue. Set to true when entering update loop
 		bool m_running;
     };

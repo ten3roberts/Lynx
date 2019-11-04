@@ -39,6 +39,7 @@ namespace Lynx
 			bool vSync;
 			EventCallbackFn eventCallback;
 		};
+	private:
 		WindowData m_data;
 		GLFWwindow* m_window;
 		WindowStyle m_style;

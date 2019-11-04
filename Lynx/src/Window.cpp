@@ -34,10 +34,6 @@ namespace Lynx
 			LogS("Window : " + m_data.title, "Initializing GLFW");
 
 			int success = glfwInit();
-			const GLubyte* vendor = glGetString(GL_VENDOR); // Returns the vendor
-			const GLubyte* renderer = glGetString(GL_RENDERER); // Returns a hint to the model
-			//printf("%s\n", vendor);
-			LogS("Window : " + m_data.title, "Vendor %c, Graphics card %c", (char*)vendor, (char*)renderer);
 
 			// Set to true even if initialization failed
 			s_GLFWInitialized = true;
@@ -88,6 +84,7 @@ namespace Lynx
 
 	void Window::Close()
 	{
+		LogS("Window " + m_data.title, "Destroying window");
 		glfwDestroyWindow(m_window);
 	}
 	void Window::enableVSync(bool enable)
