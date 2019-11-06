@@ -199,6 +199,7 @@ namespace Lynx
 	{
 		LogS("Window " + m_data.title, "Destroying window");
 		glfwDestroyWindow(m_window);
+		m_window = nullptr;
 	}
 	void Window::setVSync(bool enable)
 	{

@@ -21,7 +21,7 @@ namespace Lynx
             void onWindowClose(WindowCloseEvent& e);
 	protected:
 		std::string m_name;
-		scoped_pointer<Window> m_window;
+		Window* m_window;
 		// Indicates if the update loop should continue. Set to true when entering update loop
 		bool m_running;
     };

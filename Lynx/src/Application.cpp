@@ -16,6 +16,9 @@ namespace Lynx
 	Application::~Application()
 	{
 		LogS("Application", "Terminating");
+
+		delete m_window;
+
 		glfwTerminate();
 	}
 
