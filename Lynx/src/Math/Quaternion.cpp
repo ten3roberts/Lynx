@@ -1,8 +1,6 @@
-#include <pch.h>
+#include "pch.h"
 #include "Quaternion.h"
-#include <src/Time.h>
-#include "Math.h"
-#include "Matrix.h"
+
 const Quaternion Quaternion::identity = { 0,0,0,1 };
 
 Quaternion::Quaternion() : x(0), y(0), z(0), w(1)

@@ -37,7 +37,7 @@ project "Lynx"
 	-- Adds compiler include directories for Lynx and GLFW
 	includedirs
 	{
-		"%{prj.name}",
+		"%{prj.name}/src",
 		"%{IncludeDir.GLFW}"
 	}
 	
@@ -95,8 +95,8 @@ project "Sandbox"
 	-- Adds compiler include directories for Lynx and GLFW
 	includedirs
 	{
-		"Lynx",
-		"%{prj.name}",
+		"Lynx/src",
+		"%{prj.name}/src",
 		"%{IncludeDir.GLFW}"
 	}
 	

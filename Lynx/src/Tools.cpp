@@ -1,21 +1,16 @@
-#include <pch.h>
+#include "pch.h"
 #include "Tools.h"
-#include "Logger.h"
 
 #include <fstream>
 #include <filesystem>
 
-#ifdef WIN
+#ifdef PL_WINDOWS
 #include <Windows.h>
 
 #include <shlobj_core.h>
 #include <sys/types.h>
 #include <stdio.h>
 #endif
-
-#include <src/Time.h>
-
-#include <Math/Math.h>
 
 using namespace Math;
 

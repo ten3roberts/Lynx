@@ -1,18 +1,32 @@
+# Binary and intermediate directories
 bin/
-.vscode/
-.vs/
 obj/
 
+# Application generated log files
 Logs/
 *.log
 
+# Build systems
 Makefile
 *.make
 
-*.exe
-*.so
+# Linux binaries
+.so
+.a
 
+# Visual Studio Code files
+.vscode/
+
+# Windows binaries
+*.exe
+*.lib
+
+# Visual Studio files
+.vs/
 *.sln
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
+
+# dependencies
+vendor/

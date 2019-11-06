@@ -1,6 +1,6 @@
 #pragma once
 
-#include <src/Time.h>
+#include "Time/Time.h"
 
 extern Lynx::Application* Lynx::CreateApplication();
 

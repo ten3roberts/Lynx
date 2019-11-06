@@ -1,5 +1,5 @@
 #include <pch.h>
-#include <src/Application.h>
+#include <Application.h>
 #include <stdio.h>
 #include <GLFW/glfw3.h>
 #include <Events/Event.h>

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <src/Core.h>
-#include <src/Tools.h>
+#include <Core.h>
+#include <Tools.h>
 #include <string>
-#include <src/Window.h>
+#include <Window.h>
 #include "Events/ApplicationEvent.h"
 
 namespace Lynx

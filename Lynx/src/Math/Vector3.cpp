@@ -1,14 +1,6 @@
-#include <pch.h>
-#include "Vector3.h"
-#include <src/Time.h>
-#include <Math/Math.h>
-#include "Quaternion.h"
-#include <src/Tools.h>
+#include "pch.h"
 
-#include <cmath>
-#include <iostream>
 #include <sstream>
-#include <random>
 
 using namespace Tools;
 

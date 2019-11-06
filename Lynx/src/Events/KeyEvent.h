@@ -1,6 +1,6 @@
 #pragma once
-#include <Events/Event.h>
-#include <src/Tools.h>
+#include "Events/Event.h"
+#include "Tools.h"
 
 namespace Lynx
 {

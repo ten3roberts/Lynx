@@ -1,9 +1,9 @@
 #pragma once
 
-#include <src/Core.h>
-#include <string>
-#include <GLFW/glfw3.h>
-#include <Events/Event.h>
+#include "Core.h"
+#include "string"
+#include "GLFW/glfw3.h"
+#include "Events/Event.h"
 #include <functional>
 
 namespace Lynx

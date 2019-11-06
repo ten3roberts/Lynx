@@ -1,6 +1,6 @@
 #pragma once
-#include <src/Core.h>
-#include <functional>
+#include "Core.h"
+#include "functional"
 #include <string>
 
 namespace Lynx
