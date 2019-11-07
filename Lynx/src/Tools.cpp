@@ -40,7 +40,7 @@ std::string Tools::getAppdata()
 
 	SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA | CSIDL_FLAG_CREATE, NULL, 0, szPath));
 
-	return std::string(szPath) + "\\" + "APPNAME + \\";
+	return std::string((char*)szPath) + "\\" + "APPNAME + \\";
 #else
 	GeneratePath("~/." + std::string(APPNAME));
 	return "~/." + std::string(APPNAME);

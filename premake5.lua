@@ -29,7 +29,7 @@ project "Lynx"
 	
 	-- Precompiled headers
 	pchheader "pch.h"
-	pchsource "Lynx/pch.cpp"
+	pchsource "Lynx/src/pch.cpp"
 	
 	-- Adds all files inside Lynx recursively to project
 	files {"%{prj.name}/**.h", "%{prj.name}/**.cpp"}

@@ -18,7 +18,7 @@ static std::ofstream logFile;
 #define CONSOLE_YELLOW 6
 #define CONSOLE_RED 12
 #endif
-#define PL_LINUX 1
+
 #if PL_LINUX
 void writeColor(const std::string& msg, const char* color_code)
 {
