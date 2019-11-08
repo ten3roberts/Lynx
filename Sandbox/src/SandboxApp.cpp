@@ -7,6 +7,9 @@ public:
 	Sandbox()
 	{
 		m_name = "Sandbox";
+		AddLayer(new Lynx::Layer("1"));
+		AddLayer(new Lynx::Layer("2"));
+		AddLayer(new Lynx::Layer("3"));
 	}
 	~Sandbox()
 	{

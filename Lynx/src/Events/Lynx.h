@@ -4,3 +4,4 @@
 
 #include <src/Tools.h>
 #include "src/EntryPoint.h"
+#include "Scene/Layer.h"

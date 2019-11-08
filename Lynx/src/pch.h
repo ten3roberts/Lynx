@@ -20,6 +20,6 @@
 #include "Math/Random.h"
 #include "Tools.h"
 #include "Logger.h"
-// #inclu"e <src/XMLParser.h"
+#include "XMLParser.h"
 #include "Time/Time.h"
 #include "Time/Timer.h"

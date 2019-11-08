@@ -36,8 +36,13 @@ namespace Lynx
 			m_window->setTitle(format("%s fps : %d", APPNAME, (int)Time::frameRate));
 
 			glClearColor(0.5, 0, 1, 0);
-
 			glClear(GL_COLOR_BUFFER_BIT);
+
+			for(Layer* layer : m_layerStack)
+			{
+				layer->onUpdate();
+			}
+			
 			m_window->onUpdate();
 		}
 	}
@@ -46,7 +51,39 @@ namespace Lynx
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND(Application::onWindowClose));
+
+	//Goes through the layers backwards so the last rendered layer gets the event first
+	for(auto it = m_layerStack.end(); it != m_layerStack.begin();)
+	{
+		(*--it)->onEvent(e);
+		if(e.getHandled())
+			break;
+	}
+
 		//LogS("Application : onEvent", e.getString());
+	}
+
+
+
+	// Adds a layer to the end of the stack
+    void Application::AddLayer(Layer* layer)
+	{
+		m_layerStack.AddLayer(layer);
+	}
+    void Application::AddLayer(Layer* layer, size_t position)
+	{
+		m_layerStack.AddLayer(layer, position);
+	}
+
+	// Removes a layer from the stack and frees the memory
+    void Application::RemoveLayer(size_t position)
+	{
+		m_layerStack.RemoveLayer(position);
+	}
+
+    void Application::RemoveLayer(Layer* layer)
+	{
+		m_layerStack.RemoveLayer(layer);
 	}
 
 	void Application::onWindowClose(WindowCloseEvent& e)

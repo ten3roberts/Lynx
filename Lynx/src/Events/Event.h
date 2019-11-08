@@ -1,7 +1,7 @@
 #pragma once
 #include "Core.h"
-#include "functional"
-#include <string>
+#include "Tools.h"
+#include <functional>
 
 namespace Lynx
 {
@@ -51,6 +51,7 @@ namespace Lynx
 		inline bool CheckCategory(EventCategory category) { return getCategories() & category; }
 
 		void setHandled(bool handled) { m_handled = handled; }
+		bool getHandled() const { return m_handled; }
 	protected:
 		bool m_handled = false;
 	};

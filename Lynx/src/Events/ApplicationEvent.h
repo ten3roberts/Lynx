@@ -47,7 +47,7 @@ namespace Lynx {
 
 		std::string getString() const override 
 		{
-			return format("WindowFocusEvent : %s", FormatBool(m_inFocus));
+			return format("WindowFocusEvent : %S", FormatBool(m_inFocus));
 		}
 	private:
 		bool m_inFocus;

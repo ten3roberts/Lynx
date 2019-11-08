@@ -23,7 +23,7 @@ namespace Lynx
 
 		std::string getString() const override 
 		{
-			return format("KeyPressedEvent : [%d %c] (%d repeats)", m_keyCode, std::string(1, (char)m_keyCode), m_repeatCount);
+			return format("KeyPressedEvent : [%d %c] (%d repeats)", m_keyCode, m_keyCode, m_repeatCount);
 		}
 	private:
 		int m_repeatCount;
@@ -37,7 +37,7 @@ namespace Lynx
 
 		std::string getString() const override 
 		{
-			return format("KeyReleasedEvent : [%d %s]", m_keyCode, std::string(1, (char)m_keyCode));
+			return format("KeyReleasedEvent : [%d %c]", m_keyCode, m_keyCode);
 		}
 	};
 }
