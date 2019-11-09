@@ -52,6 +52,8 @@ namespace Lynx
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND(Application::onWindowClose));
 
+	if(e.getEventType() == EventType::MouseMoved)
+		return;
 	//Goes through the layers backwards so the last rendered layer gets the event first
 	for(auto it = m_layerStack.end(); it != m_layerStack.begin();)
 	{

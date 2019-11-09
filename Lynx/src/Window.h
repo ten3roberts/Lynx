@@ -10,11 +10,16 @@ namespace Lynx
 {
 	enum class WindowStyle
 	{
-		Windowed, Borderless, Fullscreen
+		// Creates a decorated window. Uses set width and height
+		Windowed, 
+		// Creates an undercorated window. Uses set width and height
+		Borderless,
+		// Creates a fullscreen undecorated window covering kde panels. width and height are overridden to the displays resulution
+		Fullscreen
 	};
 
-	//Represents a crossplatform window class. Stores vSync, resoulution, style, title. Set width and height to -1 to use native resolution
-	//TODO : Handle events
+	// Represents a crossplatform window class. Stores vSync, resoulution, style, title. Set width and height to -1 to use native resolution
+	// TODO : Handle events
 	class LYNX_API Window
 	{
 	public:
@@ -40,7 +45,7 @@ namespace Lynx
 		struct WindowData
 		{
 			std::string title;
-			unsigned int width, height;
+			int width, height;
 			bool vSync;
 			bool inFocus;
 			EventCallbackFn eventCallback;

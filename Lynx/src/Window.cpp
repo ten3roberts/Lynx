@@ -63,8 +63,11 @@ namespace Lynx
 
 			glfwSetErrorCallback(GLFWError);
 		}
-
 		GLFWmonitor* primary = glfwGetPrimaryMonitor();
+
+		const GLFWvidmode* mode = glfwGetVideoMode(primary);
+		m_data.width = m_data.width > 0 ? m_data.width : mode->width;
+		m_data.height = m_data.height > 0 ? m_data.height : mode->height;
 
 		if (m_style == WindowStyle::Windowed)
 		{
@@ -73,27 +76,28 @@ namespace Lynx
 
 		else if (m_style == WindowStyle::Borderless)
 		{
-			const GLFWvidmode* mode = glfwGetVideoMode(primary);
+			//const GLFWvidmode* mode = glfwGetVideoMode(primary);
 			glfwWindowHint(GLFW_RED_BITS, mode->redBits);
 			glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
 			glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
 			glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 			glfwWindowHint(GLFW_DECORATED, GL_FALSE);
 			
-			m_window = glfwCreateWindow(mode->width, mode->height, m_data.title.c_str(), nullptr, nullptr);
+			m_window = glfwCreateWindow(m_data.width, m_data.height, m_data.title.c_str(), nullptr, nullptr);
 
 		}
 
 		else if (m_style == WindowStyle::Fullscreen)
 		{
-			const GLFWvidmode* mode = glfwGetVideoMode(primary);
+			//const GLFWvidmode* mode = glfwGetVideoMode(primary);
 			glfwWindowHint(GLFW_RED_BITS, mode->redBits);
 			glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
 			glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
 			glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 			glfwWindowHint(GLFW_DECORATED, GL_FALSE);
-
-			m_window = glfwCreateWindow(mode->width, mode->height, m_data.title.c_str(), primary, nullptr);
+			m_data.width = mode->width;
+			m_data.height = mode->height;
+			m_window = glfwCreateWindow(m_data.width, m_data.height, m_data.title.c_str(), primary, nullptr);
 
 		}
 
