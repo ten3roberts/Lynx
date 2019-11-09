@@ -56,7 +56,7 @@ void LogS(const std::string& author, std::string format, ...)
 	if (!logFile.is_open())
 	{
 		// Creates one logfile for each minute
-		std::string logfile_name = WORKDIR + "Logs" + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
+		std::string logfile_name = CURR_DIR + std::string("Logs") + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
 		
 		Tools::GenerateFile(logfile_name, "");
 		
@@ -88,7 +88,7 @@ void LogF(std::string format, ...)
 
 	if (!logFile.is_open())
 	{
-		std::string logfile_name = WORKDIR + "Logs" + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
+		std::string logfile_name = CURR_DIR + std::string("Logs") + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
 		Tools::GenerateFile(logfile_name, "");
 		logFile.open(logfile_name);
 		LogW("Logger", "Creating new logfile %S", logfile_name);
@@ -124,7 +124,7 @@ void LogE(const std::string& author, std::string format, ...)
 
 	if (!logFile.is_open())
 	{
-		std::string logfile_name = WORKDIR + "Logs" + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
+		std::string logfile_name = CURR_DIR + std::string("Logs")+ Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
 		Tools::GenerateFile(logfile_name, "");
 		logFile.open(logfile_name);
 		LogW("Logger", "Creating new logfile %S", logfile_name);
@@ -162,7 +162,7 @@ void LogW(const std::string& author, std::string format, ...)
 
 	if (!logFile.is_open())
 	{
-		std::string logfile_name = WORKDIR + "Logs" + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
+		std::string logfile_name = CURR_DIR + std::string("Logs") + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
 		Tools::GenerateFile(logfile_name, "");
 		logFile.open(logfile_name);
 		LogW("Logger", "Creating new logfile %S", logfile_name);

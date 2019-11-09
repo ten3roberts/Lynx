@@ -3,8 +3,11 @@
 
 #include <fstream>
 #include <filesystem>
+#include <limits.h>
 
-#ifdef PL_WINDOWS
+#if true
+#include <unistd.h>
+#elif PL_WINDOWS
 #include <Windows.h>
 
 #include <shlobj_core.h>
@@ -16,20 +19,13 @@ using namespace Math;
 
 static std::vector<std::string> s_errorDef = {};
 static std::ofstream s_LogSile = std::ofstream();
-static std::string s_workingDir = "";
 
 void Tools::setWorkingDir(const std::string& dir)
 {
-	std::string oldDir = s_workingDir;
-
-	s_workingDir = getPath(dir);
-
-	LogS("Tools", "Working directory changed from \"%S %s %S %s", oldDir, "\" to \"", s_workingDir, "\"");
-}
-
-std::string Tools::getWorkingDir()
-{
-	return s_workingDir;
+	char old_dir[PATH_MAX];
+	getcwd(old_dir, PATH_MAX);
+	chdir(dir.c_str());
+	LogS("Tools", "Working directory changed from \"%s\" to \"%S\"", old_dir, dir);
 }
 
 std::string Tools::getAppdata()

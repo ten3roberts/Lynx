@@ -5,10 +5,8 @@
 // #define Util Tools
 
 // Macro definitions
-// The current working directory not proceeded with '\\'
-#define WORKDIR Tools::getWorkingDir()
-#define WORKINGDIR Tools::getWorkingDir()
-#define ASSETS WORKDIR + "Assets" + SLASH
+#define WORKDIR CURR_DIR
+#define ASSETS "./Assets" + SLASH
 
 #define APPDATA getAppdata()
 
@@ -22,10 +20,8 @@ std::string vformat(std::string format, va_list vl);
 
 namespace Tools
 {
-	// public:
+	// Sets the working directory, I.e; "./"
 	void LYNX_API setWorkingDir(const std::string& dir);
-
-	std::string LYNX_API getWorkingDir();
 
 	std::string LYNX_API getAppdata();
 
