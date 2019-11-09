@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Core.h"
-#include "string"
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "Events/Event.h"
 #include <functional>
+#include <string>
 
 namespace Lynx
 {
@@ -26,7 +27,7 @@ namespace Lynx
 		using EventCallbackFn = std::function<void(Event&)>;
 		Window(std::string title = APPNAME, int width = 800, int height = 600, WindowStyle style = WindowStyle::Windowed);
 		~Window() { Close(); }
-		void onUpdate();
+		void Update();
 
 		void Close();
 
@@ -39,6 +40,7 @@ namespace Lynx
 		bool inFocus() const { return m_data.inFocus; }
 
 		void setEventCallback(const EventCallbackFn& callback);
+
 	private:
 		void Init();
 

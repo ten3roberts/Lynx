@@ -8,11 +8,14 @@ workspace "Lynx"
 -- variable is required for GLFW's premake5 file
 outputdir = ""
 
-IncludeDir = {}
-IncludeDir["GLFW"] = "Lynx/vendor/glfw/include"
+includeDir = {}
+includeDir["glfw"] = "Lynx/vendor/glfw/include"
+includeDir["glad"] = "Lynx/vendor/glad/include"
 
 -- Includes the premake5 file from glfw
 include "Lynx/vendor/glfw"
+include "Lynx/vendor/glad"
+
 
 project "Lynx"
 	-- Sets type, language, and output directory for binaries and intermediates
@@ -38,13 +41,15 @@ project "Lynx"
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{IncludeDir.GLFW}"
+		"%{includeDir.glfw}",
+		"%{includeDir.glad}"
 	}
 	
 	-- Links GLFW and opengl32 to the Lynx
 	links
 	{
-		"GLFW"
+		"GLFW",
+		"glad"
 	}
 	
 	-- Specifies GCC options
@@ -97,14 +102,15 @@ project "Sandbox"
 	{
 		"Lynx/src",
 		"%{prj.name}/src",
-		"%{IncludeDir.GLFW}"
+		"%{includeDir.glfw}",
+		"%{includeDir.glad}"
 	}
 	
 	-- Links the Lynx DLL to Sandbox - GLFW are statically linked to Lynx
 	links("Lynx")
 	
 	-- Specifies GCC options
-	configuration {"linux", "gmake2"}
+	filter "system:linux and gmake2"
 		buildoptions{"-std=c++17", "-pthread"}
 		
 	-- Specifies debug symbols for different configurations

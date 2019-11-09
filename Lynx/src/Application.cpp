@@ -1,7 +1,6 @@
 #include <pch.h>
 #include <Application.h>
 #include <stdio.h>
-#include <GLFW/glfw3.h>
 #include <Events/Event.h>
 #include <Events/ApplicationEvent.h>
 
@@ -11,6 +10,7 @@ namespace Lynx
 	{
 		m_window = new Window(APPNAME, 800, 600, WindowStyle::Windowed);
 		m_window->setEventCallback(BIND(Application::onEvent));
+
 	}
 
 	Application::~Application()
@@ -32,7 +32,6 @@ namespace Lynx
 		{
 			Time::Update();
 
-
 			m_window->setTitle(format("%s fps : %d", APPNAME, (int)Time::frameRate));
 
 			glClearColor(0.5, 0, 1, 0);
@@ -40,10 +39,10 @@ namespace Lynx
 
 			for(Layer* layer : m_layerStack)
 			{
-				layer->onUpdate();
+				layer->Update();
 			}
 			
-			m_window->onUpdate();
+			m_window->Update();
 		}
 	}
 

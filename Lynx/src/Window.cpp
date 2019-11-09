@@ -24,7 +24,7 @@ namespace Lynx
 		Init();
 	}
 	static bool s_GLFWInitialized = false;
-	void Window::onUpdate()
+	void Window::Update()
 	{
 		glfwPollEvents();
 		glfwSwapBuffers(m_window);
@@ -43,8 +43,13 @@ namespace Lynx
 
 	void Window::Init()
 	{
-		// Initialize GLFW if it's not already done
-		LogS("Window : " + m_data.title, "Creating window [%u, %u]", m_data.width, m_data.height);
+		{
+			std::string width_string = m_data.width > 0 ? STR(m_data.width) : "(native)";
+			std::string height_string = m_data.height > 0 ? STR(m_data.height) : "(native)";
+			LogS("Window : " + m_data.title, "Creating window [%S, %S]", width_string, height_string);
+		}
+
+		// Initialize GLFW once
 
 		if (!s_GLFWInitialized)
 		{
@@ -63,11 +68,13 @@ namespace Lynx
 
 			glfwSetErrorCallback(GLFWError);
 		}
-		GLFWmonitor* primary = glfwGetPrimaryMonitor();
 
+		// Sets the resolution to native if res is set to -1
+		GLFWmonitor* primary = glfwGetPrimaryMonitor();
 		const GLFWvidmode* mode = glfwGetVideoMode(primary);
 		m_data.width = m_data.width > 0 ? m_data.width : mode->width;
 		m_data.height = m_data.height > 0 ? m_data.height : mode->height;
+
 
 		if (m_style == WindowStyle::Windowed)
 		{
@@ -102,8 +109,14 @@ namespace Lynx
 		}
 
 		glfwMakeContextCurrent(m_window);
+		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		if(!status)
+			LogE("Window", "Failed to initialize glad");
 		glfwSetWindowUserPointer(m_window, &m_data);
 		setVSync(true);
+
+
+		#pragma region callbacks
 		glfwSetWindowSizeCallback(m_window, [](GLFWwindow* window, int width, int height)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -197,6 +210,7 @@ namespace Lynx
 			MouseMovedEvent event((float)x, (float)y);
 			data.eventCallback(event);
 		});
+		#pragma endregion
 	}
 
 	void Window::Close()

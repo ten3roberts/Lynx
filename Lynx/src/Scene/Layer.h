@@ -17,7 +17,7 @@ namespace Lynx
         // When the layer is removed from the layer stack
         void onDetach() {}
 
-        void onUpdate() { }
+        void Update() { }
         void onEvent(Event& event) { LogS("Layer : " + m_name, "Event %S", event.getString()); event.setHandled(m_name == "2" && event.getEventType() == EventType::MouseButtonPressed); }
 
         inline const std::string getName() const { return m_name; }
