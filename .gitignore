@@ -21,7 +21,7 @@ Makefile
 # Windows binaries
 *.exe
 *.lib
-.bat
+*.bat
 
 # Visual Studio files
 .vs/
