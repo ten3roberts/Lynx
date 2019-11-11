@@ -103,7 +103,7 @@ void LogF(std::string format, ...)
 	}
 
 	fullMsg += '\n';
-	writeColor(fullMsg, CONSOLE_GREEN);
+	writeColor(fullMsg, CONSOLE_WHITE);
 	logFile.write(fullMsg.c_str(), fullMsg.size());
 	logFile.flush();
 	va_end(vl);

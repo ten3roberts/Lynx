@@ -10,7 +10,7 @@ namespace Lynx
 	{
 		m_window = new Window(APPNAME, 800, 600, WindowStyle::Windowed);
 		m_window->setEventCallback(BIND(Application::onEvent));
-
+		LogF(Tools::FindFile("/textures/sprite.png"));
 	}
 
 	Application::~Application()

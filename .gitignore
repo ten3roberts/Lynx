@@ -1,5 +1,6 @@
 # Binary and intermediate directories
 bin/
+
 obj/
 
 # Application generated log files
@@ -30,4 +31,4 @@ Makefile
 *.vcxproj.user
 
 # dependencies
-vendor/glfw
+glfw/

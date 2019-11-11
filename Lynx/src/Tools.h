@@ -6,7 +6,11 @@
 
 // Macro definitions
 #define WORKDIR CURR_DIR
-#define ASSETS "./Assets" + SLASH
+#if PL_LINUX
+#define ASSETS "./assets/"
+#elif PL_WINDOWS
+#define ASSETS ".\\assets\\"
+#endif
 
 #define APPDATA getAppdata()
 
@@ -108,9 +112,7 @@ namespace Tools
 	// Will list all files with full path and sub-directories in specified directory
 	std::vector<std::string> LYNX_API ListDir(const std::string& directory = ASSETS);
 
-
 	std::vector<std::string> LYNX_API ListDirectories(const std::string& directory = ASSETS);
-
 
 	// Will return a string vector of all files with full path in a specified directory	
 	std::vector<std::string> LYNX_API ListFiles(const std::string& directory = ASSETS);
@@ -124,10 +126,10 @@ namespace Tools
 	std::vector<std::string> LYNX_API ListAll(const std::string& directory = ASSETS);
 
 
-	// Will go through all files in the directory and all of it's subfolder searching for a specified file and return the path for it
-	std::string LYNX_API FindFile(const std::string& filename, const std::string& directory = ASSETS);
-	// Will go through all files in the directory and all of it's subfolder searching for a specified file and return the path for it optionally ignore extension
-	std::string LYNX_API FindFile(const std::string& filename, bool useExtension, const std::string& directory = ASSETS);
+	// Finds a file recursivey
+	// If the file(path) has folders leading up to it, it will match those as well, e.g; /a/b/file.txt will find file.txt in with a and b leading up to them in order
+	// Matches the path as if a wild card is placed in the beginning of the supplied file(path)
+	std::string LYNX_API FindFile(const std::string& file, const std::string& directory = ASSETS);
 
 
 	// Will return the file as a string

@@ -398,7 +398,15 @@ std::vector<std::string> Tools::ListDir(const std::string& directory)
 		if (p.status().type() == std::filesystem::file_type::regular)
 			r.push_back(p.path().string());
 		else if (p.status().type() == std::filesystem::file_type::directory)
-			r.push_back(p.path().string() + "/");
+		{
+#if PL_LINUX
+			r.push_back(p.path().string());
+#elif PL_WINDOWS
+			std::string path = p.path().string();
+			std::replace(path.begin(), path.end(), '\\', '/');
+			r.push_back(path);
+#endif
+		}
 	return r;
 }
 
@@ -408,7 +416,15 @@ std::vector<std::string> Tools::ListDirectories(const std::string& directory)
 	std::vector<std::string> r;
 	for (auto& p : std::filesystem::recursive_directory_iterator(directory))
 		if (p.status().type() == std::filesystem::file_type::directory)
-			r.push_back(p.path().string() + "/");
+		{
+#if PL_LINUX
+			r.push_back(p.path().string());
+#elif PL_WINDOWS
+			std::string path = p.path().string();
+			std::replace(path.begin(), path.end(), '\\', '/');
+			r.push_back(path);
+#endif
+		}
 	return r;
 }
 
@@ -417,7 +433,15 @@ std::vector<std::string> Tools::ListFiles(const std::string& directory)
 	std::vector<std::string> r;
 	for (auto& p : std::filesystem::directory_iterator(directory))
 		if (p.status().type() == std::filesystem::file_type::regular)
+		{
+#if PL_LINUX
 			r.push_back(p.path().string());
+#elif PL_WINDOWS
+			std::string path = p.path().string();
+			std::replace(path.begin(), path.end(), '\\', '/');
+			r.push_back(path);
+#endif
+		}
 	return r;
 }
 
@@ -426,7 +450,15 @@ std::vector<std::string> Tools::ListAllFiles(const std::string& directory)
 	std::vector<std::string> r;
 	for (auto& p : std::filesystem::recursive_directory_iterator(directory))
 		if (p.status().type() == std::filesystem::file_type::regular)
+		{
+#if PL_LINUX
 			r.push_back(p.path().string());
+#elif PL_WINDOWS
+			std::string path = p.path().string();
+			std::replace(path.begin(), path.end(), '\\', '/');
+			r.push_back(path);
+#endif
+		}
 	return r;
 }
 
@@ -435,7 +467,15 @@ std::vector<std::string> Tools::ListAllDirectories(const std::string& directory)
 	std::vector<std::string> r;
 	for (auto& p : std::filesystem::recursive_directory_iterator(directory))
 		if (p.status().type() == std::filesystem::file_type::directory)
-			r.push_back(p.path().string() + "/");
+		{
+#if PL_LINUX
+			r.push_back(p.path().string());
+#elif PL_WINDOWS
+			std::string path = p.path().string();
+			std::replace(path.begin(), path.end(), '\\', '/');
+			r.push_back(path);
+#endif
+		}
 	return r;
 }
 
@@ -446,41 +486,36 @@ std::vector<std::string> Tools::ListAll(const std::string& directory)
 		if (p.status().type() == std::filesystem::file_type::regular)
 			r.push_back(p.path().string());
 		else if (p.status().type() == std::filesystem::file_type::directory)
-			r.push_back(p.path().string() + "/");
+		{
+#if PL_LINUX
+			r.push_back(p.path().string());
+#elif PL_WINDOWS
+			std::string path = p.path().string();
+			std::replace(path.begin(), path.end(), '\\', '/');
+			r.push_back(path);
+#endif
+		}
 	return r;
 }
 
-std::string Tools::FindFile(const std::string& filename, const std::string& directory)
+std::string Tools::FindFile(const std::string& file, const std::string& directory)
 {
-	// Makes sure to remove any preceding path to the filename we're searching for
-	std::string fname = getFilename(filename, true);
-
 	std::vector<std::string> files = ListAllFiles(directory);
-	for (int i = 0; i < files.size(); i++)
-	{
-		if (getFilename(files[i]) == fname)
-		{
-			return files[i];
-		}
-	}
-	LogW("FindFile", "No file found with name: %S", filename);
-	return "";
-}
 
-std::string Tools::FindFile(const std::string& filename, bool useExtension, const std::string& directory)
-{
-	// Makes sure to remove any preceding path to the filename we're searching for
-	std::string fname = getFilename(filename, useExtension);
-
-	std::vector<std::string> files = ListAllFiles(directory);
-	for (int i = 0; i < files.size(); i++)
+	for (std::string& curr_file : files)
 	{
-		if (getFilename(files[i], useExtension) == fname)
-		{
-			return files[i];
-		}
+		if (curr_file.size() < file.size())
+			continue;
+
+
+		LogF(curr_file.substr(curr_file.size() - file.size()));
+
+		// If the filename and the paths leding up to the file matches
+		if (curr_file.substr(curr_file.size() - file.size()) == file)
+			return file;
 	}
-	LogW("FindFile", "No file found with name: %S", filename);
+	LogW("FindFile", "No file found with name: %S", file);
+
 	return "";
 }
 
@@ -516,7 +551,7 @@ std::vector<std::string> Tools::ReadFileLines(const std::string& filepath, bool 
 		LogW("Unable to open file: %S", ShortenString(filepath, 35));
 
 	file.close();
-	
+
 	return file_cont;
 }
 
@@ -772,7 +807,7 @@ std::string vformat(std::string format, va_list vl)
 			result.append(buffer);
 			break; }
 			case 'c': // Character
-			result += va_arg(vl, int);
+				result += va_arg(vl, int);
 			case 's': // C String
 			{
 				char* tmp = va_arg(vl, char*);
