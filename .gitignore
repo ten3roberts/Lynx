@@ -31,4 +31,4 @@ Makefile
 *.vcxproj.user
 
 # dependencies
-glfw/
+# glfw/
