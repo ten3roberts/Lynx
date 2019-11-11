@@ -5,11 +5,11 @@
 #include <filesystem>
 #include <limits.h>
 
-#if true
+#if PL_LINUX
 #include <unistd.h>
 #elif PL_WINDOWS
 #include <Windows.h>
-
+#include <direct.h>
 #include <shlobj_core.h>
 #include <sys/types.h>
 #include <stdio.h>
@@ -20,6 +20,7 @@ using namespace Math;
 static std::vector<std::string> s_errorDef = {};
 static std::ofstream s_LogSile = std::ofstream();
 
+#if PL_LINUX
 void Tools::setWorkingDir(const std::string& dir)
 {
 	char old_dir[PATH_MAX];
@@ -27,6 +28,15 @@ void Tools::setWorkingDir(const std::string& dir)
 	chdir(dir.c_str());
 	LogS("Tools", "Working directory changed from \"%s\" to \"%S\"", old_dir, dir);
 }
+#elif PL_WINDOWS
+void Tools::setWorkingDir(const std::string& dir)
+{
+	char old_dir[250];
+	_getcwd(old_dir, 250);
+	_chdir(dir.c_str());
+	LogS("Tools", "Working directory changed from \"%s\" to \"%S\"", old_dir, dir);
+}
+#endif
 
 std::string Tools::getAppdata()
 {

@@ -20,6 +20,7 @@ Makefile
 # Windows binaries
 *.exe
 *.lib
+.bat
 
 # Visual Studio files
 .vs/
@@ -29,4 +30,4 @@ Makefile
 *.vcxproj.user
 
 # dependencies
-vendor/
+vendor/glfw

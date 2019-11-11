@@ -17,8 +17,9 @@
 #else
 	#define LYNX_API
 #endif
-
-#if PL_WINDOWS
+#if PL_LINUX
+	#define ASSERT(x) if (!(x)) abort();
+#elif PL_WINDOWS
 	#define ASSERT __debugbreak();
 #endif
 
@@ -35,7 +36,5 @@ using namespace std::chrono_literals;
 #define SLEEPFOR(s) std::this_thread::sleep_for(std::chrono::milliseconds((long long)(s*1000)))
 
 #define BIT(x) (1 << x)
-
-#define ASSERT(x) if (!(x)) abort();
 
 #define BIND(func) std::bind(&func, this, std::placeholders::_1)
