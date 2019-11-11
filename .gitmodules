@@ -1,3 +1,3 @@
 [submodule "Lynx/vendor/glfw"]
 	path = Lynx/vendor/glfw
-	url = https://github.com/glfw/glfw.git
+	url = https://github.com/TheCherno/glfw.git
