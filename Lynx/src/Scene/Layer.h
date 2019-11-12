@@ -2,7 +2,8 @@
 
 #include "Core.h"
 #include "Events/Event.h"
-
+#include "Events/KeyEvent.h"
+#include "Input/keycodes.h"
 namespace Lynx
 {
     class LYNX_API Layer
@@ -18,7 +19,7 @@ namespace Lynx
         void onDetach() {}
 
         void Update() { }
-        void onEvent(Event& event) { LogS("Layer : " + m_name, "Event %S", event.getString()); event.setHandled(m_name == "2" && event.getEventType() == EventType::MouseButtonPressed); }
+        void onEvent(Event& event) { if(m_name == "2" && ((KeyPressedEvent*)&event)->getKeyCode() == KEY_B) event.setHandled(true);  }
 
         inline const std::string getName() const { return m_name; }
         inline const bool getEnabled() const { return m_enabled; }

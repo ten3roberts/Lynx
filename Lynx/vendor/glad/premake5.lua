@@ -31,4 +31,5 @@ project "Glad"
 		
 	filter "system:linux"
 		defines{ "PL_LINUX=1" }
+		buildoptions{"-fPIC"}
 		links "GL"

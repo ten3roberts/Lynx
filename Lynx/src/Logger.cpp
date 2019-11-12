@@ -36,7 +36,7 @@ void writeColor(const std::string& msg, int color)
 }
 #endif
 
-#define TIME_STAMP Time::getDateAndTime(Time::startPoint, "%H.%M")
+#define TIME_STAMP Time::getDateAndTime("%H.%M.%S")
 
 // Checks to see if the frame changes to put a divider between log calls on different frames
 static int frame;

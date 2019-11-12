@@ -54,7 +54,7 @@ project "Lynx"
 	
 	-- Specifies GCC options
 	configuration {"linux", "gmake2"}
-		buildoptions{"-std=c++17", "-pthread"}
+		buildoptions{"-std=c++17", "-pthread", "-fPIC"}
 	
 	-- Specifies options for different configurations
 	-- Debug includes debug symbols and disables optimization

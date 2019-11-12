@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <Events/Event.h>
 #include <Events/ApplicationEvent.h>
+#include "Input/Input.h"
 
 namespace Lynx
 {
@@ -41,7 +42,11 @@ namespace Lynx
 			{
 				layer->Update();
 			}
-			
+			if(Input::getKeyPressed(KEY_A))
+			LogF("a");
+			if(Input::getKeyPressed(KEY_B))
+			LogF("b");
+			Input::Update();
 			m_window->Update();
 		}
 	}
@@ -60,6 +65,10 @@ namespace Lynx
 		if(e.getHandled())
 			break;
 	}
+
+	//If input event has not been handled, send it to input to receive
+	if(e.CheckCategory(EventCategoryInput))
+		Input::onEvent(e);
 
 		//LogS("Application : onEvent", e.getString());
 	}
