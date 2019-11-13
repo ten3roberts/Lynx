@@ -42,9 +42,9 @@ namespace Lynx
 			{
 				layer->Update();
 			}
-			if(Input::getKeyPressed(KEY_A))
+			if(Input::getKeyHit(MOUSE_BUTTON_1))
 			LogF("a");
-			if(Input::getKeyPressed(KEY_B))
+			if(Input::getKeyHit(KEY_B))
 			LogF("b");
 			Input::Update();
 			m_window->Update();
