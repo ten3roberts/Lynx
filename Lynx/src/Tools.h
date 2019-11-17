@@ -15,7 +15,7 @@
 #define APPDATA getAppdata()
 
 // Normal defines
-#define ENABLE_CONSOLE true 
+#define ENABLE_CONSOLE true
 #define INVALID_ERROR -1
 #define APPEND_CODE -2
 
@@ -43,7 +43,8 @@ namespace Tools
 	std::vector<size_t> LYNX_API strFind(const std::string& str, char c);
 
 	// Will divide the string at every keyW(default space)
-	std::vector<std::string> LYNX_API strSplit(const std::string& str, const std::string& keyW, bool ignore_quotes = false);
+	std::vector<std::string> LYNX_API strSplit(const std::string& str, const std::string& keyW,
+											   bool ignore_quotes = false);
 	std::vector<std::string> LYNX_API strSplit(const std::string& str, char keyW, bool ignore_quotes = false);
 
 	std::string LYNX_API strClamp(const std::string& str, size_t size);
@@ -57,7 +58,8 @@ namespace Tools
 	// Removes all characters from str that exist in pattern
 	std::string LYNX_API strPurgeAll(const std::string& str, const std::string& pattern);
 
-	// Will add $lead to string if it doesn't already end with $lead. Good for trailing slashes
+	// Will add $lead to string if it doesn't already end with $lead. Good for
+	// trailing slashes
 	inline std::string LYNX_API strLead(const std::string& str, char lead)
 	{
 		if (str.back() == lead)
@@ -65,7 +67,8 @@ namespace Tools
 		return str + lead;
 	}
 
-	// Will add $lead to string if it doesn't already end with $lead. Good for trailing slashes
+	// Will add $lead to string if it doesn't already end with $lead. Good for
+	// trailing slashes
 	inline std::string LYNX_API strLead(const std::string& str, const std::string& lead)
 	{
 		if (lead.size() <= str.size() && str.substr(str.size() - lead.size()) == lead)
@@ -82,7 +85,6 @@ namespace Tools
 	std::string LYNX_API ListTostring(float* list, size_t size, const std::string& separator = ", ");
 	std::string LYNX_API ListTostring(float* list, size_t size, char separator);
 
-
 	std::string LYNX_API ListTostring(const std::vector<std::string>& list, const std::string& separator = ", ");
 	std::string LYNX_API ListTostring(const std::vector<std::string>& list, char separator);
 	int LYNX_API ParseTime(const std::string& str);
@@ -95,18 +97,18 @@ namespace Tools
 	bool LYNX_API Contains(std::vector<std::string> list, const std::string& item);
 
 	// Returns true if $item occurs in $list
-	template <typename T>
-	bool in(T item, std::vector<T> list);
+	template <typename T> bool in(T item, std::vector<T> list);
 
-	template <typename N>
-	std::vector<int> Search(std::vector<N> list, N query);
+	template <typename N> std::vector<int> Search(std::vector<N> list, N query);
 
 	std::string LYNX_API digits(int value, size_t nDigits);
 #pragma endregion
 #pragma region "File Utilities"
-	// Will return true if the given path is a file and return false if the given path is a directory
+	// Will return true if the given path is a file and return false if the given
+	// path is a directory
 	inline bool LYNX_API IsFile(const std::string& path) { return std::filesystem::is_directory(path); }
-	// Will return false if the given path is a file and return true if the given path is a directory
+	// Will return false if the given path is a file and return true if the given
+	// path is a directory
 	inline bool LYNX_API IsDir(const std::string& path) { return std::filesystem::is_regular_file(path); }
 
 	// Will list all files with full path and sub-directories in specified directory
@@ -114,34 +116,38 @@ namespace Tools
 
 	std::vector<std::string> LYNX_API ListDirectories(const std::string& directory = ASSETS);
 
-	// Will return a string vector of all files with full path in a specified directory	
+	// Will return a string vector of all files with full path in a specified
+	// directory
 	std::vector<std::string> LYNX_API ListFiles(const std::string& directory = ASSETS);
 
-	// Will return a string vector of all files with full path in a specified directory including all sub directories
+	// Will return a string vector of all files with full path in a specified
+	// directory including all sub directories
 	std::vector<std::string> LYNX_API ListAllFiles(const std::string& directory = ASSETS);
 	// Will return a string vector of all sub directories recursively with full path
 	std::vector<std::string> LYNX_API ListAllDirectories(const std::string& directory = ASSETS);
 
-	// Will return a string vector of all directories and files recursively with full path
+	// Will return a string vector of all directories and files recursively with
+	// full path
 	std::vector<std::string> LYNX_API ListAll(const std::string& directory = ASSETS);
 
-
 	// Finds a file recursivey
-	// If the file(path) has folders leading up to it, it will match those as well, e.g; /a/b/file.txt will find file.txt in with a and b leading up to them in order
-	// Matches the path as if a wild card is placed in the beginning of the supplied file(path)
+	// If the file(path) has folders leading up to it, it will match those as well,
+	// e.g; /a/b/file.txt will find file.txt in with a and b leading up to them in
+	// order Matches the path as if a wild card is placed in the beginning of the
+	// supplied file(path)
 	std::string LYNX_API FindFile(const std::string& file, const std::string& directory = ASSETS);
-
 
 	// Will return the file as a string
 	std::string LYNX_API ReadFile(const std::string& filePath, bool create = false);
 
-	// Will return the file as a string vector with each element being a separate line
+	// Will return the file as a string vector with each element being a separate
+	// line
 	std::vector<std::string> LYNX_API ReadFileLines(const std::string& filepath, bool create = false);
-
 
 	// Will create the specified path with all directories leading to up
 	void LYNX_API GeneratePath(const std::string& path);
-	// Will create a file, and if append is false, it will truncate the file if it already exists
+	// Will create a file, and if append is false, it will truncate the file if it
+	// already exists
 	void LYNX_API GenerateFile(const std::string& path, const std::string& contents, bool append = true);
 
 	bool LYNX_API Copy(const std::string& oldPath, const std::string& newPath);
@@ -158,24 +164,24 @@ namespace Tools
 	// Will only display the $depth directories back
 	std::string LYNX_API ShortenPath(const std::string& path, int depth = 3, bool omitIndicator = false);
 
-	// Will strClamp the string preserving the end to a set size and add "..." to the beginning
+	// Will strClamp the string preserving the end to a set size and add "..." to
+	// the beginning
 	std::string LYNX_API ShortenString(const std::string& str, size_t size, bool omitIndicator = false);
 
 	// Will return the file path moved up one directory
 	std::string LYNX_API DirUp(const std::string& path, size_t steps = 1);
-};
+}; // namespace Tools
 
 /*std::ostream& operator<<(std::ostream& os, std::vector<std::string> in)
 {
-	for (std::string& str : in)
-		os << str << std::endl;;
-	return os;
+		for (std::string& str : in)
+				os << str << std::endl;;
+		return os;
 }
 // For shortcuts in writing*/
 namespace Util = Tools;
 
-template<typename T>
-inline bool Tools::in(T item, std::vector<T> list)
+template <typename T> inline bool Tools::in(T item, std::vector<T> list)
 {
 	for (T i : list)
 	{
@@ -185,8 +191,7 @@ inline bool Tools::in(T item, std::vector<T> list)
 	return false;
 }
 
-template<typename N>
-inline std::vector<int> Tools::Search(std::vector<N> list, N query)
+template <typename N> inline std::vector<int> Tools::Search(std::vector<N> list, N query)
 {
 	std::vector<N> result;
 	for (N i : list)
@@ -197,27 +202,21 @@ inline std::vector<int> Tools::Search(std::vector<N> list, N query)
 	return result;
 }
 
-static bool parseBool(const std::string& str)
-{
-	return Tools::Uncapitalize(str) == "true" ? true : str == "1" ? 1 : 0;
-}
+static bool parseBool(const std::string& str) { return Tools::Uncapitalize(str) == "true" ? true : str == "1" ? 1 : 0; }
 
-static std::string FormatBool(bool boolean)
-{
-	return boolean ? "true" : "false";
-}
-
+static std::string FormatBool(bool boolean) { return boolean ? "true" : "false"; }
 
 inline int LYNX_API numi(const std::string& str) { return atoi(str.c_str()); }
 inline float LYNX_API numf(const std::string& str) { return (float)atof(str.c_str()); }
-
 
 inline float LYNX_API min(float a, float b) { return a < b ? a : b; };
 // inline int LYNX_API min(int a, int b) { return a < b ? a : b; };
 inline size_t LYNX_API min(size_t a, size_t b) { return a < b ? a : b; };
 // inline float LYNX_API min(float a, float b) { return a < b ? a : b; };
-// inline unsigned int min(unsigned int a, unsigned int b) { return a < b ? a : b; };
+// inline unsigned int min(unsigned int a, unsigned int b) { return a < b ? a :
+// b; };
 
 inline float LYNX_API max(float a, float b) { return a > b ? a : b; };
 inline int LYNX_API max(int a, int b) { return a > b ? a : b; };
-// inline unsigned int max(unsigned int a, unsigned int b) { return a > b ? a : b; };
+// inline unsigned int max(unsigned int a, unsigned int b) { return a > b ? a :
+// b; };

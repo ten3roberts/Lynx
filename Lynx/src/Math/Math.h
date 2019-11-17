@@ -1,14 +1,15 @@
 #pragma once
+#include <limits.h>
 #include <pch.h>
-#include "Vector.h"
-#include "Matrix.h"
-#include "Quaternion.h"
 
 #include <cmath>
-#include <limits.h>
+
+#include "Matrix.h"
+#include "Quaternion.h"
+#include "Vector.h"
 
 #define MATH_PI 3.141593f
-#define MATH_E  2.718282f
+#define MATH_E 2.718282f
 
 #define DEG_180 MATH_PI
 #define DEG_90 1.570796f
@@ -22,9 +23,9 @@
 #define MEGA 1000000
 #define GIGA 1000000000
 
-#define NANO 1.0/GIGA
-#define MICRO 1.0/MEGA
-#define MILLI 1.0/KILO
+#define NANO 1.0 / GIGA
+#define MICRO 1.0 / MEGA
+#define MILLI 1.0 / KILO
 
 #define MINUTE 60
 #define HOUR 3600
@@ -33,11 +34,8 @@
 namespace Math
 {
 	// public:
-	inline static float logn(float x, float base)
-	{
-		return log(x) / log(base);
-	}
-	
+	inline static float logn(float x, float base) { return log(x) / log(base); }
+
 	// Clamps value between min and max
 	inline static float Clamp(float value, float min, float max)
 	{
@@ -45,34 +43,20 @@ namespace Math
 	}
 
 	// Clamps value between 0 and infinity
-	inline static float ClampPos(float value)
-	{
-		return value < 0 ? 0 : value;
-	}
+	inline static float ClampPos(float value) { return value < 0 ? 0 : value; }
 
 	// Clamps value between 0 and negative infinity
-	inline static float ClampNeg(float value)
-	{
-		return value > 0 ? 0 : value;
-	}
+	inline static float ClampNeg(float value) { return value > 0 ? 0 : value; }
 
 	// Clamps value between 0 and 1
-	inline static float Clamp01(float value)
-	{
-		return value > 1 ? 1 : value < 0 ? 0 : value;
-	}
+	inline static float Clamp01(float value) { return value > 1 ? 1 : value < 0 ? 0 : value; }
 
-	inline static float ToRad(float& deg)
-	{
-		return (MATH_PI / 180.0f) * deg;
-	}
+	inline static float ToRad(float& deg) { return (MATH_PI / 180.0f) * deg; }
 
-	inline static float ToDeg(float& rad)
-	{
-		return (180.0f / MATH_PI) * rad;
-	}
+	inline static float ToDeg(float& rad) { return (180.0f / MATH_PI) * rad; }
 
-	int getMax(float* elements, int size); // Return the index of the greatest value in elements
+	int getMax(float* elements,
+			   int size); // Return the index of the greatest value in elements
 
 	int getMax(std::vector<float> elements);
 
@@ -86,10 +70,17 @@ namespace Math
 	int getMin(int n, ...);
 
 	// Will generate a sine wave between two thresholds
-	inline float SineWave(float min, float max, float frequency, float t) { return sinf(t * frequency) / 2 * (max - min) + (max + min) / 2; }
-	inline float CosineWave(float min, float max, float frequency, float t) { return cosf(t * frequency) / 2 * (max - min) + (max + min) / 2; }
+	inline float SineWave(float min, float max, float frequency, float t)
+	{
+		return sinf(t * frequency) / 2 * (max - min) + (max + min) / 2;
+	}
+	inline float CosineWave(float min, float max, float frequency, float t)
+	{
+		return cosf(t * frequency) / 2 * (max - min) + (max + min) / 2;
+	}
 
-	template <typename I> std::string ToHex(I w, size_t hex_len = sizeof(I) << 1, bool uppercase = true) {
+	template <typename I> std::string ToHex(I w, size_t hex_len = sizeof(I) << 1, bool uppercase = true)
+	{
 		static const char* digits = uppercase ? "0123456789ABCDEF" : "0123456789abcdef";
 		std::string rc(hex_len, '0');
 		for (size_t i = 0, j = (hex_len - 1) * 4; i < hex_len; ++i, j -= 4)
@@ -97,7 +88,8 @@ namespace Math
 		return rc;
 	}
 
-	template <typename I> std::string ToOctal(I w, size_t hex_len = sizeof(I) << 1) {
+	template <typename I> std::string ToOctal(I w, size_t hex_len = sizeof(I) << 1)
+	{
 		static const char* digits = "01234567";
 		std::string rc(hex_len, '0');
 		for (size_t i = 0, j = (hex_len - 1) * 4; i < hex_len; ++i, j -= 4)
@@ -149,18 +141,19 @@ namespace Math
 	// Linearly interpolates a and b between t
 	inline Vector4 Lerp(const Vector4& a, const Vector4& b, float t) { return Vector4::Lerp(a, b, t); }
 #pragma endregion
-};
+}; // namespace Math
 
 // Merge Sorting:
-template<typename T>
-struct Sorter
+template <typename T> struct Sorter
 {
-	static void Sort(std::vector<T>& input, Vector3& other, bool(*comp)(T a, T b, Vector3& other))
+	static void Sort(std::vector<T>& input, Vector3& other, bool (*comp)(T a, T b, Vector3& other))
 	{
 		MergeSort(input, other, 0, input.size() - 1, comp);
 	}
-private:
-	static void MergeSort(std::vector<T>& input, Vector3& other, int low, int high, bool(*comp)(T a, T b, Vector3& other))
+
+  private:
+	static void MergeSort(std::vector<T>& input, Vector3& other, int low, int high,
+						  bool (*comp)(T a, T b, Vector3& other))
 	{
 		if (low < high)
 		{
@@ -171,9 +164,9 @@ private:
 		}
 	}
 
-	static void Merge(std::vector<T>& input, Vector3& other, int low, int middle, int high, bool(*comp)(T a, T b, Vector3& other))
+	static void Merge(std::vector<T>& input, Vector3& other, int low, int middle, int high,
+					  bool (*comp)(T a, T b, Vector3& other))
 	{
-
 		int left = low;
 		int right = middle + 1;
 		std::vector<T> tmp;
@@ -219,7 +212,5 @@ private:
 		{
 			input[low + i] = tmp[i];
 		}
-
 	}
 };
-

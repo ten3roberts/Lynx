@@ -5,7 +5,7 @@ namespace Lynx
 {
 	class LYNX_API MouseMovedEvent : public Event
 	{
-	public:
+	  public:
 		MouseMovedEvent(float x, float y) : m_mouseX(x), m_mouseY(y) {}
 
 		inline float getX() const { return m_mouseX; }
@@ -13,14 +13,14 @@ namespace Lynx
 
 		EVENT_CLASS(MouseMoved, EventCategoryMouse | EventCategoryInput);
 
-	private:
+	  private:
 		// The new absolute position of the mouse
 		float m_mouseX, m_mouseY;
 	};
 
 	class LYNX_API MouseScrolledEvent : public Event
 	{
-	public:
+	  public:
 		MouseScrolledEvent(float xScroll, float yScroll) : m_xScroll(xScroll), m_yScroll(yScroll) {}
 
 		inline float getXScroll() const { return m_xScroll; }
@@ -28,26 +28,26 @@ namespace Lynx
 
 		EVENT_CLASS(MouseScrolled, EventCategoryMouse | EventCategoryInput)
 
-	private:
+	  private:
 		// The position of the scroll wheel
 		float m_xScroll, m_yScroll;
 	};
 
 	class LYNX_API MouseButtonEvent : public Event
 	{
-	public:
+	  public:
 		inline int getMouseButton() const { return m_button; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryMouseButton | EventCategoryInput)
 
-	protected:
+	  protected:
 		MouseButtonEvent(int button) : m_button(button) {}
 		int m_button;
 	};
 
 	class LYNX_API MouseButtonPressedEvent : public MouseButtonEvent
-		{
-	public:
+	{
+	  public:
 		MouseButtonPressedEvent(int button) : MouseButtonEvent(button) {}
 
 		EVENT_CLASS_TYPE(MouseButtonPressed)
@@ -55,9 +55,9 @@ namespace Lynx
 
 	class LYNX_API MouseButtonReleasedEvent : public MouseButtonEvent
 	{
-	public:
+	  public:
 		MouseButtonReleasedEvent(int button) : MouseButtonEvent(button) {}
 
 		EVENT_CLASS_TYPE(MouseButtonReleased)
 	};
-}
+} // namespace Lynx

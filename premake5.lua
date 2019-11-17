@@ -10,12 +10,9 @@ outputdir = ""
 
 includeDir = {}
 includeDir["glfw"] = "Lynx/vendor/glfw/include"
-includeDir["glad"] = "Lynx/vendor/glad/include"
 
 -- Includes the premake5 file from glfw
 include "Lynx/vendor/glfw"
-include "Lynx/vendor/glad"
-
 
 project "Lynx"
 	-- Sets type, language, and output directory for binaries and intermediates
@@ -35,26 +32,25 @@ project "Lynx"
 	pchsource "Lynx/src/pch.cpp"
 	
 	-- Adds all files inside Lynx recursively to project
-	files {"%{prj.name}/**.h", "%{prj.name}/**.cpp"}
+	files {"%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp"}
 	
 	-- Adds compiler include directories for Lynx and GLFW
 	includedirs
 	{
 		"%{prj.name}/src",
-		"%{includeDir.glfw}",
-		"%{includeDir.glad}"
+		"%{includeDir.glfw}"
 	}
 	
 	-- Links GLFW and opengl32 to the Lynx
 	links
 	{
 		"GLFW",
-		"glad"
 	}
+	--links (os.findlib("vulkan"))
 	
 	-- Specifies GCC options
-	configuration {"linux", "gmake2"}
-		buildoptions{"-std=c++17", "-pthread", "-fPIC"}
+	buildoptions {"-std=c++17", "-pthread", "-fPIC" ,"-lvulkan"}
+	linkoptions {"-lvulkan"}
 	
 	-- Specifies options for different configurations
 	-- Debug includes debug symbols and disables optimization
@@ -102,16 +98,14 @@ project "Sandbox"
 	{
 		"Lynx/src",
 		"%{prj.name}/src",
-		"%{includeDir.glfw}",
-		"%{includeDir.glad}"
+		"%{includeDir.glfw}"
 	}
 	
 	-- Links the Lynx DLL to Sandbox - GLFW are statically linked to Lynx
 	links("Lynx")
 	
 	-- Specifies GCC options
-	filter "system:linux and gmake2"
-		buildoptions{"-std=c++17", "-pthread"}
+	buildoptions{"-std=c++17", "-pthread", "-lvulkan"}
 		
 	-- Specifies debug symbols for different configurations
 	filter "configurations:Debug"

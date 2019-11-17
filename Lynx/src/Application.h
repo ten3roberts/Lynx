@@ -1,41 +1,51 @@
 #pragma once
 
-#include <Window.h>
+#include "Renderer/Renderer.h"
+#include "Window.h"
+
 #include "Events/ApplicationEvent.h"
 #include "Scene/LayerStack.h"
 
 namespace Lynx
 {
-    class LYNX_API Application
-    {
-        public:
-            Application();
-            virtual ~Application();
+	class LYNX_API Application
+	{
+	  public:
+		Application();
+		virtual ~Application();
 
-            void Run();
+		void Run();
 
+		void onEvent(Event& e);
 
-            void onEvent(Event& e);
+		// Adds a layer to the end of the stack
+		void AddLayer(Layer* layer);
+		void AddLayer(Layer* layer, size_t position);
 
-            
-            // Adds a layer to the end of the stack
-            void AddLayer(Layer* layer);
-            void AddLayer(Layer* layer, size_t position);
+		// Removes a layer from the stack and frees the memory
+		void RemoveLayer(size_t position);
+		void RemoveLayer(Layer* layer);
 
-            // Removes a layer from the stack and frees the memory
-            void RemoveLayer(size_t position);
-            void RemoveLayer(Layer* layer);
+		std::string getName() const { return m_name; }
 
-        private:
-            void onWindowClose(WindowCloseEvent& e);
-            LayerStack m_layerStack;
-	protected:
+		static Application* get() { return m_instance; }
+
+	  private:
+		static Application* m_instance;
+		void onWindowClose(WindowCloseEvent& e);
+		LayerStack m_layerStack;
+
+		// The renderer is a singleton and this is not the only reference pointer to it
+		Renderer* m_renderer;
+
+	  protected:
 		std::string m_name;
 		Window* m_window;
-		// Indicates if the update loop should continue. Set to true when entering update loop
+		// Indicates if the update loop should continue. Set to true when entering
+		// update loop
 		bool m_running;
-    };
+	};
 
-    // To be defined in client
+	// To be defined in client
 	Application* CreateApplication();
-}
+} // namespace Lynx

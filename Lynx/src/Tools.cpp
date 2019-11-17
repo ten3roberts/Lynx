@@ -1,9 +1,11 @@
-#include "pch.h"
 #include "Tools.h"
 
-#include <fstream>
-#include <filesystem>
 #include <limits.h>
+
+#include <filesystem>
+#include <fstream>
+
+#include "pch.h"
 
 #if PL_LINUX
 #include <unistd.h>
@@ -11,8 +13,8 @@
 #include <Windows.h>
 #include <direct.h>
 #include <shlobj_core.h>
-#include <sys/types.h>
 #include <stdio.h>
+#include <sys/types.h>
 #endif
 
 using namespace Math;
@@ -115,14 +117,15 @@ std::vector<std::string> Tools::strSplit(const std::string& str, const std::stri
 	int c = 0;
 	for (size_t i = 0, c = 0; i < str.size(); i++)
 	{
-		// Checks if current part is in an opening or closing quote that is not escaped
+		// Checks if current part is in an opening or closing quote that is not
+		// escaped
 		if (str[i] == '"' && !(i > 0 && str[i - 1] == '\\'))
 			in_quote = !in_quote;
 
 		if (str.substr(i, keyW.size()) == keyW && !(in_quote && ignore_quotes)) // Cursor att keyword
 		{
 			results.push_back(str.substr(c, i)); // Push left bit to results
-			c = i + 1; // Forward the left iterator to what i was
+			c = i + 1;							 // Forward the left iterator to what i was
 			i = 0;
 		}
 	}
@@ -138,14 +141,15 @@ std::vector<std::string> Tools::strSplit(const std::string& str, char keyW, bool
 	int c = 0;
 	for (size_t i = 0, c = 0; i < str.size(); i++)
 	{
-		// Checks if current part is in an opening or closing quote that is not escaped
+		// Checks if current part is in an opening or closing quote that is not
+		// escaped
 		if (str[i] == '"' && !(i > 0 && str[i - 1] == '\\'))
 			in_quote = !in_quote;
 
 		if (str[i] == keyW && !(in_quote && ignore_quotes)) // Cursor att keyword
 		{
 			results.push_back(str.substr(c, i)); // Push left bit to results
-			c = i + 1; // Forward the left iterator to what i was
+			c = i + 1;							 // Forward the left iterator to what i was
 			i = 0;
 		}
 	}
@@ -154,15 +158,9 @@ std::vector<std::string> Tools::strSplit(const std::string& str, char keyW, bool
 	return results;
 }
 
-std::string Tools::strClamp(const std::string& str, size_t size)
-{
-	return str.substr(0, size);
-}
+std::string Tools::strClamp(const std::string& str, size_t size) { return str.substr(0, size); }
 
-std::string Tools::strStop(const std::string& str, std::string keyW)
-{
-	return str.substr(str.find_first_of(keyW));
-}
+std::string Tools::strStop(const std::string& str, std::string keyW) { return str.substr(str.find_first_of(keyW)); }
 
 std::string Tools::strPurge(const std::string& str, const std::string& keyW)
 {
@@ -296,7 +294,6 @@ int Tools::ParseTime(const std::string& str)
 		if (parts[i].back() == 's')
 			parts[i].pop_back();
 
-
 		if (parts[i] == "second")
 		{
 			seconds += numi(parts[i - 1]);
@@ -322,9 +319,9 @@ int Tools::ParseTime(const std::string& str)
 
 std::string Tools::FormatTime(int seconds)
 {
-	int times[4] = { 0, 0, 0, 0 };// Days, Hours, Minutes, Seconds
+	int times[4] = {0, 0, 0, 0}; // Days, Hours, Minutes, Seconds
 
-	const std::string timesDef[] = { "day", "hour", "minute", "second" };
+	const std::string timesDef[] = {"day", "hour", "minute", "second"};
 
 	times[0] = seconds / 86400;
 	seconds = seconds % 86400;
@@ -336,7 +333,6 @@ std::string Tools::FormatTime(int seconds)
 	seconds = seconds % 60;
 
 	times[3] = seconds;
-
 
 	std::string result;
 
@@ -507,7 +503,6 @@ std::string Tools::FindFile(const std::string& file, const std::string& director
 		if (curr_file.size() < file.size())
 			continue;
 
-
 		LogF(curr_file.substr(curr_file.size() - file.size()));
 
 		// If the filename and the paths leding up to the file matches
@@ -527,14 +522,16 @@ std::string Tools::ReadFile(const std::string& filepath, bool create)
 	std::ifstream file(filepath);
 	std::string tmp, file_cont = "";
 	if (file.is_open())
-		while (std::getline(file, tmp)) { file_cont += tmp; }
+		while (std::getline(file, tmp))
+		{
+			file_cont += tmp;
+		}
 	else
 		LogW("Unable to open file: %S", ShortenString(filepath, 35));
 
 	file.close();
 
 	return file_cont;
-
 }
 
 std::vector<std::string> Tools::ReadFileLines(const std::string& filepath, bool create)
@@ -546,7 +543,10 @@ std::vector<std::string> Tools::ReadFileLines(const std::string& filepath, bool 
 	std::string tmp;
 	std::vector<std::string> file_cont;
 	if (file.is_open())
-		while (std::getline(file, tmp)) { file_cont.push_back(tmp); }
+		while (std::getline(file, tmp))
+		{
+			file_cont.push_back(tmp);
+		}
 	else
 		LogW("Unable to open file: %S", ShortenString(filepath, 35));
 
@@ -630,20 +630,18 @@ std::string Tools::getExtension(const std::string& path)
 std::string Tools::getFilename(const std::string& path, bool keepExtension)
 {
 	size_t slashIndex = path.find_last_of(SLASH);
-	return path.substr(slashIndex == std::string::npos ? 0 : slashIndex + 1, keepExtension ? path.size() : path.find_last_of(".") - slashIndex - 1);
+	return path.substr(slashIndex == std::string::npos ? 0 : slashIndex + 1,
+					   keepExtension ? path.size() : path.find_last_of(".") - slashIndex - 1);
 }
 
-std::string Tools::getPath(const std::string& path)
-{
-	return path.substr(0, path.find_last_of(SLASH) + 1);
-}
+std::string Tools::getPath(const std::string& path) { return path.substr(0, path.find_last_of(SLASH) + 1); }
 
 std::string Tools::ShortenPath(const std::string& path, int depth, bool omitIndicator)
 {
 	std::vector<size_t> pos = strFind(path, SLASH);
 	if (depth >= pos.size())
 		return path;
-	return  (omitIndicator ? "" : "...") + path.substr(pos[pos.size() - depth]);
+	return (omitIndicator ? "" : "...") + path.substr(pos[pos.size() - depth]);
 }
 
 std::string Tools::ShortenString(const std::string& str, size_t size, bool omitIndicator)
@@ -664,10 +662,12 @@ std::string Tools::DirUp(const std::string& path, size_t steps)
 	size_t lastFolder = *(folders.end() - steps - 1);
 
 	// Edge case for relative path
-	if (text == CURR_DIR) return PREV_DIR;
+	if (text == CURR_DIR)
+		return PREV_DIR;
 
 	// There are no folder names; only ../../
-	if (text.find_first_of("abcdefghijklmnopqrstuvwxyz") == std::string::npos) return "../" + text;
+	if (text.find_first_of("abcdefghijklmnopqrstuvwxyz") == std::string::npos)
+		return "../" + text;
 
 	return strLead(text.substr(0, lastFolder), SLASH);
 }
@@ -676,7 +676,8 @@ std::string vformat(std::string format, va_list vl)
 {
 	enum class Flag
 	{
-		None, Long
+		None,
+		Long
 	};
 	std::string result;
 	Flag flag = Flag::None;
@@ -685,7 +686,7 @@ std::string vformat(std::string format, va_list vl)
 		std::string a;
 		// Is a two wide substr of fmt
 		if (format[i] == '%' && !(i > 0 && format[i - 1] == SLASH) || flag != Flag::None) // Format expected
-			switch (format[i + 1]) // Checks next
+			switch (format[i + 1])														  // Checks next
 			{
 			case 'd': // Signed decimal integer
 				result += std::to_string(flag == Flag::None ? va_arg(vl, long int) : va_arg(vl, int));
@@ -762,10 +763,12 @@ std::string vformat(std::string format, va_list vl)
 				break;
 
 			case 'x': // Unsigned hexadecimal integer (lowercase)
-				result += Math::ToHex(flag == Flag::None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int), false);
+				result +=
+					Math::ToHex(flag == Flag::None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int), false);
 				break;
 			case 'X': // Unsigned hexadecimal integer (uppercase)
-				result += Math::ToHex(flag == Flag::None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int), true);
+				result +=
+					Math::ToHex(flag == Flag::None ? va_arg(vl, unsigned long int) : va_arg(vl, unsigned int), true);
 				break;
 			case 'f': // Decimal double (lowercase)
 				result += std::to_string(va_arg(vl, double));
@@ -777,35 +780,43 @@ std::string vformat(std::string format, va_list vl)
 				result += (va_arg(vl, int) ? "true" : "false");
 				break;
 			case 'e': // Scientific notation lowercase
-			{char buffer[max_loglength];
-			snprintf(buffer, max_loglength, "%e", va_arg(vl, double));
-			result.append(buffer);
-			break; }
+			{
+				char buffer[max_loglength];
+				snprintf(buffer, max_loglength, "%e", va_arg(vl, double));
+				result.append(buffer);
+				break;
+			}
 			case 'E': // Scientific notation uppercase
-			{char buffer[max_loglength];
-			snprintf(buffer, max_loglength, "%E", va_arg(vl, double));
-			result.append(buffer);
-			break; }
-			case 'g':
-			{	char buffer[max_loglength];
-			snprintf(buffer, max_loglength, "%g", va_arg(vl, double));
-			result.append(buffer);
-			break; }
-			case 'G':
-			{	char buffer[max_loglength];
-			snprintf(buffer, max_loglength, "%G", va_arg(vl, double));
-			result.append(buffer);
-			break; }
-			case 'a':
-			{	char buffer[max_loglength];
-			snprintf(buffer, max_loglength, "%a", va_arg(vl, double));
-			result.append(buffer);
-			break; }
-			case 'A':
-			{	char buffer[max_loglength];
-			snprintf(buffer, max_loglength, "%A", va_arg(vl, double));
-			result.append(buffer);
-			break; }
+			{
+				char buffer[max_loglength];
+				snprintf(buffer, max_loglength, "%E", va_arg(vl, double));
+				result.append(buffer);
+				break;
+			}
+			case 'g': {
+				char buffer[max_loglength];
+				snprintf(buffer, max_loglength, "%g", va_arg(vl, double));
+				result.append(buffer);
+				break;
+			}
+			case 'G': {
+				char buffer[max_loglength];
+				snprintf(buffer, max_loglength, "%G", va_arg(vl, double));
+				result.append(buffer);
+				break;
+			}
+			case 'a': {
+				char buffer[max_loglength];
+				snprintf(buffer, max_loglength, "%a", va_arg(vl, double));
+				result.append(buffer);
+				break;
+			}
+			case 'A': {
+				char buffer[max_loglength];
+				snprintf(buffer, max_loglength, "%A", va_arg(vl, double));
+				result.append(buffer);
+				break;
+			}
 			case 'c': // Character
 				result += va_arg(vl, int);
 			case 's': // C String
@@ -814,14 +825,15 @@ std::string vformat(std::string format, va_list vl)
 				result += (tmp ? tmp : "(null)");
 				break;
 			}
-			case 'S': //C++ std::string
+			case 'S': // C++ std::string
 				result += va_arg(vl, std::string);
 				break;
-			case 'p':
-			{	char buffer[max_loglength];
-			snprintf(buffer, max_loglength, "%p", va_arg(vl, void*));
-			result.append(buffer);
-			break; }
+			case 'p': {
+				char buffer[max_loglength];
+				snprintf(buffer, max_loglength, "%p", va_arg(vl, void*));
+				result.append(buffer);
+				break;
+			}
 			case '%': // String
 				result += "%";
 				break;

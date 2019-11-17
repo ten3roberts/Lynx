@@ -1,10 +1,11 @@
-#include "pch.h"
 #include "Vector.h"
-#include "Math.h"
+
 #include <iostream>
 
-using namespace Tools;
+#include "Math.h"
+#include "pch.h"
 
+using namespace Tools;
 
 Vector::Vector(size_t size) : m_size(size)
 {
@@ -71,7 +72,7 @@ Vector Vector::Parse(const std::string& str)
 Vector Vector::OnSphere(size_t size, float radius)
 {
 	Vector result(size);
-	for(size_t i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 		result[i] = (2.0f * std::rand() / RAND_MAX) - 1.0f;
 
 	return result.Normalize() * radius;
@@ -155,7 +156,6 @@ Vector Vector::operator/(const Vector& vec) const
 	return result;
 }
 
-
 Vector Vector::operator+(float scalar) const
 {
 	Vector result(m_size);
@@ -188,8 +188,6 @@ Vector Vector::operator/(float scalar) const
 	return result;
 }
 
-
-
 // operator "?=":
 void Vector::operator+=(const Vector& vec)
 {
@@ -206,7 +204,6 @@ void Vector::operator-=(const Vector& vec)
 	for (size_t i = 0; i < m_size; i++)
 		m_data[i] -= vec.get(i);
 }
-
 
 void Vector::operator*=(const Vector& vec)
 {
@@ -236,7 +233,6 @@ void Vector::operator-=(float scalar)
 		m_data[i] -= scalar;
 }
 
-
 void Vector::operator*=(float scalar)
 {
 	for (size_t i = 0; i < m_size; i++)
@@ -249,7 +245,6 @@ void Vector::operator/=(float scalar)
 		m_data[i] /= scalar;
 }
 
-
 float Vector::SqrMagnitude() const
 {
 	float result = 0;
@@ -258,7 +253,6 @@ float Vector::SqrMagnitude() const
 	return result;
 }
 
-
 float Vector::Magnitude() const
 {
 	float result = 0;
@@ -266,7 +260,6 @@ float Vector::Magnitude() const
 		result += m_data[i] * m_data[i];
 	return sqrtf(result);
 }
-
 
 // Multiplies the components together
 float Vector::Volume() const
@@ -353,4 +346,3 @@ Vector Vector::Lerp(Vector a, Vector b, float t)
 		result[i] = a[i] * (1 - t) + b[i] * t;
 	return result;
 }
-

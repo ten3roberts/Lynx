@@ -1,10 +1,10 @@
 #pragma once
 #include <pch.h>
+#include <stdarg.h> /* va_list, va_start, va_arg, va_end */
+#include <stdio.h>
+
 #include <ostream>
 #include <sstream>
-
-#include <stdio.h>
-#include <stdarg.h>     /* va_list, va_start, va_arg, va_end */
 
 #define max_loglength 512
 
@@ -21,5 +21,3 @@ extern void LYNX_API LogE(const std::string& author, std::string format, ...);
 extern void LYNX_API LogW(const std::string& author, std::string format, ...);
 
 #define LOG(x) LogS(std::string(__FILE__), std::string(x));
-
-

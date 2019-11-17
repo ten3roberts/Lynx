@@ -1,40 +1,29 @@
-#include "pch.h"
-
 #include <sstream>
+
+#include "pch.h"
 
 using namespace Tools;
 
-const Vector3 Vector3::red = { 1,0,0 };
-const Vector3 Vector3::green = { 0,1,0 };
-const Vector3 Vector3::blue = { 0,0,1 };
-const Vector3 Vector3::white = { 1,1,1 };
-const Vector3 Vector3::black = { 0,0,0 };
+const Vector3 Vector3::red = {1, 0, 0};
+const Vector3 Vector3::green = {0, 1, 0};
+const Vector3 Vector3::blue = {0, 0, 1};
+const Vector3 Vector3::white = {1, 1, 1};
+const Vector3 Vector3::black = {0, 0, 0};
 
+const Vector3 Vector3::forward = {0, 0, 1};
+const Vector3 Vector3::back = {0, 0, -1};
+const Vector3 Vector3::up = {0, 1, 0};
+const Vector3 Vector3::down = {0, -1, 0};
+const Vector3 Vector3::right = {1, 0, 0};
+const Vector3 Vector3::left = {-1, 0, 0};
+const Vector3 Vector3::zero = {0, 0, 0};
+const Vector3 Vector3::one = {1, 1, 1};
 
-const Vector3 Vector3::forward = { 0,0,1 };
-const Vector3 Vector3::back = { 0,0,-1 };
-const Vector3 Vector3::up = { 0,1,0 };
-const Vector3 Vector3::down = { 0,-1,0 };
-const Vector3 Vector3::right = { 1,0,0 };
-const Vector3 Vector3::left = { -1,0,0 };
-const Vector3 Vector3::zero = { 0,0,0 };
-const Vector3 Vector3::one = { 1, 1, 1 };
+Vector3::Vector3() : x(0), y(0), z(0) {}
 
+Vector3::Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
 
-
-Vector3::Vector3() :
-	x(0), y(0), z(0)
-{
-}
-
-Vector3::Vector3(float x, float y, float z) :
-	x(x), y(y), z(z)
-{
-}
-
-Vector3::Vector3(float setTo) : x(setTo), y(setTo), z(setTo)
-{
-}
+Vector3::Vector3(float setTo) : x(setTo), y(setTo), z(setTo) {}
 
 Vector3::Vector3(const std::string& str) : x(0), y(0), z(0)
 {
@@ -62,14 +51,16 @@ Vector3 Vector3::HSV(float h, float s, float v)
 	float hh, p, q, t, ff;
 	long i;
 
-	if (s <= 0.0f) {       //  < is bogus, just shuts up warnings
+	if (s <= 0.0f)
+	{ //  < is bogus, just shuts up warnings
 		out.r = v;
 		out.g = v;
 		out.b = v;
 		return out;
 	}
 	hh = h;
-	if (hh >= 1) hh = 0.0f;
+	if (hh >= 1)
+		hh = 0.0f;
 	hh /= 1 / 6.0f;
 	i = (long)hh;
 	ff = hh - i;
@@ -77,7 +68,8 @@ Vector3 Vector3::HSV(float h, float s, float v)
 	q = v * (1.0f - (s * ff));
 	t = v * (1.0f - (s * (1.0f - ff)));
 
-	switch (i) {
+	switch (i)
+	{
 	case 0:
 		out.r = v;
 		out.g = t;
@@ -114,25 +106,16 @@ Vector3 Vector3::HSV(float h, float s, float v)
 	return out;
 }
 
-Vector3 Vector3::OnSphere(float radius)
-{
-	return Random::OnSphere(radius);
-}
+Vector3 Vector3::OnSphere(float radius) { return Random::OnSphere(radius); }
 
-Vector3 Vector3::InSphere(float outerRadius, float innerRadius)
-{
-	return Random::InSphere(outerRadius, innerRadius);
-}
+Vector3 Vector3::InSphere(float outerRadius, float innerRadius) { return Random::InSphere(outerRadius, innerRadius); }
 
 Vector3 Vector3::InSphereEven(float outerRadius, float innerRadius)
 {
 	return Random::InSphereEven(outerRadius, innerRadius);
 }
 
-Vector3 Vector3::InCube(float width)
-{
-	return Random::InCube(width);
-}
+Vector3 Vector3::InCube(float width) { return Random::InCube(width); }
 
 Vector3 Vector3::HSV(Vector3 hsv)
 {
@@ -142,14 +125,16 @@ Vector3 Vector3::HSV(Vector3 hsv)
 	float hh, p, q, t, ff;
 	long i;
 
-	if (hsv.s <= 0.0f) {       //  < is bogus, just shuts up warnings
+	if (hsv.s <= 0.0f)
+	{ //  < is bogus, just shuts up warnings
 		out.r = hsv.v;
 		out.g = hsv.v;
 		out.b = hsv.v;
 		return out;
 	}
 	hh = hsv.h;
-	if (hh >= 1) hh = 0.0f;
+	if (hh >= 1)
+		hh = 0.0f;
 	hh /= 1 / 6.0f;
 	i = (long)hh;
 	ff = hh - i;
@@ -157,7 +142,8 @@ Vector3 Vector3::HSV(Vector3 hsv)
 	q = hsv.v * (1.0f - (hsv.s * ff));
 	t = hsv.v * (1.0f - (hsv.s * (1.0f - ff)));
 
-	switch (i) {
+	switch (i)
+	{
 	case 0:
 		out.r = hsv.v;
 		out.g = t;
@@ -194,13 +180,11 @@ Vector3 Vector3::HSV(Vector3 hsv)
 	return out;
 }
 
-Vector3::~Vector3()
-{
-}
+Vector3::~Vector3() {}
 
 /*Vector3 Vector3::ToRotation()
 {
-	return Vector3(cos(y)*cos(x), sin(x), sin(y)*cos(x));
+		return Vector3(cos(y)*cos(x), sin(x), sin(y)*cos(x));
 }*/
 
 void Vector3::operator=(const Vector3& vec3)
@@ -210,45 +194,21 @@ void Vector3::operator=(const Vector3& vec3)
 	z = vec3.z;
 }
 
-Vector3 Vector3::operator+(const Vector3& vec3) const
-{
-	return Vector3(x + vec3.x, y + vec3.y, z + vec3.z);
-}
+Vector3 Vector3::operator+(const Vector3& vec3) const { return Vector3(x + vec3.x, y + vec3.y, z + vec3.z); }
 
-Vector3 Vector3::operator-(const Vector3& vec3) const
-{
-	return Vector3(x - vec3.x, y - vec3.y, z - vec3.z);
-}
+Vector3 Vector3::operator-(const Vector3& vec3) const { return Vector3(x - vec3.x, y - vec3.y, z - vec3.z); }
 
-Vector3 Vector3::operator*(const Vector3& vec3) const
-{
-	return Vector3(x * vec3.x, y * vec3.y, z * vec3.z);
-}
+Vector3 Vector3::operator*(const Vector3& vec3) const { return Vector3(x * vec3.x, y * vec3.y, z * vec3.z); }
 
-Vector3 Vector3::operator/(const Vector3& vec3) const
-{
-	return Vector3(x / vec3.x, y / vec3.y, z / vec3.z);
-}
+Vector3 Vector3::operator/(const Vector3& vec3) const { return Vector3(x / vec3.x, y / vec3.y, z / vec3.z); }
 
-Vector3 Vector3::operator+(float scalar) const
-{
-	return Vector3(x + scalar, y + scalar, z + scalar);
-}
+Vector3 Vector3::operator+(float scalar) const { return Vector3(x + scalar, y + scalar, z + scalar); }
 
-Vector3 Vector3::operator-(float scalar) const
-{
-	return Vector3(x - scalar, y - scalar, z - scalar);
-}
+Vector3 Vector3::operator-(float scalar) const { return Vector3(x - scalar, y - scalar, z - scalar); }
 
-Vector3 Vector3::operator*(float scalar) const
-{
-	return Vector3(x * scalar, y * scalar, z * scalar);
-}
+Vector3 Vector3::operator*(float scalar) const { return Vector3(x * scalar, y * scalar, z * scalar); }
 
-Vector3 Vector3::operator/(float scalar) const
-{
-	return Vector3(x / scalar, y / scalar, z / scalar);
-}
+Vector3 Vector3::operator/(float scalar) const { return Vector3(x / scalar, y / scalar, z / scalar); }
 
 // operator "?=":
 
@@ -271,7 +231,6 @@ void Vector3::operator*=(const Vector3& vec3)
 	x *= vec3.x;
 	y *= vec3.y;
 	z *= vec3.z;
-
 }
 
 void Vector3::operator/=(const Vector3& vec3)
@@ -309,15 +268,9 @@ void Vector3::operator/=(float scalar)
 	z /= scalar;
 }
 
-float Vector3::SqrMagnitude() const
-{
-	return x * x + y * y + z * z;
-}
+float Vector3::SqrMagnitude() const { return x * x + y * y + z * z; }
 
-float Vector3::Magnitude() const
-{
-	return sqrt(x * x + y * y + z * z);
-}
+float Vector3::Magnitude() const { return sqrt(x * x + y * y + z * z); }
 
 void Vector3::Normalize(Vector3* out)
 {
@@ -327,9 +280,8 @@ void Vector3::Normalize(Vector3* out)
 
 	Vector3 outVec(x / mag, y / mag, z / mag);
 	if (out)
-		* out = outVec;
+		*out = outVec;
 	return;
-
 }
 
 Vector3 Vector3::Normalize() const
@@ -400,11 +352,7 @@ Vector3 Vector3::ClampMax(float max) const
 	return result;
 }
 
-
-float Vector3::Dot(Vector3 a, Vector3 b)
-{
-	return a.x * b.x + a.y * b.y + a.z * b.z;
-}
+float Vector3::Dot(Vector3 a, Vector3 b) { return a.x * b.x + a.y * b.y + a.z * b.z; }
 
 Vector3 Vector3::Project(const Vector3& vector, const Vector3& axis)
 {
@@ -442,7 +390,7 @@ Vector3 Vector3::Slerp(const Vector3& a, const Vector3& b, float t)
 	Vector3 axis = Cross(b, a);
 	axis.Normalize(&axis);
 
-	//  get the angle to rotate around the axis 
+	//  get the angle to rotate around the axis
 	//  NOTE: from and to must be of unit length!!!
 	float angleRads = acosf(Dot(b, a));
 
@@ -454,5 +402,3 @@ Vector3 Vector3::Slerp(const Vector3& a, const Vector3& b, float t)
 
 	return result;
 }
-
-

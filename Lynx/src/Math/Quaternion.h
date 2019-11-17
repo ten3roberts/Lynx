@@ -5,7 +5,7 @@ struct Matrix4;
 
 struct Quaternion
 {
-public:
+  public:
 	Quaternion();
 	Quaternion(const Vector3& axis, float angle); // Axis angle rotations
 	Quaternion(float x, float y, float z, float w);
@@ -16,13 +16,14 @@ public:
 	// Creates a quaternion from an euler rotation
 	static Quaternion Euler(const Vector3& euler);
 
-	// Will create a new quaternion pointing along to specified direction. Direction does not need to be Normalized
+	// Will create a new quaternion pointing along to specified direction.
+	// Direction does not need to be Normalized
 	static Quaternion PointTo(const Vector3& direction);
-	// Will create a new quaternion to rotate from its current position to %direction%
+	// Will create a new quaternion to rotate from its current position to
+	// %direction%
 	static Quaternion PointTo(const Vector3& sourcePoint, const Vector3& destinationPoint);
 
-	
-		float x, y, z, w;
+	float x, y, z, w;
 
 	operator std::string()
 	{
@@ -34,8 +35,8 @@ public:
 	Quaternion operator*(float scalar) const;
 	Quaternion operator*(const Quaternion& q) const;
 
-	Quaternion operator+ (const Quaternion& q) const;
-	Quaternion operator- (const Quaternion& q) const;
+	Quaternion operator+(const Quaternion& q) const;
+	Quaternion operator-(const Quaternion& q) const;
 
 	// Vector transformation
 	Vector3 operator*(const Vector3& vec) const;
@@ -65,9 +66,12 @@ public:
 
 	inline std::string str() const { return std::string(STR(x) + ", " + STR(y) + ", " + STR(z) + ", " + STR(w)); }
 
-	// Quaternion should always be a unit quaternion; only use for debugging purposes
-	inline std::string str_d() const { return std::string(STR(x) + ", " + STR(y) + ", " + STR(z) + ", " + STR(w) + "; " + STR(Magnitude())); }
-
+	// Quaternion should always be a unit quaternion; only use for debugging
+	// purposes
+	inline std::string str_d() const
+	{
+		return std::string(STR(x) + ", " + STR(y) + ", " + STR(z) + ", " + STR(w) + "; " + STR(Magnitude()));
+	}
 
 	static const Quaternion identity;
 	static float Dot(const Quaternion& q0, const Quaternion& q1);
@@ -76,6 +80,3 @@ public:
 };
 
 typedef Quaternion quat;
-
-
-

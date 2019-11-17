@@ -6,38 +6,36 @@ namespace Lynx
 {
 	class LYNX_API KeyEvent : public Event
 	{
-	public:
+	  public:
 		inline int getKeyCode() const { return m_keyCode; }
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 
-	protected:
+	  protected:
 		KeyEvent(int keyCode) : m_keyCode(keyCode) {}
 		int m_keyCode;
 	};
 
 	class LYNX_API KeyPressedEvent : public KeyEvent
 	{
-	public:
+	  public:
 		KeyPressedEvent(int keyCode, int repeatCount) : KeyEvent(keyCode), m_repeatCount(repeatCount) {}
 		EVENT_CLASS_TYPE(KeyPressed)
 
-		std::string getString() const override 
+		std::string getString() const override
 		{
 			return format("KeyPressedEvent : [%d %c] (%d repeats)", m_keyCode, m_keyCode, m_repeatCount);
 		}
-	private:
+
+	  private:
 		int m_repeatCount;
 	};
 
 	class LYNX_API KeyReleasedEvent : public KeyEvent
 	{
-	public:
+	  public:
 		KeyReleasedEvent(int keyCode) : KeyEvent(keyCode) {}
 		EVENT_CLASS_TYPE(KeyReleased)
 
-		std::string getString() const override 
-		{
-			return format("KeyReleasedEvent : [%d %c]", m_keyCode, m_keyCode);
-		}
+		std::string getString() const override { return format("KeyReleasedEvent : [%d %c]", m_keyCode, m_keyCode); }
 	};
-}
+} // namespace Lynx

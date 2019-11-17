@@ -1,9 +1,8 @@
 #pragma once
 
-#include <pch.h>
-#include <chrono>
-
 #include <Math/Math.h>
+#include <pch.h>
+
 #include <chrono>
 #include <thread>
 
@@ -11,10 +10,17 @@ using namespace std::chrono_literals;
 
 class LYNX_API Time
 {
-public:
+  public:
 	enum TimePrecision
 	{
-		PREC_YEAR, PREC_MONTH, PREC_DAY, PREC_HOUR, PREC_MINUTE, PREC_SECOND, ONLY_TIME, ONLY_DATE
+		PREC_YEAR,
+		PREC_MONTH,
+		PREC_DAY,
+		PREC_HOUR,
+		PREC_MINUTE,
+		PREC_SECOND,
+		ONLY_TIME,
+		ONLY_DATE
 	};
 
 	static void Init();
@@ -24,7 +30,7 @@ public:
 	static std::string getDateAndTime(const std::string& format = "%Y-%m-%d_%H.%M.%S");
 	static std::string getDateAndTime(time_t timepoint, const std::string& format = "%Y-%m-%d_%H.%M.%S");
 
-public:
+  public:
 	static float frameRate;
 	static float deltaTime;
 	static float unscaledDeltaTime;
@@ -38,14 +44,7 @@ public:
 	static time_t startPoint;
 	static int frameCount;
 
-
 	static std::chrono::high_resolution_clock::time_point startTime;
 	static std::chrono::high_resolution_clock::time_point prevTime;
 	static std::chrono::high_resolution_clock::time_point currentTime;
 };
-
-
-
-
-
-

@@ -1,6 +1,8 @@
-#include "pch.h"
 #include "Logger.h"
+
 #include <iostream>
+
+#include "pch.h"
 
 #if PL_WINDOWS
 #include <Windows.h>
@@ -20,10 +22,7 @@ static std::ofstream logFile;
 #endif
 
 #if PL_LINUX
-void writeColor(const std::string& msg, const char* color_code)
-{
-	printf("%s%s\u001b[0m", color_code, msg.c_str());
-}
+void writeColor(const std::string& msg, const char* color_code) { printf("%s%s\u001b[0m", color_code, msg.c_str()); }
 #elif PL_WINDOWS
 void writeColor(const std::string& msg, int color)
 {
@@ -38,28 +37,30 @@ void writeColor(const std::string& msg, int color)
 
 #define TIME_STAMP Time::getDateAndTime("%H.%M.%S")
 
-// Checks to see if the frame changes to put a divider between log calls on different frames
+// Checks to see if the frame changes to put a divider between log calls on
+// different frames
 static int frame;
 void LogS(const std::string& author, std::string format, ...)
 {
 	enum Flag
 	{
-		None, Long
+		None,
+		Long
 	};
 
 	va_list vl;
 	va_start(vl, format);
 
-	std::string fullMsg = '(' + (author == "" ? "Log" : author) + " @ " +
-		TIME_STAMP + "): " + vformat(format, vl);
+	std::string fullMsg = '(' + (author == "" ? "Log" : author) + " @ " + TIME_STAMP + "): " + vformat(format, vl);
 
 	if (!logFile.is_open())
 	{
 		// Creates one logfile for each minute
-		std::string logfile_name = CURR_DIR + std::string("Logs") + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
-		
+		std::string logfile_name =
+			CURR_DIR + std::string("Logs") + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
+
 		Tools::GenerateFile(logfile_name, "");
-		
+
 		logFile.open(logfile_name);
 		LogW("Logger", "Creating new logfile %S", logfile_name);
 	}
@@ -88,7 +89,8 @@ void LogF(std::string format, ...)
 
 	if (!logFile.is_open())
 	{
-		std::string logfile_name = CURR_DIR + std::string("Logs") + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
+		std::string logfile_name =
+			CURR_DIR + std::string("Logs") + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
 		Tools::GenerateFile(logfile_name, "");
 		logFile.open(logfile_name);
 		LogW("Logger", "Creating new logfile %S", logfile_name);
@@ -113,18 +115,19 @@ void LogE(const std::string& author, std::string format, ...)
 {
 	enum Flag
 	{
-		None, Long
+		None,
+		Long
 	};
 
 	va_list vl;
 	va_start(vl, format);
 
-	std::string fullMsg = '(' + (author == "" ? "Log" : author) + " @ " +
-		TIME_STAMP + "): " + vformat(format, vl);
+	std::string fullMsg = '(' + (author == "" ? "Log" : author) + " @ " + TIME_STAMP + "): " + vformat(format, vl);
 
 	if (!logFile.is_open())
 	{
-		std::string logfile_name = CURR_DIR + std::string("Logs")+ Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
+		std::string logfile_name =
+			CURR_DIR + std::string("Logs") + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
 		Tools::GenerateFile(logfile_name, "");
 		logFile.open(logfile_name);
 		LogW("Logger", "Creating new logfile %S", logfile_name);
@@ -142,27 +145,28 @@ void LogE(const std::string& author, std::string format, ...)
 	logFile.write(fullMsg.c_str(), fullMsg.size());
 	logFile.flush();
 	va_end(vl);
-	#if ERROR_DELAY
-		SLEEPFOR(ERROR_DELAY);
-	#endif
+#if ERROR_DELAY
+	SLEEPFOR(ERROR_DELAY);
+#endif
 }
 
 void LogW(const std::string& author, std::string format, ...)
 {
 	enum Flag
 	{
-		None, Long
+		None,
+		Long
 	};
 
 	va_list vl;
 	va_start(vl, format);
 
-	std::string fullMsg = '(' + (author == "" ? "Log" : author) + " @ " +
-		TIME_STAMP + "): " + vformat(format, vl);
+	std::string fullMsg = '(' + (author == "" ? "Log" : author) + " @ " + TIME_STAMP + "): " + vformat(format, vl);
 
 	if (!logFile.is_open())
 	{
-		std::string logfile_name = CURR_DIR + std::string("Logs") + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
+		std::string logfile_name =
+			CURR_DIR + std::string("Logs") + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
 		Tools::GenerateFile(logfile_name, "");
 		logFile.open(logfile_name);
 		LogW("Logger", "Creating new logfile %S", logfile_name);

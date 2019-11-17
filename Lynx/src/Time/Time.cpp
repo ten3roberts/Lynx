@@ -1,8 +1,9 @@
-#include "pch.h"
 #include "Time/Time.h"
-#include "Tools.h"
 
 #include <sstream>
+
+#include "Tools.h"
+#include "pch.h"
 
 float Time::frameRate = 0.0;
 float Time::deltaTime = 0.0;
@@ -44,9 +45,9 @@ void Time::Update()
 }
 std::string Time::getDateAndTime(const std::string& format)
 {
-	time_t     now = time(0);
-	struct tm  tstruct;
-	char       buf[64];
+	time_t now = time(0);
+	struct tm tstruct;
+	char buf[64];
 	tstruct = *localtime(&now);
 
 	strftime(buf, sizeof(buf), format.c_str(), &tstruct);
@@ -56,15 +57,12 @@ std::string Time::getDateAndTime(const std::string& format)
 
 std::string Time::getDateAndTime(time_t timepoint, const std::string& format)
 {
-	time_t     now = timepoint;
-	struct tm  tstruct;
-	char       buf[64];
+	time_t now = timepoint;
+	struct tm tstruct;
+	char buf[64];
 	tstruct = *localtime(&now);
 
 	strftime(buf, sizeof(buf), format.c_str(), &tstruct);
 
 	return buf;
 }
-
-
-

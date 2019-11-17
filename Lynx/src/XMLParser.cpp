@@ -1,32 +1,41 @@
-#include "pch.h"
 #include "XMLParser.h"
+
+#include "pch.h"
 
 using namespace Tools;
 
 namespace Lynx
 {
-	XMLNode::XMLNode(const std::string& filename) : m_tag(""), m_content(""), m_children(), m_depth(0), m_parent(nullptr), m_valid(true)
+	XMLNode::XMLNode(const std::string& filename)
+		: m_tag(""), m_content(""), m_children(), m_depth(0), m_parent(nullptr), m_valid(true)
 	{
 		m_filepath = FindFile(filename);
 		std::ifstream file(m_filepath);
 		std::string tmp, file_cont = "";
 		if (!file.is_open())
 		{
-			m_valid = false; return;
+			m_valid = false;
+			return;
 		}
-		while (std::getline(file, tmp)) { file_cont += tmp; }
-		if (!file_cont.size()) { m_valid = false; return; }
+		while (std::getline(file, tmp))
+		{
+			file_cont += tmp;
+		}
+		if (!file_cont.size())
+		{
+			m_valid = false;
+			return;
+		}
 		Load(file_cont);
 	}
 
-
 	/*XMLNode::XMLNode(const XMLNode& node)
 	{
-		m_attributes = node.m_attributes;
-		m_children = node.m_children;
-		m_parent = node.m_parent;
-		m_depth = node.m_depth;
-		m_tag = node.m_tag;
+			m_attributes = node.m_attributes;
+			m_children = node.m_children;
+			m_parent = node.m_parent;
+			m_depth = node.m_depth;
+			m_tag = node.m_tag;
 	}*/
 
 	XMLNode::~XMLNode()
@@ -43,13 +52,13 @@ namespace Lynx
 
 	std::string XMLNode::Load(std::string str)
 	{
-		///Removes unnecessary new line and tab characters
+		/// Removes unnecessary new line and tab characters
 		str = strPurgeAll(str, "\n\t");
 		std::string org = str;
-		//Finds the beginning of the opening tag
+		// Finds the beginning of the opening tag
 		size_t tag_open;
 
-		//Skipping processing instructions
+		// Skipping processing instructions
 		while (true)
 		{
 			tag_open = str.find('<');
@@ -68,17 +77,17 @@ namespace Lynx
 		if (tag_open == std::string::npos)
 			return str;
 
-		//Finds the end of the opening tag
+		// Finds the end of the opening tag
 		size_t tag_end = str.find('>');
 
-		//Divides the inside of the tag into several parts. [0] is the tag name. The other optional ones are attributes
+		// Divides the inside of the tag into several parts. [0] is the tag name. The
+		// other optional ones are attributes
 		std::vector<std::string> tag_parts = strSplit(str.substr(0, tag_end), ' ', true);
 		if (!tag_parts.size())
 			return str;
 		m_tag = tag_parts[0];
 		if (!m_tag.size())
 			return "";
-
 
 		if (tag_parts.size() > 1)
 		{
@@ -92,8 +101,8 @@ namespace Lynx
 			}
 		}
 
-		//Indicates the beginning of the closing tag
-		if (str[tag_end - 1] == '/') //Node is empty
+		// Indicates the beginning of the closing tag
+		if (str[tag_end - 1] == '/') // Node is empty
 		{
 			m_content = "";
 			return org.substr(0, tag_open) + str.substr(tag_end + 1);
@@ -101,12 +110,11 @@ namespace Lynx
 		size_t close_tag = str.find("</" + m_tag + ">");
 		if (close_tag == std::string::npos)
 			return "";
-		//Find the body between the opening and closing tag
+		// Find the body between the opening and closing tag
 		std::string body = str.substr(tag_end + 1, close_tag - tag_end - 1);
 
-
-		//Find the children inside of the body. Children returns the part after them
-		//Breaks the loop when there are no more childs in the body
+		// Find the children inside of the body. Children returns the part after them
+		// Breaks the loop when there are no more childs in the body
 		while (body.size())
 		{
 			XMLNode* child = new XMLNode(this, m_depth + 1, m_valid);
@@ -117,8 +125,7 @@ namespace Lynx
 			}
 			body = tmp;
 
-
-			//Checks if the child was valid
+			// Checks if the child was valid
 			if (!child->getTag().size())
 				continue;
 			m_children[child->getTag()].push_back(child);
@@ -144,17 +151,18 @@ namespace Lynx
 		else if (m_content.size())
 			body += m_content;
 
-		//Generating all the childs string
+		// Generating all the childs string
 		for (int i = 0; i < m_children.size(); i++)
 		{
-
 			std::vector<XMLNode*>& children = *getChildren(i);
 			for (int j = 0; j < children.size(); j++)
 			{
 				if (i > 0 || j > 0)
 					body += '\n';
 				const std::string& tmp = children[j]->GenerateString();
-				body += (tmp.find('\n') != std::string::npos || m_children.size() > 1 || m_content.size() ? tabs + '\t' : "") + tmp;
+				body += (tmp.find('\n') != std::string::npos || m_children.size() > 1 || m_content.size() ? tabs + '\t'
+																										  : "") +
+						tmp;
 			}
 		}
 
@@ -165,26 +173,19 @@ namespace Lynx
 		return body;
 	}
 
-	void XMLNode::Save(std::string filepath)
-	{
-		GenerateFile(filepath, GenerateString(), false);
-	}
+	void XMLNode::Save(std::string filepath) { GenerateFile(filepath, GenerateString(), false); }
 
-	void XMLNode::Save()
-	{
-		GenerateFile(m_filepath, GenerateString(), false);
-	}
+	void XMLNode::Save() { GenerateFile(m_filepath, GenerateString(), false); }
 
 	XMLNode* XMLNode::Find(const std::string& tag)
 	{
 		if (m_tag == tag)
 			return this;
 
-		//Generating all the childs string
+		// Generating all the childs string
 		XMLNode* result = nullptr;
 		for (int i = 0; i < m_children.size(); i++)
 		{
-
 			std::vector<XMLNode*>& children = *getChildren(i);
 			for (int j = 0; j < children.size(); j++)
 			{
@@ -195,4 +196,4 @@ namespace Lynx
 		}
 		return nullptr;
 	}
-}
+} // namespace Lynx

@@ -11,6 +11,6 @@ int main(int argc, char** argv)
 	Tools::setWorkingDir(Tools::DirUp(argv[0]));
 
 	auto application = Lynx::CreateApplication();
-    application->Run();
-    delete application;
+	application->Run();
+	delete application;
 }

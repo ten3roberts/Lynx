@@ -2,67 +2,60 @@
 
 #include <Events/Event.h>
 
-namespace Lynx {
+namespace Lynx
+{
 
 	class LYNX_API WindowResizeEvent : public Event
 	{
-	public:
-		WindowResizeEvent(unsigned int width, unsigned int height)
-			: m_width(width), m_height(height) {}
+	  public:
+		WindowResizeEvent(unsigned int width, unsigned int height) : m_width(width), m_height(height) {}
 
 		inline unsigned int getWidth() const { return m_width; }
 		inline unsigned int getHeight() const { return m_height; }
 
 		EVENT_CLASS(WindowResize, EventCategoryWindow | EventCategoryApplication)
 
-		std::string getString() const override 
-		{
-			return format("WindowResizeEvent : [%d %d]", m_width, m_height);
-		}
-	private:
+		std::string getString() const override { return format("WindowResizeEvent : [%d %d]", m_width, m_height); }
+
+	  private:
 		unsigned int m_width, m_height;
 	};
 
 	class LYNX_API WindowCloseEvent : public Event
 	{
-	public:
+	  public:
 		WindowCloseEvent() {}
 
 		EVENT_CLASS(WindowClose, EventCategoryWindow | EventCategoryApplication)
 
-		std::string getString() const override 
-		{
-			return format("WindowCloseEvent");
-		}
+		std::string getString() const override { return format("WindowCloseEvent"); }
 	};
 
 	class LYNX_API WindowFocusEvent : public Event
 	{
-	public:
+	  public:
 		WindowFocusEvent(bool inFocus) : m_inFocus(inFocus) {}
 
 		bool getFocus() const { return m_inFocus; }
 
 		EVENT_CLASS(WindowFocus, EventCategoryWindow | EventCategoryApplication)
 
-		std::string getString() const override 
-		{
-			return format("WindowFocusEvent : %S", FormatBool(m_inFocus));
-		}
-	private:
+		std::string getString() const override { return format("WindowFocusEvent : %S", FormatBool(m_inFocus)); }
+
+	  private:
 		bool m_inFocus;
 	};
 
 	class LYNX_API AppTickEvent : public Event
 	{
-	public:
+	  public:
 		AppTickEvent() {}
 		EVENT_CLASS(AppTick, EventCategoryApplication)
 	};
 
 	class LYNX_API AppUpdateEvent : public Event
 	{
-	public:
+	  public:
 		AppUpdateEvent() {}
 
 		EVENT_CLASS(AppUpdate, EventCategoryApplication)
@@ -70,9 +63,9 @@ namespace Lynx {
 
 	class LYNX_API AppRenderEvent : public Event
 	{
-	public:
+	  public:
 		AppRenderEvent() {}
 
 		EVENT_CLASS(AppRender, EventCategoryApplication)
 	};
-}
+} // namespace Lynx

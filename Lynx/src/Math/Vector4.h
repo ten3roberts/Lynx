@@ -4,7 +4,7 @@ struct Vector3;
 struct Vector4
 {
 	Vector4();
-	Vector4(float x, float  y, float  z, float  w);
+	Vector4(float x, float y, float z, float w);
 	Vector4(Vector3 vec3, float w = 1);
 
 	Vector4(const std::string& str);
@@ -12,8 +12,7 @@ struct Vector4
 	static Vector4 Parse(const std::string& str);
 
 	~Vector4();
-	union
-	{
+	union {
 		struct
 		{
 			float x, y, z, w;
@@ -25,20 +24,22 @@ struct Vector4
 	};
 	// float &r = x, &g = y, &b = z, &a = w;
 
-
 	// Operators:
 
-	operator std::string()
-	{
-		return str();
-	}
+	operator std::string() { return str(); }
 
 	inline float& operator[](size_t index) { return *(&x + index); }
 	// Returns a costant reference and is therefore safe with cost&
 	const float& get(size_t index) const { return *(&x + index); }
 
 	void operator=(const Vector4& vec4);
-	void operator=(float  setTo) { x = setTo; y = setTo; z = setTo; w = setTo; }
+	void operator=(float setTo)
+	{
+		x = setTo;
+		y = setTo;
+		z = setTo;
+		w = setTo;
+	}
 
 	Vector4 operator+(const Vector4& vec4) const;
 	Vector4 operator-(const Vector4& vec4) const;
@@ -46,14 +47,11 @@ struct Vector4
 	Vector4 operator*(const Vector4& vec4) const;
 	Vector4 operator/(const Vector4& vec4) const;
 
-
-
 	Vector4 operator+(float scalar) const;
 	Vector4 operator-(float scalar) const;
 
 	Vector4 operator*(float scalar) const;
 	Vector4 operator/(float scalar) const;
-
 
 	// operator "?=":
 	void operator+=(const Vector4& vec4);
@@ -70,8 +68,7 @@ struct Vector4
 
 	float SqrMagnitude() const;
 	float Magnitude() const;
-	inline float Volume() const { return x * y* z* w; }  // Multiplies the components together
-
+	inline float Volume() const { return x * y * z * w; } // Multiplies the components together
 
 	// Returns the Normalized version of the vector; does not modify the vector
 	Vector4 Normalize() const;
@@ -86,7 +83,8 @@ struct Vector4
 	// Will strClamp the vector's magnitude to a maximum value
 	Vector4 ClampMaxMag(float max) const;
 
-	// Will strClamp all the vectors components individually between a minimum and maximum value;
+	// Will strClamp all the vectors components individually between a minimum and
+	// maximum value;
 	Vector4 strClamp(float min, float max) const;
 	// Will strClamp all the vectors components individually to a minimum;
 	Vector4 ClampMin(float min) const;
@@ -100,7 +98,10 @@ struct Vector4
 	inline float* Array() { return &x; }
 
 	inline std::string str() const { return std::string(STR(x) + ", " + STR(y) + ", " + STR(z) + ", " + STR(w)); }
-	inline std::string str_d() const { return std::string(STR(x) + ", " + STR(y) + ", " + STR(z) + ", " + STR(w) + "; " + STR(Magnitude())); }
+	inline std::string str_d() const
+	{
+		return std::string(STR(x) + ", " + STR(y) + ", " + STR(z) + ", " + STR(w) + "; " + STR(Magnitude()));
+	}
 
 	static const Vector4 one;
 	static const Vector4 zero;
@@ -109,7 +110,6 @@ struct Vector4
 	static const Vector4 blue;
 	static const Vector4 white;
 	static const Vector4 black;
-	
 
 	// Calculates the dot product between two vectors
 	static float Dot(const Vector4& a, const Vector4& b);
@@ -142,5 +142,3 @@ static Vector4 operator/(float scalar, const Vector4& vec)
 }
 
 typedef Vector4 vec4;
-
-

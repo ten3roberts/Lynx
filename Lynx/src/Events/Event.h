@@ -1,7 +1,8 @@
 #pragma once
+#include <functional>
+
 #include "Core.h"
 #include "Tools.h"
-#include <functional>
 
 namespace Lynx
 {
@@ -10,38 +11,52 @@ namespace Lynx
 	enum class EventType
 	{
 		None = 0,
-		WindowClose, WindowResize, WindowsFocus, WindowLostFocus, WindowMoved, WindowFocus,
-		AppTick, AppUpdate, AppRender,
-		KeyPressed, KeyReleased,
-		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
+		WindowClose,
+		WindowResize,
+		WindowsFocus,
+		WindowLostFocus,
+		WindowMoved,
+		WindowFocus,
+		AppTick,
+		AppUpdate,
+		AppRender,
+		KeyPressed,
+		KeyReleased,
+		MouseButtonPressed,
+		MouseButtonReleased,
+		MouseMoved,
+		MouseScrolled
 	};
 	enum EventCategory
 	{
 		EventCategoryNone = 0,
-		EventCategoryApplication		= BIT(0),
-		EventCategoryWindow				= BIT(1),
-		EventCategoryInput				= BIT(2),
-		EventCategoryKeyboard			= BIT(3),
-		EventCategoryMouse				= BIT(4),
-		EventCategoryMouseButton		= BIT(5)
+		EventCategoryApplication = BIT(0),
+		EventCategoryWindow = BIT(1),
+		EventCategoryInput = BIT(2),
+		EventCategoryKeyboard = BIT(3),
+		EventCategoryMouse = BIT(4),
+		EventCategoryMouseButton = BIT(5)
 	};
 
-#define EVENT_CLASS_TYPE(type)			static EventType getStaticType() { return EventType::type; }\
-										virtual EventType getEventType() const override { return getStaticType(); }\
-										virtual std::string getName() const override { return #type; }
+#define EVENT_CLASS_TYPE(type)                                                                                         \
+	static EventType getStaticType() { return EventType::type; }                                                       \
+	virtual EventType getEventType() const override { return getStaticType(); }                                        \
+	virtual std::string getName() const override { return #type; }
 
-#define EVENT_CLASS_CATEGORY(category)	virtual int getCategories() const override { return category; }
+#define EVENT_CLASS_CATEGORY(category)                                                                                 \
+	virtual int getCategories() const override { return category; }
 
-#define EVENT_CLASS(type, category)		static EventType getStaticType() { return EventType::type; }\
-										virtual EventType getEventType() const override { return getStaticType(); }\
-										virtual std::string getName() const override { return #type; }\
-										virtual int getCategories() const override { return category; }
-
+#define EVENT_CLASS(type, category)                                                                                    \
+	static EventType getStaticType() { return EventType::type; }                                                       \
+	virtual EventType getEventType() const override { return getStaticType(); }                                        \
+	virtual std::string getName() const override { return #type; }                                                     \
+	virtual int getCategories() const override { return category; }
 
 	class LYNX_API Event
 	{
 		friend class EventDispatcher;
-	public:
+
+	  public:
 		virtual EventType getEventType() const = 0;
 		// Returns the bitfield of the catagories of the event
 		virtual int getCategories() const = 0;
@@ -52,23 +67,22 @@ namespace Lynx
 
 		void setHandled(bool handled) { m_handled = handled; }
 		bool getHandled() const { return m_handled; }
-	protected:
+
+	  protected:
 		bool m_handled = false;
 	};
 
 	class LYNX_API EventDispatcher
 	{
-	public:
-		template <typename T>
-		using EventFn = std::function<void(T&)>;
+	  public:
+		template <typename T> using EventFn = std::function<void(T&)>;
 		EventDispatcher(Event& event) : m_event(event) {}
 
-		//Dispatches event and returns true if types matched
-		template <typename T>
-		bool Dispatch(EventFn<T> func)
+		// Dispatches event and returns true if types matched
+		template <typename T> bool Dispatch(EventFn<T> func)
 		{
 			//  If current event matches template event, run the func with event
-			if(m_event.getEventType() == T::getStaticType())
+			if (m_event.getEventType() == T::getStaticType())
 			{
 				//  The function sets if the event have been handled
 				func(*(T*)&m_event);
@@ -76,7 +90,8 @@ namespace Lynx
 			}
 			return false;
 		}
-	private:
+
+	  private:
 		Event& m_event;
 	};
-}
+} // namespace Lynx

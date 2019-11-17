@@ -3,7 +3,7 @@
 struct Vector2
 {
 	Vector2();
-	Vector2(float x, float  y);
+	Vector2(float x, float y);
 	// Vector2(float x, float y);
 
 	~Vector2();
@@ -14,20 +14,20 @@ struct Vector2
 
 	float x, y;
 
-
 	// Operators:
 
-	operator std::string()
-	{
-		return str();
-	}
+	operator std::string() { return str(); }
 
 	inline float& operator[](size_t index) { return *(&x + index); }
 	// Returns a costant reference and is therefore safe with cost&
 	const float& get(size_t index) const { return *(&x + index); }
 
 	void operator=(const Vector2& vec2);
-	void operator=(float  setTo) { x = setTo; y = setTo; }
+	void operator=(float setTo)
+	{
+		x = setTo;
+		y = setTo;
+	}
 
 	Vector2 operator+(const Vector2& vec2) const;
 	Vector2 operator-(const Vector2& vec2) const;
@@ -35,14 +35,11 @@ struct Vector2
 	Vector2 operator*(const Vector2& vec2) const;
 	Vector2 operator/(const Vector2& vec2) const;
 
-
-
 	Vector2 operator+(float scalar) const;
 	Vector2 operator-(float scalar) const;
 
 	Vector2 operator*(float scalar) const;
 	Vector2 operator/(float scalar) const;
-
 
 	// operator "?=":
 	void operator+=(const Vector2& vec2);
@@ -59,7 +56,7 @@ struct Vector2
 
 	float SqrMagnitude() const;
 	float Magnitude() const;
-	inline float Volume() const { return x * y; }  // Multiplies the components together
+	inline float Volume() const { return x * y; } // Multiplies the components together
 
 	// Returns the Normalized version of the vector; does not modify the vector
 	Vector2 Normalize() const;
@@ -73,7 +70,8 @@ struct Vector2
 	// Will strClamp the vector's magnitude to a maximum value
 	Vector2 ClampMaxMag(float max) const;
 
-	// Will strClamp all the vectors components individually between a minimum and maximum value;
+	// Will strClamp all the vectors components individually between a minimum and
+	// maximum value;
 	Vector2 strClamp(float min, float max) const;
 	// Will strClamp all the vectors components individually to a minimum;
 	Vector2 ClampMin(float min) const;
@@ -88,7 +86,6 @@ struct Vector2
 
 	inline std::string str() const { return std::string(STR(x) + ", " + STR(y)); }
 	inline std::string str_d() const { return std::string(STR(x) + ", " + STR(y) + "; " + STR(Magnitude())); }
-
 
 	static const Vector2 zero;
 	static const Vector2 one;
@@ -105,24 +102,10 @@ struct Vector2
 	static Vector2 Lerp(const Vector2& a, const Vector2& b, float t);
 };
 
-static Vector2 operator+(float scalar, Vector2 vec)
-{
-	return Vector2(scalar + vec.x, scalar + vec.y);
-}
+static Vector2 operator+(float scalar, Vector2 vec) { return Vector2(scalar + vec.x, scalar + vec.y); }
 
-static Vector2 operator-(float scalar, Vector2 vec)
-{
-	return Vector2(scalar - vec.x, scalar - vec.y);
-}
-static Vector2 operator*(float scalar, Vector2 vec)
-{
-	return Vector2(scalar * vec.x, scalar * vec.y);
-}
-static Vector2 operator/(float scalar, Vector2 vec)
-{
-	return Vector2(scalar / vec.x, scalar / vec.y);
-}
+static Vector2 operator-(float scalar, Vector2 vec) { return Vector2(scalar - vec.x, scalar - vec.y); }
+static Vector2 operator*(float scalar, Vector2 vec) { return Vector2(scalar * vec.x, scalar * vec.y); }
+static Vector2 operator/(float scalar, Vector2 vec) { return Vector2(scalar / vec.x, scalar / vec.y); }
 
 typedef Vector2 vec2;
-
-

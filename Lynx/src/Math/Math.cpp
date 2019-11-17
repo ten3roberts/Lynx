@@ -1,10 +1,12 @@
-#include <pch.h>
 #include "Math.h"
+
+#include <pch.h>
+#include <stdarg.h> /* va_list, va_start, va_arg, va_end */
+
 #include "Vector3.h"
 
-#include <stdarg.h>     /* va_list, va_start, va_arg, va_end */
-
-int Math::getMax(float* elements, int size) // Return the index of the greatest value in elements
+int Math::getMax(float* elements,
+				 int size) // Return the index of the greatest value in elements
 {
 	int current = 0; //  The current biggest index in elements
 	for (int i = 1; i < size; i++)
@@ -85,4 +87,3 @@ int Math::getMin(std::vector<float> elements)
 	}
 	return current;
 }
-

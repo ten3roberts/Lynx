@@ -6,24 +6,18 @@ template <typename P>
 
 class scoped_pointer
 {
-public:
+  public:
 	operator bool() { return (bool)m_pData; }
 	P* operator->() { return m_pData; }
 	P* operator&() { return m_pData; }
 
-	~scoped_pointer()
-	{
-		Remove();
-	}
+	~scoped_pointer() { Remove(); }
 
 	scoped_pointer() : m_pData(nullptr) {}
 
-	scoped_pointer(P const* pData) : m_pData(pData)
-	{
-	}
+	scoped_pointer(P const* pData) : m_pData(pData) {}
 
-	template <typename C>
-	scoped_pointer(C pData) : m_pData(nullptr)
+	template <typename C> scoped_pointer(C pData) : m_pData(nullptr)
 	{
 		Remove();
 		m_pData = dynamic_cast<P*>(pData);
@@ -37,8 +31,7 @@ public:
 		m_pData = pData;
 	}
 
-	template <typename C>
-	void operator=(C* pData)
+	template <typename C> void operator=(C* pData)
 	{
 		Remove();
 		m_pData = dynamic_cast<P*>(pData);
@@ -46,7 +39,7 @@ public:
 			LogE("scoped_pointer", "Couldn't convert from type %s to %s", typeid(pData).name(), typeid(P*).name());
 	}
 
-private:
+  private:
 	P* m_pData;
 	void Remove()
 	{
@@ -57,28 +50,27 @@ private:
 	}
 };
 
-template <typename P>
-using scp_ptr = scoped_pointer<P>;
+template <typename P> using scp_ptr = scoped_pointer<P>;
 
-template <typename R>
-class rsc_weak;
-template <typename R>
-class rsc
+template <typename R> class rsc_weak;
+template <typename R> class rsc
 {
-	template<typename U> friend class rsc_weak;
-	template<typename U> friend class rsc;
-protected:
+	template <typename U> friend class rsc_weak;
+	template <typename U> friend class rsc;
+
+  protected:
 	R* m_pData;
 	unsigned int* m_refCount;
 	unsigned int* m_weakRefCount;
-private:
+
+  private:
 	void Remove()
 	{
 		if (!m_refCount || !m_weakRefCount)
 			return;
 
 		(*m_refCount)--;
-		//No references left
+		// No references left
 
 		if (*m_refCount <= 0 && *m_weakRefCount <= 0)
 		{
@@ -92,28 +84,32 @@ private:
 			return;
 		}
 
-		if (*m_refCount == 0)// && * m_weakRefCount == 0)
+		if (*m_refCount == 0) // && * m_weakRefCount == 0)
 		{
 			delete m_pData;
 			m_pData = nullptr;
 		}
-
 	}
-public:
-	operator bool() const { if (m_pData && m_refCount && m_weakRefCount) return true; return false; }
+
+  public:
+	operator bool() const
+	{
+		if (m_pData && m_refCount && m_weakRefCount)
+			return true;
+		return false;
+	}
 
 	R* operator->() { return m_pData; }
 	R* operator&() { return m_pData; }
-	//R operator*() { return *m_pData; }
-
+	// R operator*() { return *m_pData; }
 
 	int getRefCount() { return *m_refCount; }
 	int getWeakRefCount() { return *m_weakRefCount; }
 
 	~rsc() { Remove(); }
-	rsc() : m_pData(nullptr), m_refCount(nullptr), m_weakRefCount(nullptr) {};
+	rsc() : m_pData(nullptr), m_refCount(nullptr), m_weakRefCount(nullptr){};
 
-	//Constructor from pointer
+	// Constructor from pointer
 	rsc(R* const pData) : m_pData(pData), m_refCount(nullptr), m_weakRefCount(nullptr)
 	{
 		if (m_pData)
@@ -123,9 +119,8 @@ public:
 		}
 	}
 
-	//Conversion from pointer
-	template <typename C>
-	rsc(C* const pData) : m_pData(nullptr), m_refCount(nullptr), m_weakRefCount(nullptr)
+	// Conversion from pointer
+	template <typename C> rsc(C* const pData) : m_pData(nullptr), m_refCount(nullptr), m_weakRefCount(nullptr)
 	{
 		Remove();
 		m_pData = dynamic_cast<R*>(pData);
@@ -143,8 +138,9 @@ public:
 		}
 	}
 
-	//Copy from weak
-	rsc(const rsc_weak<R>& resource) : m_pData(resource.m_pData), m_refCount(resource.m_refCount), m_weakRefCount(resource.m_weakRefCount)
+	// Copy from weak
+	rsc(const rsc_weak<R>& resource)
+		: m_pData(resource.m_pData), m_refCount(resource.m_refCount), m_weakRefCount(resource.m_weakRefCount)
 	{
 		if (m_refCount)
 		{
@@ -152,7 +148,7 @@ public:
 		}
 	}
 
-	//Conversion from weak
+	// Conversion from weak
 	template <typename C>
 	rsc(const rsc_weak<C>& resource) : m_refCount(resource.m_refCount), m_weakRefCount(resource.m_weakRefCount)
 	{
@@ -172,8 +168,9 @@ public:
 		}
 	}
 
-	//Copy from strong
-	rsc(const rsc<R>& resource) : m_pData(resource.m_pData), m_refCount(resource.m_refCount), m_weakRefCount(resource.m_weakRefCount)
+	// Copy from strong
+	rsc(const rsc<R>& resource)
+		: m_pData(resource.m_pData), m_refCount(resource.m_refCount), m_weakRefCount(resource.m_weakRefCount)
 	{
 		if (m_refCount)
 		{
@@ -181,7 +178,7 @@ public:
 		}
 	}
 
-	//Conversion from strong
+	// Conversion from strong
 	template <typename C>
 	rsc(const rsc<C>& resource) : m_refCount(resource.m_refCount), m_weakRefCount(resource.m_weakRefCount)
 	{
@@ -199,7 +196,7 @@ public:
 		}
 	}
 
-	//Assign from weak
+	// Assign from weak
 	void operator=(const rsc_weak<R>& resource)
 	{
 		Remove();
@@ -210,9 +207,8 @@ public:
 			(*m_refCount)++;
 	}
 
-	//Conversion assign from weak
-	template <typename C>
-	void operator=(const rsc_weak<C>& resource)
+	// Conversion assign from weak
+	template <typename C> void operator=(const rsc_weak<C>& resource)
 	{
 		Remove();
 		m_pData = dynamic_cast<R*>(resource.m_pData);
@@ -229,10 +225,9 @@ public:
 		m_weakRefCount = resource.m_weakRefCount;
 		if (m_refCount)
 			(*m_refCount)++;
-
 	}
 
-	//Assign from strong
+	// Assign from strong
 	void operator=(const rsc<R>& resource)
 	{
 		Remove();
@@ -241,12 +236,10 @@ public:
 		m_weakRefCount = resource.m_weakRefCount;
 		if (m_refCount)
 			(*m_refCount)++;
-
 	}
 
-	//Conversion assign from strong
-	template <typename C>
-	void operator=(const rsc<C>& resource)
+	// Conversion assign from strong
+	template <typename C> void operator=(const rsc<C>& resource)
 	{
 		Remove();
 		m_pData = dynamic_cast<R*>(resource.m_pData);
@@ -263,10 +256,9 @@ public:
 		m_weakRefCount = resource.m_weakRefCount;
 		if (m_refCount)
 			(*m_refCount)++;
-
 	}
 
-	//Assign from pointer
+	// Assign from pointer
 	void operator=(R* const pData)
 	{
 		Remove();
@@ -280,9 +272,8 @@ public:
 		}
 	}
 
-	//Conversion assign from pointer
-	template <typename C>
-	void operator=(C* const pData)
+	// Conversion assign from pointer
+	template <typename C> void operator=(C* const pData)
 	{
 		Remove();
 		m_pData = dynamic_cast<R*>(pData);
@@ -305,23 +296,24 @@ public:
 	}
 };
 
-template <typename W>
-class rsc_weak
+template <typename W> class rsc_weak
 {
-	template<typename U> friend class rsc_weak;
-	template<typename U> friend class rsc;
-protected:
+	template <typename U> friend class rsc_weak;
+	template <typename U> friend class rsc;
+
+  protected:
 	W* m_pData;
 	unsigned int* m_refCount;
 	unsigned int* m_weakRefCount;
-private:
+
+  private:
 	void Remove()
 	{
 		if (!m_refCount || !m_weakRefCount)
 			return;
 
 		(*m_weakRefCount)--;
-		//No references left
+		// No references left
 		if (*m_refCount <= 0 && *m_weakRefCount <= 0)
 		{
 			delete m_refCount;
@@ -330,8 +322,14 @@ private:
 			m_weakRefCount = nullptr;
 		}
 	}
-public:
-	operator bool() const { if (m_pData && m_refCount && m_weakRefCount) return true; return false; }
+
+  public:
+	operator bool() const
+	{
+		if (m_pData && m_refCount && m_weakRefCount)
+			return true;
+		return false;
+	}
 
 	W* operator->() { return m_pData; }
 	W* operator&() { return m_pData; }
@@ -342,9 +340,9 @@ public:
 
 	~rsc_weak() { Remove(); }
 
-	rsc_weak() : m_pData(nullptr), m_refCount(nullptr), m_weakRefCount(nullptr) {};
+	rsc_weak() : m_pData(nullptr), m_refCount(nullptr), m_weakRefCount(nullptr){};
 
-	//Constructor from pointer
+	// Constructor from pointer
 	rsc_weak(W* const pData) : m_pData(pData), m_refCount(nullptr), m_weakRefCount(nullptr)
 	{
 		if (m_pData)
@@ -354,9 +352,8 @@ public:
 		}
 	}
 
-	//Conversion from pointer
-	template <typename C>
-	rsc_weak(C* const pData) : m_pData(nullptr), m_refCount(nullptr), m_weakRefCount(nullptr)
+	// Conversion from pointer
+	template <typename C> rsc_weak(C* const pData) : m_pData(nullptr), m_refCount(nullptr), m_weakRefCount(nullptr)
 	{
 		Remove();
 		m_pData = dynamic_cast<W*>(pData);
@@ -376,8 +373,9 @@ public:
 		}
 	}
 
-	//Copy from weak
-	rsc_weak(const rsc_weak<W>& resource) : m_pData(resource.m_pData), m_refCount(resource.m_refCount), m_weakRefCount(resource.m_weakRefCount)
+	// Copy from weak
+	rsc_weak(const rsc_weak<W>& resource)
+		: m_pData(resource.m_pData), m_refCount(resource.m_refCount), m_weakRefCount(resource.m_weakRefCount)
 	{
 		if (m_weakRefCount)
 		{
@@ -385,7 +383,7 @@ public:
 		}
 	}
 
-	//Conversion from weak
+	// Conversion from weak
 	template <typename C>
 	rsc_weak(const rsc_weak<C>& resource) : m_refCount(resource.m_refCount), m_weakRefCount(resource.m_weakRefCount)
 	{
@@ -405,8 +403,9 @@ public:
 		}
 	}
 
-	//Copy from strong
-	rsc_weak(const rsc<W>& resource) : m_pData(resource.m_pData), m_refCount(resource.m_refCount), m_weakRefCount(resource.m_weakRefCount)
+	// Copy from strong
+	rsc_weak(const rsc<W>& resource)
+		: m_pData(resource.m_pData), m_refCount(resource.m_refCount), m_weakRefCount(resource.m_weakRefCount)
 	{
 		if (m_weakRefCount)
 		{
@@ -414,7 +413,7 @@ public:
 		}
 	}
 
-	//Conversion from strong
+	// Conversion from strong
 	template <typename C>
 	rsc_weak(const rsc<C>& resource) : m_refCount(resource.m_refCount), m_weakRefCount(resource.m_weakRefCount)
 	{
@@ -432,7 +431,7 @@ public:
 		}
 	}
 
-	//Assign from weak
+	// Assign from weak
 	void operator=(const rsc_weak<W>& resource)
 	{
 		Remove();
@@ -443,9 +442,8 @@ public:
 			(*m_weakRefCount)++;
 	}
 
-	//Conversion assign from weak
-	template <typename C>
-	void operator=(const rsc_weak<C>& resource)
+	// Conversion assign from weak
+	template <typename C> void operator=(const rsc_weak<C>& resource)
 	{
 		Remove();
 		m_pData = dynamic_cast<W*>(resource.m_pData);
@@ -460,10 +458,9 @@ public:
 		m_weakRefCount = resource.m_weakRefCount;
 		if (m_weakRefCount)
 			(*m_weakRefCount)++;
-
 	}
 
-	//Assign from strong
+	// Assign from strong
 	void operator=(const rsc<W>& resource)
 	{
 		Remove();
@@ -472,12 +469,10 @@ public:
 		m_weakRefCount = resource.m_weakRefCount;
 		if (m_weakRefCount)
 			(*m_weakRefCount)++;
-
 	}
 
-	//Conversion assign from strong
-	template <typename C>
-	void operator=(const rsc<C>& resource)
+	// Conversion assign from strong
+	template <typename C> void operator=(const rsc<C>& resource)
 	{
 		Remove();
 		m_pData = dynamic_cast<W*>(resource.m_pData);
@@ -492,10 +487,9 @@ public:
 		m_weakRefCount = resource.m_weakRefCount;
 		if (m_weakRefCount)
 			(*m_weakRefCount)++;
-
 	}
 
-	//Assign from pointer
+	// Assign from pointer
 	void operator=(W* const pData)
 	{
 		Remove();
@@ -509,9 +503,8 @@ public:
 		}
 	}
 
-	//Conversion assign from pointer
-	template <typename C>
-	void operator=(C* const pData)
+	// Conversion assign from pointer
+	template <typename C> void operator=(C* const pData)
 	{
 		Remove();
 		m_pData = dynamic_cast<W*>(pData);

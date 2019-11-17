@@ -1,38 +1,30 @@
-#include "pch.h"
 #include "Vector4.h"
-#include "Vector3.h"
-#include "Math.h"
+
 #include <math.h>
+
 #include <sstream>
+
+#include "Math.h"
+#include "Vector3.h"
+#include "pch.h"
 
 using namespace Tools;
 
-const Vector4 Vector4::zero = { 0,0,0,0 };
-const Vector4 Vector4::one = { 1,1,1,1 };
-const Vector4 Vector4::red = { 1,0,0,1 };
-const Vector4 Vector4::green = { 0,1,0,1 };
-const Vector4 Vector4::blue = { 0,0,1,1 };
-const Vector4 Vector4::white = { 1,1,1,1 };
-const Vector4 Vector4::black = { 0,0,0,0 };
+const Vector4 Vector4::zero = {0, 0, 0, 0};
+const Vector4 Vector4::one = {1, 1, 1, 1};
+const Vector4 Vector4::red = {1, 0, 0, 1};
+const Vector4 Vector4::green = {0, 1, 0, 1};
+const Vector4 Vector4::blue = {0, 0, 1, 1};
+const Vector4 Vector4::white = {1, 1, 1, 1};
+const Vector4 Vector4::black = {0, 0, 0, 0};
 
-Vector4::Vector4() :
-	x(0), y(0), z(0), w(0)
-{
-}
+Vector4::Vector4() : x(0), y(0), z(0), w(0) {}
 
-Vector4::Vector4(float  x, float  y, float  z, float  w) :
-	x(x), y(y), z(z), w(w)
-{
-}
+Vector4::Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
 
-Vector4::Vector4(Vector3 vec3, float w) :
-	x(vec3.x), y(vec3.y), z(vec3.z), w(w)
-{
-}
+Vector4::Vector4(Vector3 vec3, float w) : x(vec3.x), y(vec3.y), z(vec3.z), w(w) {}
 
-Vector4::~Vector4()
-{
-}
+Vector4::~Vector4() {}
 
 Vector4::Vector4(const std::string& str) : x(0), y(0), z(0), w(0)
 {
@@ -80,25 +72,13 @@ Vector4 Vector4::operator/(const Vector4& vec4) const
 	return Vector4(x / vec4.x, y / vec4.y, z / vec4.z, w / vec4.w);
 }
 
-Vector4 Vector4::operator+(float scalar) const
-{
-	return Vector4(x + scalar, y + scalar, z + scalar, w + scalar);
-}
+Vector4 Vector4::operator+(float scalar) const { return Vector4(x + scalar, y + scalar, z + scalar, w + scalar); }
 
-Vector4 Vector4::operator-(float scalar) const
-{
-	return Vector4(x - scalar, y - scalar, z - scalar, w - scalar);
-}
+Vector4 Vector4::operator-(float scalar) const { return Vector4(x - scalar, y - scalar, z - scalar, w - scalar); }
 
-Vector4 Vector4::operator*(float scalar) const
-{
-	return Vector4(x * scalar, y * scalar, z * scalar, w * scalar);
-}
+Vector4 Vector4::operator*(float scalar) const { return Vector4(x * scalar, y * scalar, z * scalar, w * scalar); }
 
-Vector4 Vector4::operator/(float scalar) const
-{
-	return Vector4(x / scalar, y / scalar, z / scalar, w / scalar);
-}
+Vector4 Vector4::operator/(float scalar) const { return Vector4(x / scalar, y / scalar, z / scalar, w / scalar); }
 
 void Vector4::operator+=(const Vector4& vec4)
 {
@@ -164,15 +144,9 @@ void Vector4::operator/=(float scalar)
 	w /= scalar;
 }
 
-float Vector4::SqrMagnitude() const
-{
-	return x * x + y * y + z * z + w * w;
-}
+float Vector4::SqrMagnitude() const { return x * x + y * y + z * z + w * w; }
 
-float Vector4::Magnitude() const
-{
-	return sqrt(x * x + y * y + z * z + w * w);
-}
+float Vector4::Magnitude() const { return sqrt(x * x + y * y + z * z + w * w); }
 
 Vector4 Vector4::Normalize() const
 {
@@ -191,10 +165,9 @@ void Vector4::Normalize(Vector4* out)
 
 	Vector4 outVec(x / mag, y / mag, z / mag, w / mag);
 	if (out)
-		* out = outVec;
+		*out = outVec;
 
 	return;
-
 }
 
 Vector4 Vector4::ClampMag(float min, float max) const
@@ -259,11 +232,7 @@ Vector4 Vector4::ClampMax(float max) const
 	return result;
 }
 
-
-float Vector4::Dot(const Vector4& a, const Vector4& b)
-{
-	return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
-}
+float Vector4::Dot(const Vector4& a, const Vector4& b) { return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w; }
 
 Vector4 Vector4::Project(const Vector4& vector, const Vector4& axis)
 {
@@ -282,6 +251,3 @@ Vector4 Vector4::Lerp(const Vector4& a, const Vector4& b, float t)
 	t = Math::Clamp01(t);
 	return Vector4((a * (1 - t) + b * t));
 }
-
-
-

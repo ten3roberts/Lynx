@@ -1,27 +1,22 @@
-#include "pch.h"
 #include "Vector2.h"
-#include "Math.h"
+
 #include <math.h>
+
 #include <sstream>
+
+#include "Math.h"
+#include "pch.h"
 
 using namespace Tools;
 
-const Vector2 Vector2::zero = { 0, 0 };
-const Vector2 Vector2::one = { 1, 1 };
+const Vector2 Vector2::zero = {0, 0};
+const Vector2 Vector2::one = {1, 1};
 
-Vector2::Vector2() :
-	x(0), y(0)
-{
-}
+Vector2::Vector2() : x(0), y(0) {}
 
-Vector2::Vector2(float  x, float  y) :
-	x(x), y(y)
-{
-}
+Vector2::Vector2(float x, float y) : x(x), y(y) {}
 
-Vector2::~Vector2()
-{
-}
+Vector2::~Vector2() {}
 
 Vector2::Vector2(const std::string& str) : x(0), y(0)
 {
@@ -41,72 +36,48 @@ Vector2 Vector2::Parse(const std::string& str)
 	return result;
 }
 
-void Vector2::operator=(const Vector2 & vec2)
+void Vector2::operator=(const Vector2& vec2)
 {
 	x = vec2.x;
 	y = vec2.y;
 }
 
-Vector2 Vector2::operator+(const Vector2 & vec2) const
-{
-	return Vector2(x + vec2.x, y + vec2.y);
-}
+Vector2 Vector2::operator+(const Vector2& vec2) const { return Vector2(x + vec2.x, y + vec2.y); }
 
-Vector2 Vector2::operator-(const Vector2 & vec2) const
-{
-	return Vector2(x - vec2.x, y - vec2.y);
-}
+Vector2 Vector2::operator-(const Vector2& vec2) const { return Vector2(x - vec2.x, y - vec2.y); }
 
-Vector2 Vector2::operator*(const Vector2 & vec2) const
-{
-	return Vector2(x * vec2.x, y * vec2.y);
-}
+Vector2 Vector2::operator*(const Vector2& vec2) const { return Vector2(x * vec2.x, y * vec2.y); }
 
-Vector2 Vector2::operator/(const Vector2 & vec2) const
-{
-	return Vector2(x / vec2.x, y / vec2.y);
-}
+Vector2 Vector2::operator/(const Vector2& vec2) const { return Vector2(x / vec2.x, y / vec2.y); }
 
-Vector2 Vector2::operator+(float scalar) const
-{
-	return Vector2(x + scalar, y + scalar);
-}
+Vector2 Vector2::operator+(float scalar) const { return Vector2(x + scalar, y + scalar); }
 
-Vector2 Vector2::operator-(float scalar) const
-{
-	return Vector2(x - scalar, y - scalar);
-}
+Vector2 Vector2::operator-(float scalar) const { return Vector2(x - scalar, y - scalar); }
 
-Vector2 Vector2::operator*(float scalar) const
-{
-	return Vector2(x*scalar, y*scalar);
-}
+Vector2 Vector2::operator*(float scalar) const { return Vector2(x * scalar, y * scalar); }
 
-Vector2 Vector2::operator/(float scalar) const
-{
-	return Vector2(x / scalar, y / scalar);
-}
+Vector2 Vector2::operator/(float scalar) const { return Vector2(x / scalar, y / scalar); }
 
 // operator "?=":
-void Vector2::operator+=(const Vector2 & vec2)
+void Vector2::operator+=(const Vector2& vec2)
 {
 	x += vec2.x;
 	y += vec2.y;
 }
 
-void Vector2::operator-=(const Vector2 & vec2)
+void Vector2::operator-=(const Vector2& vec2)
 {
 	x -= vec2.x;
 	y -= vec2.y;
 }
 
-void Vector2::operator*=(const Vector2 & vec2)
+void Vector2::operator*=(const Vector2& vec2)
 {
 	x *= vec2.x;
 	y *= vec2.y;
 }
 
-void Vector2::operator/=(const Vector2 & vec2)
+void Vector2::operator/=(const Vector2& vec2)
 {
 	x /= vec2.x;
 	y /= vec2.y;
@@ -136,15 +107,9 @@ void Vector2::operator/=(float scalar)
 	y /= scalar;
 }
 
-float Vector2::SqrMagnitude() const
-{
-	return x*x + y*y;
-}
+float Vector2::SqrMagnitude() const { return x * x + y * y; }
 
-float Vector2::Magnitude() const
-{
-	return sqrt(x*x + y*y);
-}
+float Vector2::Magnitude() const { return sqrt(x * x + y * y); }
 
 Vector2 Vector2::Normalize() const
 {
@@ -163,9 +128,8 @@ void Vector2::Normalize(Vector2* out)
 
 	Vector2 outVec(x / mag, y / mag);
 	if (out)
-		* out = outVec;
+		*out = outVec;
 	return;
-
 }
 
 Vector2 Vector2::ClampMag(float min, float max) const
@@ -224,12 +188,7 @@ Vector2 Vector2::ClampMax(float max) const
 	return result;
 }
 
-
-
-float Vector2::Dot(const Vector2& a, const Vector2& b)
-{
-	return a.x* b.x + a.y * b.y;
-}
+float Vector2::Dot(const Vector2& a, const Vector2& b) { return a.x * b.x + a.y * b.y; }
 
 Vector2 Vector2::Project(const Vector2& vector, const Vector2& axis)
 {
@@ -248,4 +207,3 @@ Vector2 Vector2::Lerp(const Vector2& a, const Vector2& b, float t)
 	t = Math::Clamp01(t);
 	return Vector2((a * (1 - t) + b * t));
 }
-

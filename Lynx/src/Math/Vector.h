@@ -1,11 +1,11 @@
 #pragma once
 #include <string.h>
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Vector4.h"
 
 #include <algorithm>
 
+#include "Vector2.h"
+#include "Vector3.h"
+#include "Vector4.h"
 
 struct Vector
 {
@@ -27,10 +27,7 @@ struct Vector
 
 	static Vector Parse(const std::string& str);
 
-	~Vector()
-	{
-		delete[] m_data;
-	}
+	~Vector() { delete[] m_data; }
 
 	static Vector OnSphere(size_t size, float radius = 1);
 	static Vector InSphere(size_t size, float outerRadius, float innerRadius = 0);
@@ -39,26 +36,17 @@ struct Vector
 
 	// Operators:
 
-	operator std::string()
-	{
-		return str();
-	}
+	operator std::string() { return str(); }
 
 	inline float& operator[](size_t index) { return m_data[index]; }
 	// Returns a costant reference and is therefore safe with cost&
 	inline const float& get(size_t index) const { return m_data[index]; }
 	inline size_t size() const { return m_size; }
 
-	inline void operator=(const Vector& vec)
-	{
-		memcpy(m_data, vec.m_data, m_size * sizeof(float));
-	}
+	inline void operator=(const Vector& vec) { memcpy(m_data, vec.m_data, m_size * sizeof(float)); }
 
 	// Assumes the list is as big or bigger than the vector
-	inline void operator=(float* list)
-	{
-		memcpy(m_data, list, m_size * sizeof(float));
-	}
+	inline void operator=(float* list) { memcpy(m_data, list, m_size * sizeof(float)); }
 
 	Vector operator+(const Vector& vec) const;
 
@@ -66,7 +54,6 @@ struct Vector
 
 	Vector operator*(const Vector& vec) const;
 	Vector operator/(const Vector& vec) const;
-
 
 	Vector operator+(float scalar) const;
 
@@ -76,13 +63,10 @@ struct Vector
 
 	Vector operator/(float scalar) const;
 
-
-
 	// operator "?=":
 	void operator+=(const Vector& vec);
 
 	void operator-=(const Vector& vec);
-
 
 	void operator*=(const Vector& vec);
 
@@ -92,32 +76,25 @@ struct Vector
 
 	void operator-=(float scalar);
 
-
 	void operator*=(float scalar);
 
 	void operator/=(float scalar);
 
-
 	float SqrMagnitude() const;
-
 
 	float Magnitude() const;
 
 	// Multiplies the components together
 	inline float Volume() const;
 
-
 	// Returns the Normalized version of the vector; does not modify the vector
-	inline Vector Normalize() const
-	{
-		return *this / Magnitude();
-	}
+	inline Vector Normalize() const { return *this / Magnitude(); }
 
 	// Normalizes the vector and assigns it to $out. Out can be the same as self
 	inline void Normalize(Vector* out)
 	{
 		if (out)
-			* out = *this / Magnitude();
+			*out = *this / Magnitude();
 	}
 
 	Vector ClampMag(float min, float max) const;
@@ -171,12 +148,10 @@ struct Vector
 	// Linearly interpolates a and b between t
 	static Vector Lerp(Vector a, Vector b, float t);
 
-private:
+  private:
 	// The element array
 	float* m_data;
 	size_t m_size;
-
 };
 
 using vec = Vector;
-
