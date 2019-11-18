@@ -1,5 +1,5 @@
-#include "pch.h"
 #include "Logger.h"
+#include "pch.h"
 
 #include <iostream>
 
@@ -39,14 +39,83 @@ void writeColor(const std::string& msg, int color)
 // Checks to see if the frame changes to put a divider between log calls on
 // different frames
 static int frame;
+
+enum Flag
+{
+	None,
+	Long
+};
+
+void Log(std::string format, ...)
+{
+	va_list vl;
+	va_start(vl, format);
+
+	std::string fullMsg = "Log @ " + TIME_STAMP + "): " + vformat(format, vl);
+
+	if (!logFile.is_open())
+	{
+		// Creates one logfile for each minute
+		std::string logfile_name =
+			CURR_DIR + std::string("Logs") + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
+
+		Tools::GenerateFile(logfile_name, "");
+
+		logFile.open(logfile_name);
+		LogW("Logger", "Creating new logfile %S", logfile_name);
+	}
+
+	if (frame != Time::frameCount)
+	{
+		frame = Time::frameCount;
+		std::string divider(fullMsg.size(), '-');
+		divider += "\n";
+		fullMsg.insert(fullMsg.begin(), divider.begin(), divider.end());
+	}
+	fullMsg += '\n';
+
+	printf(fullMsg.c_str());
+	logFile.write(fullMsg.c_str(), fullMsg.size());
+	logFile.flush();
+	va_end(vl);
+}
+
+void LogF(const std::string& author, std::string format, ...)
+{
+	va_list vl;
+	va_start(vl, format);
+
+	std::string fullMsg = '(' + (author == "" ? "Log" : author) + " @ " + TIME_STAMP + "): " + vformat(format, vl);
+
+	if (!logFile.is_open())
+	{
+		// Creates one logfile for each minute
+		std::string logfile_name =
+			CURR_DIR + std::string("Logs") + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
+
+		Tools::GenerateFile(logfile_name, "");
+
+		logFile.open(logfile_name);
+		LogW("Logger", "Creating new logfile %S", logfile_name);
+	}
+
+	if (frame != Time::frameCount)
+	{
+		frame = Time::frameCount;
+		std::string divider(fullMsg.size(), '-');
+		divider += "\n";
+		fullMsg.insert(fullMsg.begin(), divider.begin(), divider.end());
+	}
+	fullMsg += '\n';
+
+	printf(fullMsg.c_str());
+	logFile.write(fullMsg.c_str(), fullMsg.size());
+	logFile.flush();
+	va_end(vl);
+}
+
 void LogS(const std::string& author, std::string format, ...)
 {
-	enum Flag
-	{
-		None,
-		Long
-	};
-
 	va_list vl;
 	va_start(vl, format);
 
@@ -79,12 +148,12 @@ void LogS(const std::string& author, std::string format, ...)
 	va_end(vl);
 }
 
-void LogF(std::string format, ...)
+void LogW(const std::string& author, std::string format, ...)
 {
 	va_list vl;
 	va_start(vl, format);
 
-	std::string fullMsg = "(Log @ " + TIME_STAMP + "): " + vformat(format, vl);
+	std::string fullMsg = '(' + (author == "" ? "Log" : author) + " @ " + TIME_STAMP + "): " + vformat(format, vl);
 
 	if (!logFile.is_open())
 	{
@@ -102,9 +171,8 @@ void LogF(std::string format, ...)
 		divider += "\n";
 		fullMsg.insert(fullMsg.begin(), divider.begin(), divider.end());
 	}
-
 	fullMsg += '\n';
-	writeColor(fullMsg, CONSOLE_WHITE);
+	writeColor(fullMsg, CONSOLE_YELLOW);
 	logFile.write(fullMsg.c_str(), fullMsg.size());
 	logFile.flush();
 	va_end(vl);
@@ -112,12 +180,6 @@ void LogF(std::string format, ...)
 
 void LogE(const std::string& author, std::string format, ...)
 {
-	enum Flag
-	{
-		None,
-		Long
-	};
-
 	va_list vl;
 	va_start(vl, format);
 
@@ -147,40 +209,4 @@ void LogE(const std::string& author, std::string format, ...)
 #if ERROR_DELAY
 	SLEEPFOR(ERROR_DELAY);
 #endif
-}
-
-void LogW(const std::string& author, std::string format, ...)
-{
-	enum Flag
-	{
-		None,
-		Long
-	};
-
-	va_list vl;
-	va_start(vl, format);
-
-	std::string fullMsg = '(' + (author == "" ? "Log" : author) + " @ " + TIME_STAMP + "): " + vformat(format, vl);
-
-	if (!logFile.is_open())
-	{
-		std::string logfile_name =
-			CURR_DIR + std::string("Logs") + SLASH + Time::getDateAndTime(Time::startPoint, "%F_%H.%M") + ".log";
-		Tools::GenerateFile(logfile_name, "");
-		logFile.open(logfile_name);
-		LogW("Logger", "Creating new logfile %S", logfile_name);
-	}
-
-	if (frame != Time::frameCount)
-	{
-		frame = Time::frameCount;
-		std::string divider(fullMsg.size(), '-');
-		divider += "\n";
-		fullMsg.insert(fullMsg.begin(), divider.begin(), divider.end());
-	}
-	fullMsg += '\n';
-	writeColor(fullMsg, CONSOLE_YELLOW);
-	logFile.write(fullMsg.c_str(), fullMsg.size());
-	logFile.flush();
-	va_end(vl);
 }

@@ -84,7 +84,7 @@ namespace Lynx
 		if (e.CheckCategory(EventCategoryInput))
 			Input::onEvent(e);
 
-		LogS("Application : onEvent", e.getString());
+		LogF("Application : onEvent", e.getString());
 	}
 
 	// Adds a layer to the end of the stack

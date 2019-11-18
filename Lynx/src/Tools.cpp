@@ -19,9 +19,6 @@
 
 using namespace Math;
 
-static std::vector<std::string> s_errorDef = {};
-static std::ofstream s_LogSile = std::ofstream();
-
 #if PL_LINUX
 void Tools::setWorkingDir(const std::string& dir)
 {
@@ -502,8 +499,6 @@ std::string Tools::FindFile(const std::string& file, const std::string& director
 	{
 		if (curr_file.size() < file.size())
 			continue;
-
-		LogF(curr_file.substr(curr_file.size() - file.size()));
 
 		// If the filename and the paths leding up to the file matches
 		if (curr_file.substr(curr_file.size() - file.size()) == file)
