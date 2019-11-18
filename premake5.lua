@@ -49,8 +49,21 @@ project "Lynx"
 	--links (os.findlib("vulkan"))
 	
 	-- Specifies GCC options
-	buildoptions {"-std=c++17", "-pthread", "-fPIC" ,"-lvulkan"}
-	linkoptions {"-lvulkan"}
+	filter "system:linux"
+		buildoptions {"-std=c++17", "-pthread", "-fPIC" ,"-lvulkan"}
+		linkoptions {"-lvulkan"}
+		defines{ "PL_LINUX=1" }
+		links "GL"
+	
+	-- Specifies Windows and MSVC specific options and preprocessor definitions
+	filter "system:windows"
+		defines { "PL_WINDOWS=1", "_CRT_SECURE_NO_WARNINGS", "LX_EXPORT"}
+		staticruntime "off"
+		systemversion "latest"
+		links "opengl32.lib"
+		-- Vulkan
+		includedirs "C:/VulkanSDK/1.1.126.0/Include"
+		links 		"C:/VulkanSDK/1.1.126.0/Lib/vulkan-1.lib"
 	
 	-- Specifies options for different configurations
 	-- Debug includes debug symbols and disables optimization
@@ -65,17 +78,7 @@ project "Lynx"
 		optimize "on"
 		symbols "off"
 	
-	-- Specifies Windows and MSVC specific options and preprocessor definitions
-	filter "system:windows"
-		defines { "PL_WINDOWS=1", "_CRT_SECURE_NO_WARNINGS", "LX_EXPORT"}
-		staticruntime "off"
-		systemversion "latest"
-		links "opengl32.lib"
-	
-	-- Specifies Linux specific preprocessor definitions
-	filter "system:linux"
-		defines{ "PL_LINUX=1" }
-		links "GL"
+
 	
 	
 project "Sandbox"

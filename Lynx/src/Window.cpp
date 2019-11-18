@@ -1,10 +1,10 @@
+#include "pch.h"
 #include "Window.h"
 
 #include "Events/ApplicationEvent.h"
 #include "Events/Event.h"
 #include "Events/KeyEvent.h"
 #include "Events/MouseEvent.h"
-#include "pch.h"
 
 #include "GLFW/glfw3.h"
 

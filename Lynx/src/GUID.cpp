@@ -1,6 +1,6 @@
+#include "pch.h"
 #include "GUID.h"
 
-#include <pch.h>
 
 namespace Lynx
 {

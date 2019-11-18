@@ -1,6 +1,5 @@
-#include "LayerStack.h"
-
 #include "pch.h"
+#include "LayerStack.h"
 
 namespace Lynx
 {

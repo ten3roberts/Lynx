@@ -1,8 +1,7 @@
+#include "pch.h"
 #include "Logger.h"
 
 #include <iostream>
-
-#include "pch.h"
 
 #if PL_WINDOWS
 #include <Windows.h>

@@ -1,10 +1,11 @@
 #pragma once
 
-#include "Renderer/Renderer.h"
 #include "Window.h"
 
 #include "Events/ApplicationEvent.h"
 #include "Scene/LayerStack.h"
+
+class Renderer;
 
 namespace Lynx
 {

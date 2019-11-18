@@ -1,7 +1,8 @@
+#include "pch.h"
+#include "Renderer/Renderer.h"
 #include <Application.h>
 #include <Events/ApplicationEvent.h>
 #include <Events/Event.h>
-#include <pch.h>
 #include <stdio.h>
 
 #include "Input/Input.h"

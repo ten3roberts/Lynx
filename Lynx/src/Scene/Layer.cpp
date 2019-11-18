@@ -1,6 +1,6 @@
+#include "pch.h"
 #include "Layer.h"
 
-#include "pch.h"
 
 namespace Lynx
 {

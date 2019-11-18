@@ -1,6 +1,6 @@
 // Vector math
 // Will return a vector to a random point on a sphere
-#include <pch.h>
+#include "pch.h"
 
 Vector2 Random::OnCircle(float radius) { return Vector2(Random::RandNorm(), Random::RandNorm()).Normalize() * radius; }
 
