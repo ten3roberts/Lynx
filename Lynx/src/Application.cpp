@@ -21,7 +21,7 @@ namespace Lynx
 
 		delete m_window;
 
-		glfwTerminate();
+		m_renderer->Terminate();
 	}
 
 	bool Application::Init()
@@ -60,7 +60,7 @@ namespace Lynx
 
 			Input::Update();
 			m_window->Update();
-			SLEEP(2ms);
+			SLEEP(5ms);
 		}
 	}
 

@@ -16,6 +16,9 @@ namespace Lynx
 		// Returns true on success
 		bool Init();
 
+		// Terminates and frees all graphic
+		void Terminate();
+
 		static Renderer* get()
 		{
 			if (!m_instance)
@@ -24,10 +27,14 @@ namespace Lynx
 		}
 
 	  private:
+		// Creates a Vulkan instance
 		bool CreateInstance();
+		// Creates a debug message callback handle
+		void CreateDebugMessenger();
 
 	  private:
 		static Renderer* m_instance;
 		VkInstance m_vkInstance;
+		VkDebugUtilsMessengerEXT m_debugMessenger;
 	};
 } // namespace Lynx
