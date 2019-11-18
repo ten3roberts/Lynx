@@ -44,16 +44,15 @@ project "Lynx"
 	-- Links GLFW and opengl32 to the Lynx
 	links
 	{
-		"GLFW",
+		"GLFW"
 	}
-	--links (os.findlib("vulkan"))
 	
-	-- Specifies GCC options
+	-- Specifies GCC options and Linux specific options
 	filter "system:linux"
-		buildoptions {"-std=c++17", "-pthread", "-fPIC" ,"-lvulkan"}
-		linkoptions {"-lvulkan"}
+		buildoptions {"-std=c++17", "-pthread", "-fPIC"}
+		--linkoptions {"-lvulkan"}
 		defines{ "PL_LINUX=1" }
-		links "GL"
+		links { "GL", "vulkan"}
 	
 	-- Specifies Windows and MSVC specific options and preprocessor definitions
 	filter "system:windows"
@@ -107,8 +106,17 @@ project "Sandbox"
 	-- Links the Lynx DLL to Sandbox - GLFW are statically linked to Lynx
 	links("Lynx")
 	
-	-- Specifies GCC options
-	buildoptions{"-std=c++17", "-pthread", "-lvulkan"}
+	-- Specifies GCC options and Linux specific options
+	filter "system:linux"
+		buildoptions {"-std=c++17", "-pthread", "-fPIC"}
+		defines{ "PL_LINUX=1" }
+		links "GL"
+	
+	-- Specifies Windows and MSVC specific options and preprocessor definitions
+	filter "system:windows"
+		defines { "PL_WINDOWS=1", "_CRT_SECURE_NO_WARNINGS", "LX_EXPORT"}
+		staticruntime "off"
+		systemversion "latest"
 		
 	-- Specifies debug symbols for different configurations
 	filter "configurations:Debug"
@@ -118,14 +126,3 @@ project "Sandbox"
 	filter "configurations:Release"
 		defines {"DEBUG=0", "RELEASE=1", "ERROR_DELAY=0"}
 		optimize "on"
-		
-	-- Specifies Windows and MSVC specific options and preprocessor definitions
-	filter "system:windows"
-		defines { "PL_WINDOWS=1", "_CRT_SECURE_NO_WARNINGS", "LX_IMPORT"}
-		cppdialect "C++17"
-		staticruntime "off"
-		systemversion "latest"
-		
-	-- Specifies Linux specific preprocessor definitions
-	filter "system:linux"
-		defines{ "PL_LINUX=1" }

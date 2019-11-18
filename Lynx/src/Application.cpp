@@ -26,6 +26,7 @@ namespace Lynx
 
 	bool Application::Init()
 	{
+		Timer timer("Application::Init");
 		Time::Init();
 
 		m_window = new Window(m_name, 800, 600, WindowStyle::Windowed);
