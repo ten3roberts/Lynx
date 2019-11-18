@@ -15,6 +15,8 @@ namespace Lynx
 		Application();
 		virtual ~Application();
 
+		bool Init();
+
 		void Run();
 
 		void onEvent(Event& e);

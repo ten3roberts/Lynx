@@ -10,17 +10,9 @@
 namespace Lynx
 {
 	Application* Application::m_instance = nullptr;
-	Application::Application() : m_name("Lynx"), m_running(false)
+	Application::Application() : m_name("Lynx"), m_running(false), m_renderer(nullptr)
 	{
-		// StartVulkan();
 		m_instance = this;
-		m_window = new Window(APPNAME, 800, 600, WindowStyle::Windowed);
-		m_window->setEventCallback(BIND(Application::onEvent));
-
-		m_renderer = Renderer::get();
-		LogF("%b", m_renderer->Init());
-
-		LogF(Tools::FindFile("/textures/sprite.png"));
 	}
 
 	Application::~Application()
@@ -32,10 +24,28 @@ namespace Lynx
 		glfwTerminate();
 	}
 
-	void Application::Run()
+	bool Application::Init()
 	{
 		Time::Init();
+
+		m_window = new Window(m_name, 800, 600, WindowStyle::Windowed);
+		m_window->setEventCallback(BIND(Application::onEvent));
+
+		m_renderer = Renderer::get();
+		if (!m_renderer->Init())
+		{
+			LogE("Application", "Could not initialize renderer");
+			return false;
+		}
+		return true;
+	}
+
+	void Application::Run()
+	{
 		m_running = true;
+
+		LogS("Application", "Entering main loop");
+
 		while (m_running)
 		{
 			Time::Update();
