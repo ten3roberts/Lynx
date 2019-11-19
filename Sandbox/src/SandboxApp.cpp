@@ -1,6 +1,7 @@
 #include <Lynx.h>
 
 #include <stdio.h>
+Lynx::Application* Lynx::Application::m_instance = nullptr;
 class Sandbox : public Lynx::Application
 {
 public:

@@ -51,7 +51,7 @@ namespace Lynx
 		{
 			Time::Update();
 
-			m_window->setTitle(format("%s fps : %d", APPNAME, (int)Time::frameRate));
+			m_window->setTitle(format("%s fps : %d", m_name.c_str(), (int)Time::frameRate));
 
 			for (Layer* layer : m_layerStack)
 			{

@@ -19,8 +19,8 @@
 #define INVALID_ERROR -1
 #define APPEND_CODE -2
 
-std::string format(std::string format, ...);
-std::string vformat(std::string format, va_list vl);
+std::string LYNX_API format(std::string format, ...);
+std::string LYNX_API vformat(std::string format, va_list vl);
 
 namespace Tools
 {

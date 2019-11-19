@@ -7,7 +7,7 @@ namespace Lynx
 	// Represents a singleton renderer using vulkan
 	// Is global to all threads
 	// Need to be explicitely initialized before using
-	class Renderer
+	class LYNX_API Renderer
 	{
 	  public:
 		Renderer();

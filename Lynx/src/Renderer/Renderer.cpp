@@ -1,6 +1,6 @@
+#include "pch.h"
 #include "Renderer.h"
 #include "Application.h"
-#include "pch.h"
 
 namespace Lynx
 {
