@@ -35,7 +35,7 @@ namespace Lynx
 		m_renderer = Renderer::get();
 		if (!m_renderer->Init())
 		{
-			LogE("Application", "Could not initialize renderer");
+			LogE("Application", "Failed to initialize renderer");
 			return false;
 		}
 		return true;

@@ -1,6 +1,6 @@
-#include "pch.h"
 #include "Renderer.h"
 #include "Application.h"
+#include "pch.h"
 
 namespace Lynx
 {
@@ -13,9 +13,9 @@ namespace Lynx
 #endif
 #pragma region helper functions
 	VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-														VkDebugUtilsMessageTypeFlagsEXT messageType,
-														const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-														void* pUserData)
+												 VkDebugUtilsMessageTypeFlagsEXT messageType,
+												 const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
+												 void* pUserData)
 	{
 
 		if (messageSeverity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT)
@@ -115,15 +115,25 @@ namespace Lynx
 #pragma endregion
 
 	Renderer* Renderer::m_instance = nullptr;
-	Renderer::Renderer() : m_vkInstance(nullptr), m_debugMessenger(nullptr) {}
+	Renderer::Renderer()
+		: m_vkInstance(VK_NULL_HANDLE), m_debugMessenger(VK_NULL_HANDLE), m_physicalDevice(VK_NULL_HANDLE)
+
+	{
+	}
 
 	bool Renderer::Init()
 	{
 		LogS("Renderer", "Initializing");
 		if (!CreateInstance())
 			return false;
+
 		CreateDebugMessenger();
 
+		if (!CreatePhysicalDevice())
+			return false;
+
+		if (!CreateLogicalDevice())
+			return false;
 		// No errors occurred
 		return true;
 	}
@@ -183,7 +193,7 @@ namespace Lynx
 			createInfo.ppEnabledLayerNames = validationLayers.data();
 
 			populateDebugMessengerCreateInfo(debugCreateInfo);
-			createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&debugCreateInfo;
+			// createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&debugCreateInfo;
 		}
 		else
 		{
@@ -196,10 +206,153 @@ namespace Lynx
 		VkResult result = vkCreateInstance(&createInfo, nullptr, &m_vkInstance);
 		if (result != VK_SUCCESS)
 		{
-			LogE("Renderer", "Could not create Vulkan instance - error code : %d", result);
+			LogE("Renderer", "Failed to create Vulkan instance - error code : %d", result);
 			return false;
 		}
 		return true;
+	}
+
+	// Returns a score of how suitable or favorable one GPU is to Another
+	int Renderer::getDeviceSuitability(VkPhysicalDevice device)
+	{
+		QueueFamilyIndices indices = getQueueFamilies(device);
+		if (!indices.getComplete())
+			return -1;
+
+		VkPhysicalDeviceProperties deviceProperties;
+		vkGetPhysicalDeviceProperties(device, &deviceProperties);
+
+		VkPhysicalDeviceFeatures deviceFeatures;
+		vkGetPhysicalDeviceFeatures(device, &deviceFeatures);
+
+		// Device passed all required steps
+		// Rate GPU to pick the best one - useful for laptops to use discrete GPU
+		int score = 0;
+
+		// Discrete GPUs have a significant performance advantage
+		if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
+		{
+			score += 1000;
+		}
+
+		// Maximum possible size of textures affects graphics quality
+		score += deviceProperties.limits.maxImageDimension2D;
+
+		// Application can't function without geometry shaders
+		if (!deviceFeatures.geometryShader)
+		{
+			return 0;
+		}
+
+		return score;
+	}
+
+	bool Renderer::CreatePhysicalDevice()
+	{
+		uint32_t deviceCount = 0;
+		vkEnumeratePhysicalDevices(m_vkInstance, &deviceCount, nullptr);
+		if (deviceCount == 0)
+		{
+			LogE("Renderer", "Failed to find GPUs with Vulkan support");
+			return false;
+		}
+
+		std::vector<VkPhysicalDevice> devices(deviceCount);
+		vkEnumeratePhysicalDevices(m_vkInstance, &deviceCount, devices.data());
+
+		// Use an ordered map to automatically sort candidates by increasing score
+		std::multimap<int, VkPhysicalDevice> candidates;
+
+		for (const auto& device : devices)
+		{
+			int score = getDeviceSuitability(device);
+			candidates.insert(std::make_pair(score, device));
+		}
+
+		if (candidates.rbegin()->first > 0)
+		{
+			m_physicalDevice = candidates.rbegin()->second;
+		}
+		else
+		{
+			LogE("Renderer", "Failed to find suitable GPU");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool Renderer::CreateLogicalDevice()
+	{
+		// Specifying the queues to be created
+		QueueFamilyIndices indices = getQueueFamilies(m_physicalDevice);
+
+		VkDeviceQueueCreateInfo queueCreateInfo = {};
+		queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+		queueCreateInfo.queueFamilyIndex = indices.graphicsFamily.value();
+		queueCreateInfo.queueCount = 1;
+
+		float queuePriority = 1.0f;
+		queueCreateInfo.pQueuePriorities = &queuePriority;
+
+		// Setting the logical device features
+		VkPhysicalDeviceFeatures deviceFeatures = {};
+
+		// Specifying the create info for the device itself
+		VkDeviceCreateInfo createInfo = {};
+		createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+		createInfo.pQueueCreateInfos = &queueCreateInfo;
+		createInfo.queueCreateInfoCount = 1;
+
+		createInfo.pEnabledFeatures = &deviceFeatures;
+
+		// For now, we don't need any device specific extensions
+		createInfo.enabledExtensionCount = 0;
+
+		// Use validation layers even though they're deprecated for compatability with older implementations
+		if (enableValidationLayers)
+		{
+			createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+			createInfo.ppEnabledLayerNames = validationLayers.data();
+		}
+		else
+		{
+			createInfo.enabledLayerCount = 0;
+		}
+
+		if (vkCreateDevice(m_physicalDevice, &createInfo, nullptr, &m_device) != VK_SUCCESS)
+		{
+			LogE("Renderer", "Failed to create logical device");
+			return false;
+		}
+
+		// Get queue handles
+		vkGetDeviceQueue(m_device, indices.graphicsFamily.value(), 0, &m_graphicsQueue);
+		return true;
+	}
+
+	QueueFamilyIndices Renderer::getQueueFamilies(VkPhysicalDevice device)
+	{
+		QueueFamilyIndices indices;
+		// Assign index to queue families that could be found
+
+		uint32_t queueFamilyCount = 0;
+		vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
+
+		std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+		vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
+
+		int i = 0;
+		for (const auto& queueFamily : queueFamilies)
+		{
+			if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
+			{
+				indices.graphicsFamily = i;
+			}
+
+			i++;
+		}
+		return indices;
 	}
 
 	void Renderer::Terminate()
@@ -208,6 +361,7 @@ namespace Lynx
 		{
 			DestroyDebugUtilsMessengerEXT(m_vkInstance, m_debugMessenger, nullptr);
 		}
+		vkDestroyDevice(m_device, nullptr);
 		vkDestroyInstance(m_vkInstance, nullptr);
 		glfwTerminate();
 	}
