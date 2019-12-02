@@ -1,5 +1,8 @@
 #pragma once
 #include "Core.h"
+//#define GLFW_EXPOSE_NATIVE_X11
+//#define VK_USE_PLATFORM_XLIB_KHR
+//#define VK_USE_PLATFORM_WIN32_KHR
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 #include <optional>
@@ -45,13 +48,19 @@ namespace Lynx
 
 		bool CreateLogicalDevice();
 
+		// Creats a presentable surface
+		bool CreateSurface();
+		
+
 		QueueFamilyIndices getQueueFamilies(VkPhysicalDevice device);
 		// Creates a debug message callback handle
 		void CreateDebugMessenger();
 
+
 	  private:
 		static Renderer* m_instance;
 		VkInstance m_vkInstance;
+		VkSurfaceKHR m_surface;
 		VkPhysicalDevice m_physicalDevice;
 		VkDevice m_device;
 		VkDebugUtilsMessengerEXT m_debugMessenger;

@@ -31,6 +31,8 @@ namespace Lynx
 
 		std::string getName() const { return m_name; }
 
+		Window* getWindow() { return m_window; }
+
 		static Application* get() { return m_instance; }
 
 	  private:

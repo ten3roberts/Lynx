@@ -46,6 +46,8 @@ namespace Lynx
 
 		void setEventCallback(const EventCallbackFn& callback);
 
+		GLFWwindow* getRawWindow() { return m_window; }
+
 	  private:
 		void Init();
 

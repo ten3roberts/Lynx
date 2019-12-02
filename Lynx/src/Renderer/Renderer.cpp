@@ -1,6 +1,9 @@
+
 #include "Renderer.h"
 #include "Application.h"
 #include "pch.h"
+
+#include <GLFW/glfw3native.h>
 
 namespace Lynx
 {
@@ -116,7 +119,7 @@ namespace Lynx
 
 	Renderer* Renderer::m_instance = nullptr;
 	Renderer::Renderer()
-		: m_vkInstance(VK_NULL_HANDLE), m_debugMessenger(VK_NULL_HANDLE), m_physicalDevice(VK_NULL_HANDLE)
+		: m_vkInstance(VK_NULL_HANDLE), m_debugMessenger(VK_NULL_HANDLE), m_physicalDevice(VK_NULL_HANDLE), m_surface(nullptr)
 
 	{
 	}
@@ -125,6 +128,9 @@ namespace Lynx
 	{
 		LogS("Renderer", "Initializing");
 		if (!CreateInstance())
+			return false;
+
+		if (!CreateSurface())
 			return false;
 
 		CreateDebugMessenger();
@@ -209,6 +215,39 @@ namespace Lynx
 			LogE("Renderer", "Failed to create Vulkan instance - error code : %d", result);
 			return false;
 		}
+
+		/*// Surface Creation
+		VkDisplaySurfaceCreateInfoKHR
+		VkWin32SurfaceCreateInfoKHR createInfo = {};
+createInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+createInfo.hwnd = glfwGetWin32Window(window);
+createInfo.hinstance = GetModuleHandle(nullptr);
+*/
+		return true;
+	}
+
+	// Implementation needs to be implemented for each platform, for now, only Linux - X11 is supported
+	bool Renderer::CreateSurface()
+	{
+		GLFWwindow* window = Application::get()->getWindow()->getRawWindow();
+		/*VkXlibSurfaceCreateInfoKHR createInfo = {};
+		createInfo.sType = VK_STRUCTURE_TYPE_XLIB_SURFACE_CREATE_INFO_KHR;
+		createInfo.window =	glfwGetX11Window(window);
+		if(vkCreateXlibSurfaceKHR(m_vkInstance, &createInfo, nullptr, &m_surface) != VK_SUCCESS)
+		{
+			LogE("Renderer", "Failed to create window surface");
+			return false;
+
+		}
+
+		*/
+
+		if (glfwCreateWindowSurface(m_vkInstance, window, nullptr, &m_surface) != VK_SUCCESS)
+		{
+			LogE("Renderer", "Failed to create window surface");
+			return false;
+		}
+
 		return true;
 	}
 
@@ -362,6 +401,7 @@ namespace Lynx
 			DestroyDebugUtilsMessengerEXT(m_vkInstance, m_debugMessenger, nullptr);
 		}
 		vkDestroyDevice(m_device, nullptr);
+		vkDestroySurfaceKHR(m_vkInstance, m_surface, nullptr);
 		vkDestroyInstance(m_vkInstance, nullptr);
 		glfwTerminate();
 	}
