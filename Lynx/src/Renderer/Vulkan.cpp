@@ -1,7 +1,7 @@
 
-#include "Renderer.h"
-#include "Application.h"
 #include "pch.h"
+#include "Vulkan.h"
+#include "Application.h"
 
 #include <GLFW/glfw3native.h>
 
@@ -24,7 +24,7 @@ namespace Lynx
 		if (messageSeverity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT)
 		{
 			// Important (error) message
-			LogE("Renderer", pCallbackData->pMessage);
+			LogE("Vulkan", pCallbackData->pMessage);
 		}
 
 		return VK_FALSE;
@@ -117,16 +117,16 @@ namespace Lynx
 	}
 #pragma endregion
 
-	Renderer* Renderer::m_instance = nullptr;
-	Renderer::Renderer()
+	Vulkan* Vulkan::m_instance = nullptr;
+	Vulkan::Vulkan()
 		: m_vkInstance(VK_NULL_HANDLE), m_debugMessenger(VK_NULL_HANDLE), m_physicalDevice(VK_NULL_HANDLE), m_surface(nullptr)
 
 	{
 	}
 
-	bool Renderer::Init()
+	bool Vulkan::Init()
 	{
-		LogS("Renderer", "Initializing");
+		LogS("Vulkan", "Initializing");
 		if (!CreateInstance())
 			return false;
 
@@ -144,7 +144,7 @@ namespace Lynx
 		return true;
 	}
 
-	bool Renderer::CreateInstance()
+	bool Vulkan::CreateInstance()
 	{
 		VkApplicationInfo appInfo = {};
 		appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -163,7 +163,7 @@ namespace Lynx
 		uint32_t glfwExtensionCount = 0;
 		const char** glfwExtensions;
 		glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
-		LogF("Renderer", "GLFW needs %d extensions", glfwExtensionCount);
+		LogF("Vulkan", "GLFW needs %d extensions", glfwExtensionCount);
 
 		// Getting required extension count
 		std::vector<const char*> extensions = getRequiredExtensions();
@@ -172,7 +172,7 @@ namespace Lynx
 		createInfo.enabledExtensionCount = extensions.size();
 		createInfo.ppEnabledExtensionNames = extensions.data();
 
-		LogF("Renderer", "Extensions used (%d) : ", extensions.size());
+		LogF("Vulkan", "Extensions used (%d) : ", extensions.size());
 		for (const char* extension : extensions)
 		{
 			printf("\t%s\n", extension);
@@ -180,14 +180,14 @@ namespace Lynx
 
 		// Validation layers for debugging
 		// In release these are disabled
-		LogF("Renderer", "Validation layers used (%d) : ", validationLayers.size());
+		LogF("Vulkan", "Validation layers used (%d) : ", validationLayers.size());
 		for (const char* validationLayer : validationLayers)
 		{
 			printf("\t%s\n", validationLayer);
 		}
 		if (validationLayers.size() && !checkValidationLayerSupport())
 		{
-			LogE("Renderer", "Some of the requested validation layers are not supported");
+			LogE("Vulkan", "Some of the requested validation layers are not supported");
 			return false;
 		}
 
@@ -207,12 +207,12 @@ namespace Lynx
 		}
 
 		// Create the Vulkan instance
-		LogS("Renderer", "Creating Vulkan instance");
+		LogS("Vulkan", "Creating Vulkan instance");
 
 		VkResult result = vkCreateInstance(&createInfo, nullptr, &m_vkInstance);
 		if (result != VK_SUCCESS)
 		{
-			LogE("Renderer", "Failed to create Vulkan instance - error code : %d", result);
+			LogE("Vulkan", "Failed to create Vulkan instance - error code : %d", result);
 			return false;
 		}
 
@@ -227,7 +227,7 @@ createInfo.hinstance = GetModuleHandle(nullptr);
 	}
 
 	// Implementation needs to be implemented for each platform, for now, only Linux - X11 is supported
-	bool Renderer::CreateSurface()
+	bool Vulkan::CreateSurface()
 	{
 		GLFWwindow* window = Application::get()->getWindow()->getRawWindow();
 		/*VkXlibSurfaceCreateInfoKHR createInfo = {};
@@ -235,7 +235,7 @@ createInfo.hinstance = GetModuleHandle(nullptr);
 		createInfo.window =	glfwGetX11Window(window);
 		if(vkCreateXlibSurfaceKHR(m_vkInstance, &createInfo, nullptr, &m_surface) != VK_SUCCESS)
 		{
-			LogE("Renderer", "Failed to create window surface");
+			LogE("Vulkan", "Failed to create window surface");
 			return false;
 
 		}
@@ -244,7 +244,7 @@ createInfo.hinstance = GetModuleHandle(nullptr);
 
 		if (glfwCreateWindowSurface(m_vkInstance, window, nullptr, &m_surface) != VK_SUCCESS)
 		{
-			LogE("Renderer", "Failed to create window surface");
+			LogE("Vulkan", "Failed to create window surface");
 			return false;
 		}
 
@@ -252,7 +252,7 @@ createInfo.hinstance = GetModuleHandle(nullptr);
 	}
 
 	// Returns a score of how suitable or favorable one GPU is to Another
-	int Renderer::getDeviceSuitability(VkPhysicalDevice device)
+	int Vulkan::getDeviceSuitability(VkPhysicalDevice device)
 	{
 		QueueFamilyIndices indices = getQueueFamilies(device);
 		if (!indices.getComplete())
@@ -286,13 +286,13 @@ createInfo.hinstance = GetModuleHandle(nullptr);
 		return score;
 	}
 
-	bool Renderer::CreatePhysicalDevice()
+	bool Vulkan::CreatePhysicalDevice()
 	{
 		uint32_t deviceCount = 0;
 		vkEnumeratePhysicalDevices(m_vkInstance, &deviceCount, nullptr);
 		if (deviceCount == 0)
 		{
-			LogE("Renderer", "Failed to find GPUs with Vulkan support");
+			LogE("Vulkan", "Failed to find GPUs with Vulkan support");
 			return false;
 		}
 
@@ -314,14 +314,14 @@ createInfo.hinstance = GetModuleHandle(nullptr);
 		}
 		else
 		{
-			LogE("Renderer", "Failed to find suitable GPU");
+			LogE("Vulkan", "Failed to find suitable GPU");
 			return false;
 		}
 
 		return true;
 	}
 
-	bool Renderer::CreateLogicalDevice()
+	bool Vulkan::CreateLogicalDevice()
 	{
 		// Specifying the queues to be created
 		QueueFamilyIndices indices = getQueueFamilies(m_physicalDevice);
@@ -361,7 +361,7 @@ createInfo.hinstance = GetModuleHandle(nullptr);
 
 		if (vkCreateDevice(m_physicalDevice, &createInfo, nullptr, &m_device) != VK_SUCCESS)
 		{
-			LogE("Renderer", "Failed to create logical device");
+			LogE("Vulkan", "Failed to create logical device");
 			return false;
 		}
 
@@ -370,7 +370,7 @@ createInfo.hinstance = GetModuleHandle(nullptr);
 		return true;
 	}
 
-	QueueFamilyIndices Renderer::getQueueFamilies(VkPhysicalDevice device)
+	QueueFamilyIndices Vulkan::getQueueFamilies(VkPhysicalDevice device)
 	{
 		QueueFamilyIndices indices;
 		// Assign index to queue families that could be found
@@ -394,7 +394,7 @@ createInfo.hinstance = GetModuleHandle(nullptr);
 		return indices;
 	}
 
-	void Renderer::Terminate()
+	void Vulkan::Terminate()
 	{
 		if (enableValidationLayers)
 		{
@@ -407,7 +407,7 @@ createInfo.hinstance = GetModuleHandle(nullptr);
 	}
 
 } // namespace Lynx
-void Lynx::Renderer::CreateDebugMessenger()
+void Lynx::Vulkan::CreateDebugMessenger()
 {
 	if (!enableValidationLayers)
 		return;
@@ -417,6 +417,6 @@ void Lynx::Renderer::CreateDebugMessenger()
 
 	if (CreateDebugUtilsMessengerEXT(m_vkInstance, &createInfo, nullptr, &m_debugMessenger) != VK_SUCCESS)
 	{
-		LogE("Renderer", "Failed to set up debug messenger!");
+		LogE("Vulkan", "Failed to set up debug messenger!");
 	}
 }

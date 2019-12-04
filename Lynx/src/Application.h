@@ -5,7 +5,7 @@
 #include "Events/ApplicationEvent.h"
 #include "Scene/LayerStack.h"
 
-class Renderer;
+class Vulkan;
 
 namespace Lynx
 {
@@ -40,8 +40,8 @@ namespace Lynx
 		void onWindowClose(WindowCloseEvent& e);
 		LayerStack m_layerStack;
 
-		// The renderer is a singleton and this is not the only reference pointer to it
-		Renderer* m_renderer;
+		// The Vulkan is a singleton and this is not the only reference pointer to it
+		Vulkan* m_renderer;
 
 	  protected:
 		std::string m_name;

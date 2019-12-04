@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Renderer/Renderer.h"
+#include "Renderer/Vulkan.h"
 #include <Application.h>
 #include <Events/ApplicationEvent.h>
 #include <Events/Event.h>
@@ -32,10 +32,10 @@ namespace Lynx
 		m_window = new Window(m_name, 800, 600, WindowStyle::Windowed);
 		m_window->setEventCallback(BIND(Application::onEvent));
 
-		m_renderer = Renderer::get();
+		m_renderer = Vulkan::get();
 		if (!m_renderer->Init())
 		{
-			LogE("Application", "Failed to initialize renderer");
+			LogE("Application", "Failed to initialize Vulkan");
 			return false;
 		}
 		return true;

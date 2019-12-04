@@ -17,10 +17,10 @@ namespace Lynx
 		bool getComplete() { return graphicsFamily.has_value(); }
 	};
 
-	// Represents a singleton renderer using vulkan
+	// Represents a singleton Vulkan using vulkan
 	// Is global to all threads
 	// Need to be explicitely initialized before using
-	class LYNX_API Renderer
+	class LYNX_API Vulkan
 	{
 	  public:
 		// Initializes Vulkan and all other required components
@@ -30,15 +30,15 @@ namespace Lynx
 		// Terminates and frees all graphic
 		void Terminate();
 
-		static Renderer* get()
+		static Vulkan* get()
 		{
 			if (!m_instance)
-				m_instance = new Renderer;
+				m_instance = new Vulkan;
 			return m_instance;
 		}
 
 	  private:
-		Renderer();
+		Vulkan();
 		// Creates a Vulkan instance
 		bool CreateInstance();
 
@@ -58,7 +58,7 @@ namespace Lynx
 
 
 	  private:
-		static Renderer* m_instance;
+		static Vulkan* m_instance;
 		VkInstance m_vkInstance;
 		VkSurfaceKHR m_surface;
 		VkPhysicalDevice m_physicalDevice;
