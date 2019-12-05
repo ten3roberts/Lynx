@@ -9,18 +9,14 @@ namespace Lynx
 {
 #if DEBUG
 	const bool enableValidationLayers = true;
-	const std::vector<const char*> validationLayers = {"VK_LAYER_KHRONOS_validation"};
+	const std::vector<const char*> validationLayers = { "VK_LAYER_KHRONOS_validation" };
 #else
 	const std::vector<const char*> validationLayers = {};
 	const bool enableValidationLayers = false;
 #endif
-#pragma region helper functions
-	VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-												 VkDebugUtilsMessageTypeFlagsEXT messageType,
-												 const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-												 void* pUserData)
+	VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType,
+		const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData)
 	{
-
 		if (messageSeverity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT)
 		{
 			// Important (error) message
@@ -30,7 +26,7 @@ namespace Lynx
 		return VK_FALSE;
 	}
 
-	bool checkValidationLayerSupport()
+	bool getValidationLayerSupport()
 	{
 		uint32_t layerCount;
 		vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
@@ -40,21 +36,19 @@ namespace Lynx
 
 		for (const char* layerName : validationLayers)
 		{
-			bool layerFound = false;
+			bool layer_found = false;
 
 			for (const auto& layerProperties : availableLayers)
 			{
 				if (strcmp(layerName, layerProperties.layerName) == 0)
 				{
-					layerFound = true;
+					layer_found = true;
 					break;
 				}
 			}
 
-			if (!layerFound)
-			{
+			if (!layer_found)
 				return false;
-			}
 		}
 
 		return true;
@@ -69,57 +63,65 @@ namespace Lynx
 		std::vector<const char*> extensions(glfwExtensions, glfwExtensions + glfwExtensionCount);
 
 		if (enableValidationLayers)
-		{
 			extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-		}
 
 		return extensions;
 	}
 
-	VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
-										  const VkAllocationCallbacks* pAllocator,
-										  VkDebugUtilsMessengerEXT* pDebugMessenger)
+	VkResult CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger)
 	{
-		auto func =
-			(PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
+		auto func = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkCreateDebugUtilsMessengerEXT");
 		if (func != nullptr)
-		{
 			return func(instance, pCreateInfo, pAllocator, pDebugMessenger);
-		}
 		else
-		{
 			return VK_ERROR_EXTENSION_NOT_PRESENT;
-		}
 	}
 
 	void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo)
 	{
 		createInfo = {};
 		createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-		createInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
-									 VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
-									 VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
-		createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
-								 VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
-								 VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+		createInfo.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+		createInfo.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
 		createInfo.pfnUserCallback = debugCallback;
 	}
 
 	void DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger,
-									   const VkAllocationCallbacks* pAllocator)
+		const VkAllocationCallbacks* pAllocator)
 	{
-		auto func =
-			(PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
+		auto func = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(instance, "vkDestroyDebugUtilsMessengerEXT");
 		if (func != nullptr)
-		{
 			func(instance, debugMessenger, pAllocator);
-		}
 	}
-#pragma endregion
+
+	QueueFamilyIndices getQueueFamilies(VkPhysicalDevice device)
+	{
+		QueueFamilyIndices indices;
+		// Assign index to queue families that could be found
+
+		uint32_t queueFamilyCount = 0;
+		vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
+
+		std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+		vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
+
+		int i = 0;
+		for (const auto& queueFamily : queueFamilies)
+		{
+			if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
+			{
+				indices.graphicsFamily = i;
+			}
+
+			i++;
+		}
+		return indices;
+	}
+
 
 	Vulkan* Vulkan::m_instance = nullptr;
 	Vulkan::Vulkan()
-		: m_vkInstance(VK_NULL_HANDLE), m_debugMessenger(VK_NULL_HANDLE), m_physicalDevice(VK_NULL_HANDLE), m_surface(nullptr)
+		: m_vkInstance(VK_NULL_HANDLE), m_debugMessenger(VK_NULL_HANDLE), m_device(VK_NULL_HANDLE), m_physicalDevice(VK_NULL_HANDLE), m_surface(nullptr)
 
 	{
 	}
@@ -130,9 +132,6 @@ namespace Lynx
 		if (!CreateInstance())
 			return false;
 
-		if (!CreateSurface())
-			return false;
-
 		CreateDebugMessenger();
 
 		if (!CreatePhysicalDevice())
@@ -140,6 +139,7 @@ namespace Lynx
 
 		if (!CreateLogicalDevice())
 			return false;
+
 		// No errors occurred
 		return true;
 	}
@@ -159,7 +159,6 @@ namespace Lynx
 		createInfo.pApplicationInfo = &appInfo;
 
 		// GLFW extensions
-
 		uint32_t glfwExtensionCount = 0;
 		const char** glfwExtensions;
 		glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
@@ -174,18 +173,15 @@ namespace Lynx
 
 		LogF("Vulkan", "Extensions used (%d) : ", extensions.size());
 		for (const char* extension : extensions)
-		{
 			printf("\t%s\n", extension);
-		}
 
 		// Validation layers for debugging
 		// In release these are disabled
 		LogF("Vulkan", "Validation layers used (%d) : ", validationLayers.size());
 		for (const char* validationLayer : validationLayers)
-		{
 			printf("\t%s\n", validationLayer);
-		}
-		if (validationLayers.size() && !checkValidationLayerSupport())
+
+		if (validationLayers.size() && !getValidationLayerSupport())
 		{
 			LogE("Vulkan", "Some of the requested validation layers are not supported");
 			return false;
@@ -216,32 +212,8 @@ namespace Lynx
 			return false;
 		}
 
-		/*// Surface Creation
-		VkDisplaySurfaceCreateInfoKHR
-		VkWin32SurfaceCreateInfoKHR createInfo = {};
-createInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-createInfo.hwnd = glfwGetWin32Window(window);
-createInfo.hinstance = GetModuleHandle(nullptr);
-*/
-		return true;
-	}
-
-	// Implementation needs to be implemented for each platform, for now, only Linux - X11 is supported
-	bool Vulkan::CreateSurface()
-	{
+		// Surface creation
 		GLFWwindow* window = Application::get()->getWindow()->getRawWindow();
-		/*VkXlibSurfaceCreateInfoKHR createInfo = {};
-		createInfo.sType = VK_STRUCTURE_TYPE_XLIB_SURFACE_CREATE_INFO_KHR;
-		createInfo.window =	glfwGetX11Window(window);
-		if(vkCreateXlibSurfaceKHR(m_vkInstance, &createInfo, nullptr, &m_surface) != VK_SUCCESS)
-		{
-			LogE("Vulkan", "Failed to create window surface");
-			return false;
-
-		}
-
-		*/
-
 		if (glfwCreateWindowSurface(m_vkInstance, window, nullptr, &m_surface) != VK_SUCCESS)
 		{
 			LogE("Vulkan", "Failed to create window surface");
@@ -270,9 +242,7 @@ createInfo.hinstance = GetModuleHandle(nullptr);
 
 		// Discrete GPUs have a significant performance advantage
 		if (deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
-		{
 			score += 1000;
-		}
 
 		// Maximum possible size of textures affects graphics quality
 		score += deviceProperties.limits.maxImageDimension2D;
@@ -370,30 +340,6 @@ createInfo.hinstance = GetModuleHandle(nullptr);
 		return true;
 	}
 
-	QueueFamilyIndices Vulkan::getQueueFamilies(VkPhysicalDevice device)
-	{
-		QueueFamilyIndices indices;
-		// Assign index to queue families that could be found
-
-		uint32_t queueFamilyCount = 0;
-		vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
-
-		std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
-		vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
-
-		int i = 0;
-		for (const auto& queueFamily : queueFamilies)
-		{
-			if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT)
-			{
-				indices.graphicsFamily = i;
-			}
-
-			i++;
-		}
-		return indices;
-	}
-
 	void Vulkan::Terminate()
 	{
 		if (enableValidationLayers)
@@ -416,7 +362,5 @@ void Lynx::Vulkan::CreateDebugMessenger()
 	populateDebugMessengerCreateInfo(createInfo);
 
 	if (CreateDebugUtilsMessengerEXT(m_vkInstance, &createInfo, nullptr, &m_debugMessenger) != VK_SUCCESS)
-	{
 		LogE("Vulkan", "Failed to set up debug messenger!");
-	}
 }

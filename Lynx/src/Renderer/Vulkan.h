@@ -46,16 +46,10 @@ namespace Lynx
 
 		bool CreatePhysicalDevice();
 
-		bool CreateLogicalDevice();
+		bool CreateLogicalDevice();		
 
-		// Creats a presentable surface
-		bool CreateSurface();
-		
-
-		QueueFamilyIndices getQueueFamilies(VkPhysicalDevice device);
 		// Creates a debug message callback handle
 		void CreateDebugMessenger();
-
 
 	  private:
 		static Vulkan* m_instance;
