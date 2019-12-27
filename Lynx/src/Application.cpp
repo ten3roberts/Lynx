@@ -26,6 +26,7 @@ namespace Lynx
 
 	bool Application::Init()
 	{
+		printf("Running debug %d", DEBUG);
 		Timer timer("Application::Init");
 		Time::Init();
 

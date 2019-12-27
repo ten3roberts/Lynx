@@ -48,8 +48,11 @@ namespace Lynx
 
 		GLFWwindow* getRawWindow() { return m_window; }
 
-	  private:
+		int GetWidth() const {return m_data.width; }
+		int GetHeight() const {return m_data.height; }
+
 		void Init();
+	  private:
 
 		struct WindowData
 		{

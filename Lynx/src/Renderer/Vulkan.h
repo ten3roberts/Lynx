@@ -13,8 +13,16 @@ namespace Lynx
 	struct QueueFamilyIndices
 	{
 		std::optional<uint32_t> graphicsFamily;
+		std::optional<uint32_t> presentFamily;
 
-		bool getComplete() { return graphicsFamily.has_value(); }
+		bool getComplete() { return graphicsFamily.has_value() && presentFamily.has_value(); }
+	};
+
+	struct SwapChainSupportDetails
+	{
+		VkSurfaceCapabilitiesKHR capabilities;
+		std::vector<VkSurfaceFormatKHR> formats;
+		std::vector<VkPresentModeKHR> presentModes;
 	};
 
 	// Represents a singleton Vulkan using vulkan
@@ -42,11 +50,13 @@ namespace Lynx
 		// Creates a Vulkan instance
 		bool CreateInstance();
 
-		int getDeviceSuitability(VkPhysicalDevice device);
+		int getDeviceSuitability(VkPhysicalDevice device, VkSurfaceKHR surface);
 
 		bool CreatePhysicalDevice();
 
-		bool CreateLogicalDevice();		
+		bool CreateLogicalDevice();
+
+		bool CreateSwapChain();
 
 		// Creates a debug message callback handle
 		void CreateDebugMessenger();
@@ -57,9 +67,12 @@ namespace Lynx
 		VkSurfaceKHR m_surface;
 		VkPhysicalDevice m_physicalDevice;
 		VkDevice m_device;
+		VkSwapchainKHR m_swapchain;
+
 		VkDebugUtilsMessengerEXT m_debugMessenger;
 
 		// Queues
 		VkQueue m_graphicsQueue;
+		VkQueue m_presentQueue;
 	};
 } // namespace Lynx
